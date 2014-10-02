@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <title>Add Client | Fair Hope Children's Ministry</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -71,7 +71,7 @@
  <br/>
  
  
-	<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form">
   <div class="form-group">
     <label for="fName" class="col-sm-2 control-label">First Name:</label>
     <div class="col-sm-3">
@@ -89,21 +89,26 @@
     <div class="form-group">
     <label for="referAgency" class="col-sm-2 control-label">Referring Agency:</label>
     <div class="col-sm-3">
-      <input type = "text" class="form-control" id="referAgency" placeholder="Referring Agency">
-    </div>
+  <select class="form-control">
+    <option>--Select Agency--</option>
+    <option>Mustard</option>
+    <option>Ketchup</option>
+    <option>Relish</option>
+  </select>    
+  </div>
   </div>
   
       <div class="form-group">
-    <label for="nameRefer" class="col-sm-2 control-label">Name of person Referring:</label>
+    <label for="nameRefer" class="col-sm-2 control-label">Name of person referring:</label>
     <div class="col-sm-3">
-      <input type = "text" class="form-control" id="nameRefer" placeholder="Name of person Referring">
+      <input type = "text" class="form-control" id="nameRefer" placeholder="e.g. John Doe">
     </div>
   </div>
   
         <div class="form-group">
     <label for="numChild" class="col-sm-2 control-label">Number of Children:</label>
     <div class="col-sm-1">
-      <input type = "number" class="form-control" id="numChild" placeholder="Number ">
+      <input type ="number" min="0" class="form-control" id="numChild" placeholder="Number ">
     </div>
   </div>
   
@@ -127,15 +132,34 @@
     
         <label>
 		    <div class="checkbox">
-          <input type="checkbox"> PNP
+          <p>
+            <input type="checkbox"> 
+            PNP
 		  <input type="checkbox"> School Clothes
 		  <input type="checkbox"> Clothing
 		  <input type="checkbox"> Layette (Boy)
 		  <input type="checkbox"> Layette (Girl)
 		  <input type="checkbox"> Book supplying
         </label>
-		
-		       <br/>
+          </p>
+          
+          
+    
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <span class="input-group-addon">
+        <input type="checkbox">
+      </span>
+      <input type="text" class="form-control">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  
+
+
+          <p><br/>
+          </p>
 			   
 
 		
@@ -146,16 +170,12 @@
     </div>
   </div>
   
-    <div class="form-group">
-    <div class="col-sm-offset-1 col-sm-10">
-      <button type="submit" class="btn btn-default">Schedule the time</button>
-    </div>
 	<hr>
 	
 	
   <div class="form-group">
     <div class="col-sm-offset-6 col-sm-10">
-      <button type="submit" class="btn btn-default">Add</button>
+      <button type="submit" class="btn btn-primary">Add Client</button>
     </div>
   </div>
 </form>
