@@ -91,17 +91,20 @@
             <label for="email"><?php echo $this->lang->line('email'); ?> *</label>
             <input type="text" id="email" class="span11 required" />
 
-            <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
+<!--             <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
             <input type="text" id="phone-number" class="span11 required" />
-            
-            <label for="address"><?php echo $this->lang->line('address'); ?></label>
+ -->            
+<!--             <label for="address"><?php echo $this->lang->line('address'); ?></label>
             <input type="text" id="address" class="span11" />
 
             <label for="city"><?php echo $this->lang->line('city'); ?></label>
             <input type="text" id="city" class="span11" />
 
             <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
-            <input type="text" id="zip-code" class="span11" />
+            <input type="text" id="zip-code" class="span11" /> 
+-->
+            <label for="num_of_children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
+            <input type="text" id="num_of_children" class="span11 required" />
 
             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
             <textarea id="notes" rows="4" class="span11"></textarea>

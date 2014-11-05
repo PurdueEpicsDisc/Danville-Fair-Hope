@@ -33,6 +33,7 @@
                     <td class="label" style="padding: 3px;font-weight: bold;">End</td>
                     <td style="padding: 3px;">$appointment_end_date</td>
                 </tr>
+
             </table>
             
             <h2>Customer Details</h2>

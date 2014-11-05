@@ -330,12 +330,12 @@ var FrontendBook = {
             // service. Fill the available hours div with response data. 
             if (response.length > 0) {
                 var currColumn = 1;
-                $('#available-hours').html('<div style="width:50px; float:left;"></div>');
+                $('#available-hours').html('<div style="width:80px; float:left;"></div>');
 
                 $.each(response, function(index, availableHour) {
                     if ((currColumn * 10) < (index + 1)) {
                         currColumn++;
-                        $('#available-hours').append('<div style="width:50px; float:left;"></div>');
+                        $('#available-hours').append('<div style="width:80px; float:left;"></div>');
                     }
 
                     $('#available-hours div:eq(' + (currColumn - 1) + ')').append(
@@ -463,7 +463,7 @@ var FrontendBook = {
         
         postData['appointment'] = {
             'start_datetime': $('#select-date').datepicker('getDate').toString('yyyy-MM-dd') 
-                                    + ' ' + $('.selected-hour').text() + ':00',
+                + ' ' + Date.parse((($('.selected-hour').text()) ? $('.selected-hour').text() : '00:00')).toString('HH:mm') + ':00',
             'end_datetime': FrontendBook.calcEndDatetime(),
             'notes': $('#notes').val(),
             'is_unavailable': false,
@@ -579,9 +579,9 @@ var FrontendBook = {
                             + ' ' + EALang['minutes'] + '] ';
                 }
                 
-                if (service.price != '' && service.price != null) {
-                    html += '[' + EALang['price'] + ' ' + service.price + ' ' + service.currency  + ']';
-                }   
+                // if (service.price != '' && service.price != null) {
+                //     html += '[' + EALang['price'] + ' ' + service.price + ' ' + service.currency  + ']';
+                // }   
                 
                 html += '<br>';
                 

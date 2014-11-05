@@ -364,7 +364,7 @@ class Appointments extends CI_Controller {
                 $diff = $current_hour->diff($end_hour);
 
                 while (($diff->h * 60 + $diff->i) >= intval($_POST['service_duration'])) {
-                    $available_hours[] = $current_hour->format('H:i');
+                    $available_hours[] = $current_hour->format('h:i A'); 
                     $current_hour->add(new DateInterval("PT15M"));
                     $diff = $current_hour->diff($end_hour);
                 }
@@ -392,7 +392,7 @@ class Appointments extends CI_Controller {
             }
 
             $available_hours = array_values($available_hours);
-            sort($available_hours, SORT_STRING );
+            // sort($available_hours, SORT_STRING );
             $available_hours = array_values($available_hours);
             echo json_encode($available_hours);
             
