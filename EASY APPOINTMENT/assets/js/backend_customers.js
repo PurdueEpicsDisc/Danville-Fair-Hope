@@ -167,6 +167,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 
     /**
      * Event: Save Add/Edit Customer Operation "Click"
+     Left is database value, right is the form label
      */
     $('#save-customer').click(function() {
         var customer = {
@@ -176,6 +177,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
             'phone_number': $('#phone-number').val(),
             'address': $('#address').val(),
             'city': $('#city').val(),
+            'num_of_children': $('#num-of-children').val(),
             'zip_code': $('#zip-code').val(),
             'notes': $('#notes').val()
         };
@@ -325,6 +327,7 @@ CustomersHelper.prototype.display = function(customer) {
     $('#address').val(customer.address);
     $('#city').val(customer.city);
     $('#zip-code').val(customer.zip_code);
+    $('#num-of-children').val(customer.num_of_children);
     $('#notes').val(customer.notes);
 
     $('#customer-appointments').data('jsp').destroy();

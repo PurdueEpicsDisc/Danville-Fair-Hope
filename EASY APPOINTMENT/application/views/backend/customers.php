@@ -103,8 +103,8 @@
             <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
             <input type="text" id="zip-code" class="span11" /> 
 -->
-            <label for="num_of_children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
-            <input type="text" id="num_of_children" class="span11 required" />
+            <label for="number-of-children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
+            <input type="text" id="num-of-children" class="span11 required" />
 
             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
             <textarea id="notes" rows="4" class="span11"></textarea>
