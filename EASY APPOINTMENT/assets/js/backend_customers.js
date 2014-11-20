@@ -399,9 +399,12 @@ CustomersHelper.prototype.filter = function(key, selectId, display) {
  * @param {object} customer Contains the customer data.
  * @return {string} Returns the record html code.
  */
+
+
+ /************************control how it appear on backend costumer page, left column   */
 CustomersHelper.prototype.getFilterHtml = function(customer) {
     var name = customer.first_name + ' ' + customer.last_name;
-    var info = customer.email; 
+    var info = customer.dob; 
     info = (customer.phone_number != '' && customer.phone_number != null) 
             ? info + ', ' + customer.phone_number : info;
     
