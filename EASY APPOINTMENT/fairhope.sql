@@ -172,7 +172,7 @@ CREATE TABLE `ea_users` (
 `id` bigint(20) unsigned NOT NULL,
   `first_name` varchar(256) DEFAULT NULL,
   `last_name` varchar(512) DEFAULT NULL,
-  `dob` date NOT NULL COMMENT 'Date of Birth',
+  `dob` varchar(64) DEFAULT NULL,
   `email` varchar(512) DEFAULT NULL,
   `mobile_number` varchar(128) DEFAULT NULL,
   `phone_number` varchar(128) DEFAULT NULL,

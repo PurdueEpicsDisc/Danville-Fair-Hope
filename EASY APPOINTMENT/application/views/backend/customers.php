@@ -102,9 +102,15 @@
 
             <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
             <input type="text" id="zip-code" class="span11" /> 
+			
 -->
+		
+			
             <label for="number-of-children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
             <input type="text" id="num-of-children" class="span11 required" />
+			
+				<label for="date-of-birth"><?php echo $this->lang->line('dob'); ?> *</label>
+            <input type="text" id="date-of-birth" class="span11" />
 
             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
             <textarea id="notes" rows="4" class="span11"></textarea>

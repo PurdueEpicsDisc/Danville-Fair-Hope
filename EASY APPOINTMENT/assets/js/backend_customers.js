@@ -179,6 +179,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
             'city': $('#city').val(),
             'num_of_children': $('#num-of-children').val(),
             'zip_code': $('#zip-code').val(),
+			'dob': $('#date-of-birth').val(),
             'notes': $('#notes').val()
         };
 
@@ -328,6 +329,7 @@ CustomersHelper.prototype.display = function(customer) {
     $('#city').val(customer.city);
     $('#zip-code').val(customer.zip_code);
     $('#num-of-children').val(customer.num_of_children);
+	 $('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
 
     $('#customer-appointments').data('jsp').destroy();
