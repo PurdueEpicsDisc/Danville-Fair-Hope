@@ -532,13 +532,15 @@ var BackendCalendar = {
                 'first_name': $dialog.find('#first-name').val(),
                 'last_name': $dialog.find('#last-name').val(),
                 'email': $dialog.find('#email').val(),
-                'phone_number': $dialog.find('#phone-number').val(),
-                'address': $dialog.find('#address').val(),
-                'city': $dialog.find('#city').val(),
-                'zip_code': $dialog.find('#zip-code').val(),
-                'dob': $dialog.find('#date-of-birth').val()
+
+                // 'phone_number': $dialog.find('#phone-number').val(),
+                // 'address': $dialog.find('#address').val(),
+                // 'city': $dialog.find('#city').val(),
+                // 'zip_code': $dialog.find('#zip-code').val(),
+				'dob': $dialog.find('#date-of-birth').val()
 				'num_of_children': $dialog.find('#num-of-children').val()
-				
+                'notes': $dialog.find('#customer-notes').val()
+
             };
             
             if ($dialog.find('#customer-id').val() !== '') {
@@ -882,11 +884,13 @@ var BackendCalendar = {
                     $('#customer-id').val(c.id);
                     $('#first-name').val(c.first_name);
                     $('#last-name').val(c.last_name);
+                    $('#dob').val(c.dob);
+                    $('#num-of-children').val(c.num_of_children);
                     $('#email').val(c.email);
-                    $('#phone-number').val(c.phone_number);
-                    $('#address').val(c.address);
-                    $('#city').val(c.city);
-                    $('#zip-code').val(c.zip_code);
+                    // $('#phone-number').val(c.phone_number);
+                    // $('#address').val(c.address);
+                    // $('#city').val(c.city);
+                    // $('#zip-code').val(c.zip_code);
                     $('#customer-notes').val(c.notes);
 					$('#num-of-children').val(c.num_of_children);
 					$('#date-of-birth').val(c.dob); 

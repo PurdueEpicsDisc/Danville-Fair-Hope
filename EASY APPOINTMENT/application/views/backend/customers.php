@@ -1,6 +1,14 @@
+<link href="assets/js/libs/jquery/jquery.ui.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery-ui-timepicker-addon.js"></script>
-        
+
+<script type="text/javascript" 
+        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.js"></script>
+
+<script type="text/javascript" 
+        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.ui.js"></script>
+
 <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/backend_customers.js"></script>
         
@@ -26,7 +34,7 @@
 <div id="customers-page" class="row-fluid">
 	<div id="filter-customers" class="filter-records column span4">
 		<form class="input-append">
-			<input class="key span12" type="text" />
+			<input class="key span12" id="search" type="text" />
             <button class="filter btn" type="submit" title="<?php echo $this->lang->line('filter'); ?>">
                     <i class="icon-search"></i>
                 </button>
