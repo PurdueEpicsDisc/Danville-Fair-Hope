@@ -323,6 +323,7 @@ UserSettings.prototype.get = function() {
         'city': $('#city').val(),
         'state': $('#state').val(),
         'zip_code': $('#zip-code').val(),
+		'num_of_children': $('num-of-children').val(),
 		'dob': $('#date-of-birth').val(),
         'notes': $('#notes').val(),
         'settings': {
