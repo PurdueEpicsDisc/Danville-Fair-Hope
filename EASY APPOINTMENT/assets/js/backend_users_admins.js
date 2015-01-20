@@ -121,6 +121,8 @@ AdminsHelper.prototype.bindEventHandlers = function() {
             'city': $('#admin-city').val(),
             'state': $('#admin-state').val(),
             'zip_code': $('#admin-zip-code').val(),
+			'dob': $('#date-of-birth').val(),
+			'num_of_children': $('#num-of-children').val(),
             'notes': $('#admin-notes').val(),
             'settings': {
                 'username': $('#admin-username').val(),                    
@@ -295,6 +297,9 @@ AdminsHelper.prototype.display = function(admin) {
     $('#admin-city').val(admin.city);
     $('#admin-state').val(admin.state);
     $('#admin-zip-code').val(admin.zip_code);
+    $('#admin-notes').val(admin.notes);
+	$('#admin-num-of-children').val(admin.num_of_children);
+	$('#admin-date-of-birth').val(admin.dob);
     $('#admin-notes').val(admin.notes);
     
     $('#admin-username').val(admin.settings.username);
