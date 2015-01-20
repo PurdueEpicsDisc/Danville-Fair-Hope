@@ -1,6 +1,14 @@
+<link href="assets/js/libs/jquery/jquery.ui.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery-ui-timepicker-addon.js"></script>
-        
+
+<script type="text/javascript" 
+        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.js"></script>
+
+<script type="text/javascript" 
+        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.ui.js"></script>
+
 <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/backend_customers.js"></script>
         
@@ -26,7 +34,7 @@
 <div id="customers-page" class="row-fluid">
 	<div id="filter-customers" class="filter-records column span4">
 		<form class="input-append">
-			<input class="key span12" type="text" />
+			<input class="key span12" id="search" type="text" />
             <button class="filter btn" type="submit" title="<?php echo $this->lang->line('filter'); ?>">
                     <i class="icon-search"></i>
                 </button>
@@ -102,9 +110,15 @@
 
             <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
             <input type="text" id="zip-code" class="span11" /> 
+			
 -->
-            <label for="num_of_children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
-            <input type="text" id="num_of_children" class="span11 required" />
+		
+			
+            <label for="number-of-children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
+            <input type="text" id="num-of-children" class="span11 required" />
+			
+				<label for="date-of-birth"><?php echo $this->lang->line('dob'); ?> *</label>
+            <input type="text" id="date-of-birth" class="span11" />
 
             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
             <textarea id="notes" rows="4" class="span11"></textarea>

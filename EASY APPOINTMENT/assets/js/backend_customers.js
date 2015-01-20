@@ -167,6 +167,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 
     /**
      * Event: Save Add/Edit Customer Operation "Click"
+     Left is database value, right is the form label
      */
     $('#save-customer').click(function() {
         var customer = {
@@ -176,7 +177,9 @@ CustomersHelper.prototype.bindEventHandlers = function() {
             'phone_number': $('#phone-number').val(),
             'address': $('#address').val(),
             'city': $('#city').val(),
+            'num_of_children': $('#num-of-children').val(),
             'zip_code': $('#zip-code').val(),
+			'dob': $('#date-of-birth').val(),
             'notes': $('#notes').val()
         };
 
@@ -325,6 +328,8 @@ CustomersHelper.prototype.display = function(customer) {
     $('#address').val(customer.address);
     $('#city').val(customer.city);
     $('#zip-code').val(customer.zip_code);
+    $('#num-of-children').val(customer.num_of_children);
+	 $('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
 
     $('#customer-appointments').data('jsp').destroy();
@@ -394,9 +399,12 @@ CustomersHelper.prototype.filter = function(key, selectId, display) {
  * @param {object} customer Contains the customer data.
  * @return {string} Returns the record html code.
  */
+
+
+ /************************control how it appear on backend costumer page, left column   */
 CustomersHelper.prototype.getFilterHtml = function(customer) {
     var name = customer.first_name + ' ' + customer.last_name;
-    var info = customer.email; 
+    var info = customer.dob; 
     info = (customer.phone_number != '' && customer.phone_number != null) 
             ? info + ', ' + customer.phone_number : info;
     
