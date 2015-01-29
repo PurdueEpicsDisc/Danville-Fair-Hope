@@ -300,10 +300,10 @@
                             <label for="contact_person"><?php echo $this->lang->line('contact_person'); ?> *</label>
                             <input type="text" id="contact_person" class="required" maxlength="250" />
 
-<!--                             <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
+<!--                             <label for="phone-number"> *</label>
                             <input type="text" id="phone-number" class="required" maxlength="60" />
- -->
-                            <br/>
+
+ -->                            <br/>
                             <em id="form-message" class="text-error"><?php echo $this->lang->line('fields_are_required'); ?></em>
                         </div>
 
@@ -316,7 +316,7 @@
 
                             <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
                             <input type="text" id="zip-code" maxlength="120" /> -->
-
+                            <input type="text" id="favorite_team" maxlength="32" />
                             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
                             <textarea id="notes" maxlength="500" rows="3"></textarea>
                         </div>

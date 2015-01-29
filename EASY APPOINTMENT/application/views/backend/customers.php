@@ -99,9 +99,9 @@
             <label for="email"><?php echo $this->lang->line('email'); ?> *</label>
             <input type="text" id="email" class="span11 required" />
 
-<!--             <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
+            <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
             <input type="text" id="phone-number" class="span11 required" />
- -->            
+            
 <!--             <label for="address"><?php echo $this->lang->line('address'); ?></label>
             <input type="text" id="address" class="span11" />
 

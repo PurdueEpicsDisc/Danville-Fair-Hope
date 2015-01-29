@@ -272,15 +272,29 @@
                         </div>
                     </div>
 
+<!--                     <div class="control-group">
+                        <label for="phone-number" class="control-label">
+                            <?php echo $this->lang->line('phone_number'); ?>*</label>
+                        <div class="controls">
+                            <input type="text" id="phone-number" class="required" />
+                        </div>
+                    </div> -->
                 </div>
                 <div class="span6">
-
+<!--                     <div class="control-group">
+                        <label for="address" class="control-label">
+                            <?php echo $this->lang->line('address'); ?>
+                        </label>
+                        <div class="controls">
+                            <input type="text" id="address" />
+                        </div>
+                    </div> -->
                 <div class="control-group">
-                    <label for="date-of-birth" class="control-label">
+                    <label for="dob" class="control-label">
                         <?php echo $this->lang->line('dob'); ?>
                     </label>
                     <div class="controls">
-                        <input type="text" id="date-of-birth" class="required" />
+                        <input type="text" id="dob" class="required" />
                     </div>
                 </div>
                 <div class="control-group">
@@ -292,7 +306,24 @@
                     </div>
                 </div>
 
-
+<!--                     <div class="control-group">
+                        <label for="city" class="control-label">
+                            <?php echo $this->lang->line('city'); ?>
+                        </label>
+                        <div class="controls">
+                            <input type="text" id="city" />
+                        </div>
+                    </div>
+ -->
+<!--                     <div class="control-group">
+                        <label for="zip-code" class="control-label">
+                            <?php echo $this->lang->line('zip_code'); ?>
+                        </label>
+                        <div class="controls">
+                            <input type="text" id="zip-code" />
+                        </div>
+                    </div> -->
+                    
                     <div class="control-group">
                         <label for="customer-notes" class="control-label">
                             <?php echo $this->lang->line('notes'); ?></label>
