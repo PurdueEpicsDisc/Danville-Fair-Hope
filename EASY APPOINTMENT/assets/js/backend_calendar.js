@@ -902,11 +902,14 @@ var BackendCalendar = {
             $.each(GlobalVariables.customers, function(index, c) {
                 if (c.first_name.toLowerCase().indexOf(key) != -1 
                         || c.last_name.toLowerCase().indexOf(key) != -1
-                        || c.email.toLowerCase().indexOf(key) != -1
-                        || c.phone_number.toLowerCase().indexOf(key) != -1
-                        || c.address.toLowerCase().indexOf(key) != -1
-                        || c.city.toLowerCase().indexOf(key) != -1
-                        || c.zip_code.toLowerCase().indexOf(key) != -1) {
+                        // || c.email.toLowerCase().indexOf(key) != -1
+                        // || c.phone_number.toLowerCase().indexOf(key) != -1
+                        // || c.address.toLowerCase().indexOf(key) != -1
+                        // || c.city.toLowerCase().indexOf(key) != -1
+                        // || c.zip_code.toLowerCase().indexOf(key) != -1
+                    ) 
+
+                {
                     $list.append('<div data-id="' + c.id + '">' 
                             + c.first_name + ' ' + c.last_name + '</div>');
                 }
