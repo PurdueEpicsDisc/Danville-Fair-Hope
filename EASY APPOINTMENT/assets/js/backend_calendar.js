@@ -963,7 +963,7 @@ var BackendCalendar = {
          */
         $('#new-customer').click(function() {
             $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, #no_noshow'
-                    + '#phone-number, #address, #city, #zip-code, #num-of-children, #customer-notes').val('');
+                    + '#phone-number, #address, #city, #zip-code, #dob,#num-of-children, #customer-notes').val('');
         });
         
         /**
