@@ -168,6 +168,10 @@ var BackendCalendar = {
             $dialog.find('#appointment-id').val(appointment['id']);
             $dialog.find('#select-service').val(appointment['id_services']).change();
             $dialog.find('#select-provider').val(appointment['id_users_provider']);
+            $dialog.find('#layette').val(appointment['layette']);
+            $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
+            $dialog.find('#no-show').val(appointment['no_show_flag']);
+            $dialog.find('#appointment-notes').val(appointment['notes']);
 
             // Set the start and end datetime of the appointment.
             var startDatetime = Date.parseExact(appointment['start_datetime'],
@@ -183,11 +187,13 @@ var BackendCalendar = {
             $dialog.find('#first-name').val(customer['first_name']);
             $dialog.find('#last-name').val(customer['last_name']);
             $dialog.find('#email').val(customer['email']);
-            $dialog.find('#phone-number').val(customer['phone_number']);
-            $dialog.find('#address').val(customer['address']);
-            $dialog.find('#city').val(customer['city']);
-            $dialog.find('#zip-code').val(customer['zip_code']);
-            $dialog.find('#appointment-notes').val(appointment['notes']);
+            //$dialog.find('#phone-number').val(customer['phone_number']);
+            //$dialog.find('#address').val(customer['address']);
+            //$dialog.find('#city').val(customer['city']);
+            //$dialog.find('#zip-code').val(customer['zip_code']);
+            $dialog.find('#dob').val(customer['dob']);
+            $dialog.find('#num-of-children').val(customer['num_of_children']);
+            $dialog.find('#no-noshow').val(customer['no_noshow']);           
             $dialog.find('#customer-notes').val(customer['notes']);
             
             $dialog.modal('show');
@@ -349,6 +355,10 @@ var BackendCalendar = {
                 $dialog.find('#appointment-id').val(appointment['id']);
                 $dialog.find('#select-service').val(appointment['id_services']).trigger('change');
                 $dialog.find('#select-provider').val(appointment['id_users_provider']);
+                $dialog.find('#layette').val(appointment['layette']);
+                $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
+                $dialog.find('#appointment-notes').val(appointment['notes']);
+                $dialog.find('#no-show').val(appointment['no_show_flag']);
 
                 // Set the start and end datetime of the appointment.
                 var startDatetime = Date.parseExact(appointment['start_datetime'],
@@ -364,11 +374,13 @@ var BackendCalendar = {
                 $dialog.find('#first-name').val(customer['first_name']);
                 $dialog.find('#last-name').val(customer['last_name']);
                 $dialog.find('#email').val(customer['email']);
-                $dialog.find('#phone-number').val(customer['phone_number']);
-                $dialog.find('#address').val(customer['address']);
-                $dialog.find('#city').val(customer['city']);
-                $dialog.find('#zip-code').val(customer['zip_code']);
-                $dialog.find('#appointment-notes').val(appointment['notes']);
+                //$dialog.find('#phone-number').val(customer['phone_number']);
+                //$dialog.find('#address').val(customer['address']);
+                //$dialog.find('#city').val(customer['city']);
+                //$dialog.find('#zip-code').val(customer['zip_code']);
+                $dialog.find('#dob').val(customer['dob']);
+                $dialog.find('#num-of-children').val(customer['num_of_children']);
+                $dialog.find('#no-noshow').val(customer['no_noshow']);
                 $dialog.find('#customer-notes').val(customer['notes']);
             } else {
                 var unavailable = BackendCalendar.lastFocusedEventData.data;
@@ -517,6 +529,9 @@ var BackendCalendar = {
                 'start_datetime': startDatetime,
                 'end_datetime': endDatetime,
                 'notes': $dialog.find('#appointment-notes').val(),
+                'layette': $dialog.find('#layette').val(),
+                'backpack_qty': $dialog.find('#backpack-qty').val(),
+                'no_show_flag': $dialog.find('#no-show').val(),
                 'is_unavailable': false
             };
             
@@ -529,6 +544,9 @@ var BackendCalendar = {
                 'first_name': $dialog.find('#first-name').val(),
                 'last_name': $dialog.find('#last-name').val(),
                 'email': $dialog.find('#email').val(),
+                'num_of_children': $dialog.find('#num-of-children').val(),
+                'dob': $dialog.find('#dob').val(),
+                'no_noshow': $dialog.find('#no-noshow').val(),
                 // 'phone_number': $dialog.find('#phone-number').val(),
                 // 'address': $dialog.find('#address').val(),
                 // 'city': $dialog.find('#city').val(),
@@ -807,7 +825,9 @@ var BackendCalendar = {
             
             $dialog.find('#start-datetime').val(start.toString('dd/MM/yyyy HH:mm'));
             $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('dd/MM/yyyy HH:mm'));
-            
+            $dialog.find('#layette').val();
+            $dialog.find('#backpack-qty').val();
+            $dialog.find('#no-show').val();
             // Display modal form.
             $dialog.find('.modal-header h3').text(EALang['new_appointment_title']);
             $dialog.modal('show');
@@ -879,6 +899,7 @@ var BackendCalendar = {
                     $('#last-name').val(c.last_name);
                     $('#dob').val(c.dob);
                     $('#num-of-children').val(c.num_of_children);
+                    $('#no-noshow').val(c.no_noshow);
                     $('#email').val(c.email);
                     // $('#phone-number').val(c.phone_number);
                     // $('#address').val(c.address);
@@ -902,14 +923,11 @@ var BackendCalendar = {
             $.each(GlobalVariables.customers, function(index, c) {
                 if (c.first_name.toLowerCase().indexOf(key) != -1 
                         || c.last_name.toLowerCase().indexOf(key) != -1
-                        // || c.email.toLowerCase().indexOf(key) != -1
-                        // || c.phone_number.toLowerCase().indexOf(key) != -1
-                        // || c.address.toLowerCase().indexOf(key) != -1
-                        // || c.city.toLowerCase().indexOf(key) != -1
-                        // || c.zip_code.toLowerCase().indexOf(key) != -1
-                    ) 
-
-                {
+                      /*  || c.email.toLowerCase().indexOf(key) != -1
+                        || c.phone_number.toLowerCase().indexOf(key) != -1
+                        || c.address.toLowerCase().indexOf(key) != -1
+                        || c.city.toLowerCase().indexOf(key) != -1
+                        || c.zip_code.toLowerCase().indexOf(key) != -1*/) {
                     $list.append('<div data-id="' + c.id + '">' 
                             + c.first_name + ' ' + c.last_name + '</div>');
                 }
@@ -944,8 +962,8 @@ var BackendCalendar = {
          * Event: Enter New Customer Button "Click"
          */
         $('#new-customer').click(function() {
-            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, '
-                    + '#phone-number, #address, #city, #zip-code, #customer-notes').val('');
+            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, #no_noshow'
+                    + '#phone-number, #address, #city, #zip-code, #num-of-children, #customer-notes').val('');
         });
         
         /**

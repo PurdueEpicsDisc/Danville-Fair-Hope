@@ -200,9 +200,9 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="backpack_qty" class="control-label"><?php echo $this->lang->line('backpack_qty'); ?></label>
+                    <label for="backpack-qty" class="control-label"><?php echo $this->lang->line('backpack_qty'); ?></label>
                     <div class="controls">
-                        <input type="text" id="backpack_qty" />
+                        <input type="text" id="backpack-qty" />
                     </div>
                 </div>
 
@@ -214,9 +214,9 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="controls" class="control-label"><?php echo $this->lang->line('no_show'); ?></label>
+                    <label for="no-show" class="control-label"><?php echo $this->lang->line('no_show'); ?></label>
                     <div class="controls">
-                        <input type="checkbox" id="no_show" />
+                        <input type="checkbox" id="no-show" />
                     </div>
                 </div>
                 
@@ -269,6 +269,13 @@
                             <?php echo $this->lang->line('email'); ?>*</label>
                         <div class="controls">
                             <input type="text" id="email" class="required" />
+                        </div>
+                    </div>
+					<div class="control-group">
+                        <label for="no-noshow" class="control-label">
+                            <?php echo $this->lang->line('No.Noshow'); ?></label>
+                        <div class="controls">
+                            <input type="text" id="no-noshow"/>
                         </div>
                     </div>
 
