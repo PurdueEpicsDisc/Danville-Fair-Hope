@@ -39,6 +39,7 @@ $lang['appointment_registered'] = 'Your appointment has been successfully regist
 $lang['cancel_appointment_title'] = 'Cancel Appointment';
 $lang['appointment_cancelled'] = 'Your appointment has been successfully cancelled!';
 $lang['appointment_cancelled_title'] = 'Appointment Cancelled';
+$lang['num-of-noshow'] = 'No. of No show';
 $lang['reason'] = 'Reason';
 $lang['appointment_removed_from_schedule'] = 'The following appointment was removed from the company\'s schedule.';
 $lang['appointment_details_was_sent_to_you'] = 'An email with the appointment details has been sent to you.';

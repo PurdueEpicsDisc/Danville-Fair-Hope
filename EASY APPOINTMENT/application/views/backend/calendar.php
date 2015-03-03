@@ -272,10 +272,10 @@
                         </div>
                     </div>
 					<div class="control-group">
-                        <label for="no-noshow" class="control-label">
-                            <?php echo $this->lang->line('No.Noshow'); ?></label>
+                        <label for="num-noshow" class="control-label">
+                            <?php echo $this->lang->line('num-of-noshow'); ?></label>
                         <div class="controls">
-                            <input type="text" id="no-noshow"/>
+                            <input type="text" id="num-noshow"/>
                         </div>
                     </div>
 

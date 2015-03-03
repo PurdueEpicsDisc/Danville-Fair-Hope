@@ -193,7 +193,7 @@ var BackendCalendar = {
             //$dialog.find('#zip-code').val(customer['zip_code']);
             $dialog.find('#dob').val(customer['dob']);
             $dialog.find('#num-of-children').val(customer['num_of_children']);
-            $dialog.find('#no-noshow').val(customer['no_noshow']);           
+            $dialog.find('#num-noshow').val(customer['num_noshow']);           
             $dialog.find('#customer-notes').val(customer['notes']);
             
             $dialog.modal('show');
@@ -380,7 +380,7 @@ var BackendCalendar = {
                 //$dialog.find('#zip-code').val(customer['zip_code']);
                 $dialog.find('#dob').val(customer['dob']);
                 $dialog.find('#num-of-children').val(customer['num_of_children']);
-                $dialog.find('#no-noshow').val(customer['no_noshow']);
+                $dialog.find('#num-noshow').val(customer['num_noshow']);
                 $dialog.find('#customer-notes').val(customer['notes']);
             } else {
                 var unavailable = BackendCalendar.lastFocusedEventData.data;
@@ -546,7 +546,7 @@ var BackendCalendar = {
                 'email': $dialog.find('#email').val(),
                 'num_of_children': $dialog.find('#num-of-children').val(),
                 'dob': $dialog.find('#dob').val(),
-                'no_noshow': $dialog.find('#no-noshow').val(),
+                'num_noshow': $dialog.find('#num-noshow').val(),
                 // 'phone_number': $dialog.find('#phone-number').val(),
                 // 'address': $dialog.find('#address').val(),
                 // 'city': $dialog.find('#city').val(),
@@ -899,7 +899,7 @@ var BackendCalendar = {
                     $('#last-name').val(c.last_name);
                     $('#dob').val(c.dob);
                     $('#num-of-children').val(c.num_of_children);
-                    $('#no-noshow').val(c.no_noshow);
+                    $('#num-noshow').val(c.num_noshow);
                     $('#email').val(c.email);
                     // $('#phone-number').val(c.phone_number);
                     // $('#address').val(c.address);
@@ -962,7 +962,7 @@ var BackendCalendar = {
          * Event: Enter New Customer Button "Click"
          */
         $('#new-customer').click(function() {
-            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, #no_noshow'
+            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, #num_noshow'
                     + '#phone-number, #address, #city, #zip-code, #dob,#num-of-children, #customer-notes').val('');
         });
         
