@@ -335,8 +335,8 @@ CustomersHelper.prototype.display = function(customer) {
     $('#customer-appointments').data('jsp').destroy();
     $('#customer-appointments').empty();
     $.each(customer.appointments, function(index, appointment) {
-        var start = Date.parse(appointment.start_datetime).toString('dd/MM/yyyy HH:mm');
-        var end = Date.parse(appointment.end_datetime).toString('dd/MM/yyyy HH:mm');
+        var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
+        var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
         var html = 
                 '<div class="appointment-row" data-id="' + appointment.id + '">' + 
                     start + ' - ' + end + '<br>' +
@@ -456,8 +456,8 @@ CustomersHelper.prototype.select = function(id, display) {
  * @param {object} appointment Appointment data
  */
 CustomersHelper.prototype.displayAppointment = function(appointment) {
-    var start = Date.parse(appointment.start_datetime).toString('dd/MM/yyyy HH:mm');
-    var end = Date.parse(appointment.end_datetime).toString('dd/MM/yyyy HH:mm');
+    var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
+    var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
 
     var html = 
             '<div>' + 

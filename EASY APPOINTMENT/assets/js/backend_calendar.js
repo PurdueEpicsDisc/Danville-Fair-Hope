@@ -35,8 +35,8 @@ var BackendCalendar = {
             'allDayText': EALang['all_day'], 
             'columnFormat': {
                 'month': 'ddd',
-                'week': 'ddd d/M',
-                'day': 'dddd d/M'
+                'week': 'ddd M/d',
+                'day': 'dddd M/d'
             },
             'titleFormat': {
                 'month': 'MMMM yyyy',
@@ -175,11 +175,11 @@ var BackendCalendar = {
 
             // Set the start and end datetime of the appointment.
             var startDatetime = Date.parseExact(appointment['start_datetime'],
-                    'yyyy-MM-dd HH:mm:ss').toString('dd/MM/yyyy HH:mm');            
+                    'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');            
             $dialog.find('#start-datetime').val(startDatetime);
 
             var endDatetime = Date.parseExact(appointment['end_datetime'],
-                    'yyyy-MM-dd HH:mm:ss').toString('dd/MM/yyyy HH:mm');
+                    'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
             $dialog.find('#end-datetime').val(endDatetime);
 
             var customer = appointment['customer'];
@@ -362,11 +362,11 @@ var BackendCalendar = {
 
                 // Set the start and end datetime of the appointment.
                 var startDatetime = Date.parseExact(appointment['start_datetime'],
-                        'yyyy-MM-dd HH:mm:ss').toString('dd/MM/yyyy HH:mm');            
+                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');            
                 $dialog.find('#start-datetime').val(startDatetime);
 
                 var endDatetime = Date.parseExact(appointment['end_datetime'],
-                        'yyyy-MM-dd HH:mm:ss').toString('dd/MM/yyyy HH:mm');
+                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
                 $dialog.find('#end-datetime').val(endDatetime);
 
                 var customer = appointment['customer'];
@@ -395,8 +395,8 @@ var BackendCalendar = {
                 // :: APPLY UNAVAILABLE DATA TO DIALOG
                 $dialog.find('.modal-header h3').text('Edit Unavailable Period');
                 $dialog.find('#unavailable-id').val(unavailable.id);
-                $dialog.find('#unavailable-start').val(unavailable.start_datetime.toString('dd/MM/yyyy HH:mm'));
-                $dialog.find('#unavailable-end').val(unavailable.end_datetime.toString('dd/MM/yyyy HH:mm'));
+                $dialog.find('#unavailable-start').val(unavailable.start_datetime.toString('MM/dd/yyyy HH:mm'));
+                $dialog.find('#unavailable-end').val(unavailable.end_datetime.toString('MM/dd/yyyy HH:mm'));
                 $dialog.find('#unavailable-notes').val(unavailable.notes);
             }
             
@@ -519,9 +519,9 @@ var BackendCalendar = {
             // the record and not to perform an insert operation.
             
             var startDatetime = Date.parseExact($dialog.find('#start-datetime').val(),
-                    'dd/MM/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
+                    'MM/dd/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
             var endDatetime = Date.parseExact($dialog.find('#end-datetime').val(),
-                    'dd/MM/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
+                    'MM/dd/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
             
             var appointment = {
                 'id_services': $dialog.find('#select-service').val(),
@@ -605,8 +605,8 @@ var BackendCalendar = {
         $('#manage-unavailable #save-unavailable').click(function() {
             var $dialog = $('#manage-unavailable');
             
-            var start = Date.parseExact($dialog.find('#unavailable-start').val(), 'dd/MM/yyyy HH:mm');
-            var end = Date.parseExact($dialog.find('#unavailable-end').val(), 'dd/MM/yyyy HH:mm');
+            var start = Date.parseExact($dialog.find('#unavailable-start').val(), 'MM/dd/yyyy HH:mm');
+            var end = Date.parseExact($dialog.find('#unavailable-end').val(), 'MM/dd/yyyy HH:mm');
             
             if (start > end) {
                 // Start time is after end time - display message to user.
@@ -823,8 +823,8 @@ var BackendCalendar = {
             else 
                 start.addHours(1).set({ 'minute': 0 });
             
-            $dialog.find('#start-datetime').val(start.toString('dd/MM/yyyy HH:mm'));
-            $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('dd/MM/yyyy HH:mm'));
+            $dialog.find('#start-datetime').val(start.toString('MM/dd/yyyy HH:mm'));
+            $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#layette').val();
             $dialog.find('#backpack-qty').val();
             $dialog.find('#no-show').val();
@@ -856,8 +856,8 @@ var BackendCalendar = {
             else 
                 start.addHours(1).set({ 'minute': 0 });
             
-            $dialog.find('#unavailable-start').val(start.toString('dd/MM/yyyy HH:mm'));
-            $dialog.find('#unavailable-end').val(start.addHours(1).toString('dd/MM/yyyy HH:mm'));
+            $dialog.find('#unavailable-start').val(start.toString('MM/dd/yyyy HH:mm'));
+            $dialog.find('#unavailable-end').val(start.addHours(1).toString('MM/dd/yyyy HH:mm'));
             
             $dialog.find('.modal-header h3').text(EALang['new_unavailable_title']);
             $dialog.modal('show');
@@ -1103,9 +1103,9 @@ var BackendCalendar = {
                                 // Add unavailable period before work starts.
                                 var calendarDateStart = $calendar.fullCalendar('getView').start;
                                 var workDateStart = Date.parseExact(
-                                        calendarDateStart.toString('dd/MM/yyyy') + ' ' 
+                                        calendarDateStart.toString('MM/dd/yyyy') + ' ' 
                                         + workingPlan[selDayName].start,
-                                        'dd/MM/yyyy HH:mm');
+                                        'MM/dd/yyyy HH:mm');
                                 
                                 if (calendarDateStart < workDateStart) {
                                     unavailablePeriod = {
@@ -1123,9 +1123,9 @@ var BackendCalendar = {
                                 // Add unavailable period after work ends.
                                 var calendarDateEnd = $calendar.fullCalendar('getView').end;
                                 var workDateEnd = Date.parseExact(
-                                        calendarDateStart.toString('dd/MM/yyyy') + ' ' 
+                                        calendarDateStart.toString('MM/dd/yyyy') + ' ' 
                                         + workingPlan[selDayName].end,
-                                        'dd/MM/yyyy HH:mm'); // Use calendarDateStart ***
+                                        'MM/dd/yyyy HH:mm'); // Use calendarDateStart ***
                                 if (calendarDateEnd > workDateEnd) {
                                     var unavailablePeriod = {
                                         'title': EALang['not_working'],
@@ -1142,10 +1142,10 @@ var BackendCalendar = {
                                 // Add unavailable periods for breaks.
                                 var breakStart, breakEnd;
                                 $.each(workingPlan[selDayName].breaks, function(index, currBreak) {
-                                    breakStart = Date.parseExact(calendarDateStart.toString('dd/MM/yyyy') 
-                                            + ' ' + currBreak.start, 'dd/MM/yyyy HH:mm');
-                                    breakEnd = Date.parseExact(calendarDateStart.toString('dd/MM/yyyy') 
-                                            + ' ' + currBreak.end, 'dd/MM/yyyy HH:mm');
+                                    breakStart = Date.parseExact(calendarDateStart.toString('MM/dd/yyyy') 
+                                            + ' ' + currBreak.start, 'MM/dd/yyyy HH:mm');
+                                    breakEnd = Date.parseExact(calendarDateStart.toString('MM/dd/yyyy') 
+                                            + ' ' + currBreak.end, 'MM/dd/yyyy HH:mm');
                                     var unavailablePeriod = {
                                         'title': EALang['break'],
                                         'start': breakStart,
@@ -1167,8 +1167,8 @@ var BackendCalendar = {
                                 // Add custom unavailable periods (they are always displayed
                                 // on the calendar, even if the provider won't work on that day).
                                 $.each(response.unavailables, function(index, unavailable) {
-                                   //if (currDateStart.toString('dd/MM/yyyy') 
-                                   //        === Date.parse(unavailable.start_datetime).toString('dd/MM/yyyy')) {
+                                   //if (currDateStart.toString('MM/dd/yyyy') 
+                                   //        === Date.parse(unavailable.start_datetime).toString('MM/dd/yyyy')) {
                                         unavailablePeriod = {
                                             'title': EALang['unavailable'] + ' <br><small>' + ((unavailable.notes.length > 30) 
                                                     ? unavailable.notes.substring(0, 30) + '...'
@@ -1207,8 +1207,8 @@ var BackendCalendar = {
                                     var start, end; 
                                     
                                     // Add unavailable period before work starts.
-                                    start = Date.parseExact(currDateStart.toString('dd/MM/yyyy') 
-                                            + ' ' + workingDay.start, 'dd/MM/yyyy HH:mm');
+                                    start = Date.parseExact(currDateStart.toString('MM/dd/yyyy') 
+                                            + ' ' + workingDay.start, 'MM/dd/yyyy HH:mm');
                                     if (currDateStart < start) {
                                         unavailablePeriod = {
                                             'title': EALang['not_working'],
@@ -1223,8 +1223,8 @@ var BackendCalendar = {
                                     }
 
                                     // Add unavailable period after work ends.
-                                    end = Date.parseExact(currDateStart.toString('dd/MM/yyyy') 
-                                            + ' ' + workingDay.end, 'dd/MM/yyyy HH:mm');
+                                    end = Date.parseExact(currDateStart.toString('MM/dd/yyyy') 
+                                            + ' ' + workingDay.end, 'MM/dd/yyyy HH:mm');
                                     if (currDateEnd > end) {
                                         unavailablePeriod = {
                                             'title': EALang['not_working'],
@@ -1241,10 +1241,10 @@ var BackendCalendar = {
                                     // Add unavailable periods during day breaks.
                                     var breakStart, breakEnd;
                                     $.each(workingDay.breaks, function(index, currBreak) {
-                                        breakStart = Date.parseExact(currDateStart.toString('dd/MM/yyyy') 
-                                                + ' ' + currBreak.start, 'dd/MM/yyyy HH:mm');
-                                        breakEnd = Date.parseExact(currDateStart.toString('dd/MM/yyyy') 
-                                                + ' ' + currBreak.end, 'dd/MM/yyyy HH:mm');
+                                        breakStart = Date.parseExact(currDateStart.toString('MM/dd/yyyy') 
+                                                + ' ' + currBreak.start, 'MM/dd/yyyy HH:mm');
+                                        breakEnd = Date.parseExact(currDateStart.toString('MM/dd/yyyy') 
+                                                + ' ' + currBreak.end, 'MM/dd/yyyy HH:mm');
                                         var unavailablePeriod = {
                                             'title': EALang['break'],
                                             'start': breakStart,
@@ -1540,10 +1540,10 @@ var BackendCalendar = {
                         + '.popover-content button {margin-right: 10px;}'
                         + '</style>' +
                     '<strong>' + EALang['start'] + '</strong> ' 
-                        + event.start.toString('dd/MM/yyyy HH:mm') 
+                        + event.start.toString('MM/dd/yyyy HH:mm') 
                         + '<br>' + 
                     '<strong>' + EALang['end'] + '</strong> ' 
-                        + event.end.toString('dd/MM/yyyy HH:mm') 
+                        + event.end.toString('MM/dd/yyyy HH:mm') 
                         + '<br>'  
                         + notes 
                         + '<hr>' +
@@ -1564,10 +1564,10 @@ var BackendCalendar = {
                         + '.popover-content button {margin-right: 10px;}'
                         + '</style>' +
                     '<strong>' + EALang['start'] + '</strong> ' 
-                        + event.start.toString('dd/MM/yyyy HH:mm') 
+                        + event.start.toString('MM/dd/yyyy HH:mm') 
                         + '<br>' + 
                     '<strong>' + EALang['end'] + '</strong> ' 
-                        + event.end.toString('dd/MM/yyyy HH:mm') 
+                        + event.end.toString('MM/dd/yyyy HH:mm') 
                         + '<br>' + 
                     '<strong>' + EALang['service'] + '</strong> ' 
                         + event.data['service']['name'] 
@@ -1873,12 +1873,12 @@ var BackendCalendar = {
         });
         
         var startDatetime = new Date().addMinutes(GlobalVariables.bookAdvanceTimeout)
-                .toString('dd/MM/yyyy HH:mm');
+                .toString('MM/dd/yyyy HH:mm');
         var endDatetime  = new Date().addMinutes(GlobalVariables.bookAdvanceTimeout)
-                .addMinutes(serviceDuration).toString('dd/MM/yyyy HH:mm');
+                .addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm');
         
         $dialog.find('#start-datetime').datetimepicker({
-            'dateFormat': 'dd/mm/yy',
+            'dateFormat': 'mm/dd/yy',
             // Translation
             dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
                     EALang['thursday'], EALang['friday'], EALang['saturday']],
@@ -1906,7 +1906,7 @@ var BackendCalendar = {
         $dialog.find('#start-datetime').val(startDatetime);
         
         $dialog.find('#end-datetime').datetimepicker({
-            'dateFormat': 'dd/mm/yy',
+            'dateFormat': 'mm/dd/yy',
             // Translation
             dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
                     EALang['thursday'], EALang['friday'], EALang['saturday']],
@@ -1967,8 +1967,8 @@ var BackendCalendar = {
             }
             
             // :: CHECK APPOINTMENT START AND END TIME
-            var start = Date.parseExact($('#start-datetime').val(), 'dd/MM/yyyy HH:mm');
-            var end = Date.parseExact($('#end-datetime').val(), 'dd/MM/yyyy HH:mm');
+            var start = Date.parseExact($('#start-datetime').val(), 'MM/dd/yyyy HH:mm');
+            var end = Date.parseExact($('#end-datetime').val(), 'MM/dd/yyyy HH:mm');
             if (start > end) {
                 $dialog.find('#start-datetime').parents().eq(1).addClass('error');
                 $dialog.find('#end-datetime').parents().eq(1).addClass('error');
@@ -1992,11 +1992,11 @@ var BackendCalendar = {
         $dialog.find('#unavailable-id').val('');
 
         // Set default time values
-        var start = new Date().toString('dd/MM/yyyy HH:mm');
-        var end = new Date().addHours(1).toString('dd/MM/yyyy HH:mm');
+        var start = new Date().toString('MM/dd/yyyy HH:mm');
+        var end = new Date().addHours(1).toString('MM/dd/yyyy HH:mm');
         
         $dialog.find('#unavailable-start').datetimepicker({
-            'dateFormat': 'dd/mm/yy',
+            'dateFormat': 'mm/dd/yy',
             // Translation
             dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
                     EALang['thursday'], EALang['friday'], EALang['saturday']],
@@ -2024,7 +2024,7 @@ var BackendCalendar = {
         $dialog.find('#unavailable-start').val(start);
         
         $dialog.find('#unavailable-end').datetimepicker({
-            'dateFormat': 'dd/mm/yy',
+            'dateFormat': 'mm/dd/yy',
             // Translation
             dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
                     EALang['thursday'], EALang['friday'], EALang['saturday']],

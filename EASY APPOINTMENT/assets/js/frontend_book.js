@@ -407,7 +407,7 @@ var FrontendBook = {
         // Appointment Details
         var selectedDate = $('#select-date').datepicker('getDate');
         if (selectedDate !== null) {
-            selectedDate = Date.parse(selectedDate).toString('dd/MM/yyyy');
+            selectedDate = Date.parse(selectedDate).toString('MM/dd/yyyy');
         }
 
         var selServiceId = $('#select-service').val();
