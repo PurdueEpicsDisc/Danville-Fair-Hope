@@ -46,6 +46,7 @@ class Backend extends CI_Controller {
         $view['available_providers'] = $this->providers_model->get_available_providers();
         $view['available_services'] = $this->services_model->get_available_services();
         $view['customers'] = $this->customers_model->get_batch();
+        $view['appointments'] = $this->appointments_model->get_batch();
         $this->setUserData($view);
         
         if ($this->session->userdata('role_slug') == DB_SLUG_SECRETARY) {
