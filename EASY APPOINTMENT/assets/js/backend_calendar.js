@@ -170,7 +170,7 @@ var BackendCalendar = {
             $dialog.find('#select-provider').val(appointment['id_users_provider']);
             $dialog.find('#layette').val(appointment['layette']);
             $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
-            $dialog.find('#no-show').val(appointment['no_show_flag']);
+            //$dialog.find('#no-show').val(appointment['no_show_flag']);
             $dialog.find('#appointment-notes').val(appointment['notes']);
 
             // Set the start and end datetime of the appointment.
@@ -341,7 +341,7 @@ var BackendCalendar = {
          */
         $(document).on('click', '.edit-popover', function() {
             $(this).parents().eq(2).remove(); // Hide the popover
-            
+            document.getElementById("num-noshow").disabled = true;
             var $dialog; 
             
             if (BackendCalendar.lastFocusedEventData.data.is_unavailable == false) {
@@ -358,8 +358,22 @@ var BackendCalendar = {
                 $dialog.find('#layette').val(appointment['layette']);
                 $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
                 $dialog.find('#appointment-notes').val(appointment['notes']);
-                $dialog.find('#no-show').val(appointment['no_show_flag']);
-
+                var checked = appointment['no_show_flag'];
+                var rescheduled = appointment['reschedule'];
+                if (checked == 1) {
+                    $dialog.find('#no-show').attr("checked", true);
+                }
+                else
+                {
+                    $dialog.find('#no-show').attr("checked", false);
+                }
+                if (rescheduled == 1) {
+                    $dialog.find('#reschedule').attr("checked", true);
+                }
+                else
+                {
+                    $dialog.find('#reschedule').attr("checked", false);
+                }
                 // Set the start and end datetime of the appointment.
                 var startDatetime = Date.parseExact(appointment['start_datetime'],
                         'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');            
@@ -403,7 +417,6 @@ var BackendCalendar = {
             // :: DISPLAY EDIT DIALOG
             $dialog.modal('show');
         });
-        
         /**
          * Event: Popover Delete Button "Click"
          * 
@@ -522,7 +535,9 @@ var BackendCalendar = {
                     'MM/dd/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
             var endDatetime = Date.parseExact($dialog.find('#end-datetime').val(),
                     'MM/dd/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
-            
+            var checked = $('#no-show').is(':checked') ? 1 : 0;
+            var rescheduled = $('#reschedule').is(':checked') ? 1 : 0;
+            //console.log(checked);
             var appointment = {
                 'id_services': $dialog.find('#select-service').val(),
                 'id_users_provider': $dialog.find('#select-provider').val(),
@@ -531,7 +546,8 @@ var BackendCalendar = {
                 'notes': $dialog.find('#appointment-notes').val(),
                 'layette': $dialog.find('#layette').val(),
                 'backpack_qty': $dialog.find('#backpack-qty').val(),
-                'no_show_flag': $dialog.find('#no-show').val(),
+                'no_show_flag': checked,
+                'reschedule': rescheduled,
                 'is_unavailable': false
             };
             
@@ -827,7 +843,8 @@ var BackendCalendar = {
             $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#layette').val();
             $dialog.find('#backpack-qty').val();
-            $dialog.find('#no-show').val();
+            $dialog.find('#no-show').attr('checked', false);
+            $dialog.find('#reschedule').attr('checked', false);
             // Display modal form.
             $dialog.find('.modal-header h3').text(EALang['new_appointment_title']);
             $dialog.modal('show');

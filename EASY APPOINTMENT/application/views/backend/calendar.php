@@ -17,6 +17,7 @@
         'baseUrl'               : <?php echo '"' . $base_url . '"'; ?>,
         'bookAdvanceTimeout'    : <?php echo $book_advance_timeout; ?>,
         'editAppointment'       : <?php echo json_encode($edit_appointment); ?>,
+        'appointments'           : <?php echo json_encode($appointments); ?>,
         'customers'             : <?php echo json_encode($customers); ?>,
         'secretaryProviders'    : <?php echo json_encode($secretary_providers); ?>,
         'user'                  : {
@@ -209,14 +210,14 @@
                 <div class="control-group">
                     <label for="reschedule" class="control-label"><?php echo $this->lang->line('reschedule'); ?></label>
                     <div class="controls">
-                        <input type="checkbox" id="reschedule" />
+                        <input type="checkbox" id="reschedule" checked="checked"/>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <label for="no-show" class="control-label"><?php echo $this->lang->line('no_show'); ?></label>
                     <div class="controls">
-                        <input type="checkbox" id="no-show" />
+                        <input type="checkbox" id="no-show" checked="checked"/>
                     </div>
                 </div>
                 
