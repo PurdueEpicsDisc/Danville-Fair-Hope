@@ -543,10 +543,10 @@ var BackendCalendar = {
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>1   sweater/Sweatshirt					________</FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   onesies/underwear					________</FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   pr socks								________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>2   pj¡¯s									________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>2   pj&#39s									________</FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Pack¡®N Play      	         </SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><SPAN STYLE="background: #ffff00">	</SPAN></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt">	</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Pack&#39N Play      	         </SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><SPAN STYLE="background: #ffff00">	</SPAN></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt">	</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U></U></FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0">' +
            '<FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Layette  Boy  Girl    ___</SPAN></B></U></FONT></FONT></P>' +
@@ -557,7 +557,7 @@ var BackendCalendar = {
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Shoes</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">' +
            '</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>_______</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">		</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>Hat    ________</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt"></FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Gloves    _______		Scarf    ________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Women¡¯s     Clothes _______     Men¡¯s Clothes ___                                   Fancy Socks	 _______         </FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Women&#39s     Clothes _______     Men&#39s Clothes ________                                   Fancy Socks	 _______         </FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><U> </U></P>' +
