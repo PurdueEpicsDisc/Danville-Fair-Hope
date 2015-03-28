@@ -503,7 +503,126 @@ var BackendCalendar = {
                 }, 'json');
             }
         });
-        
+        /**
+         * Event: Popover Print Button "Click"
+         * 
+         * print the selected calendar event.
+         */
+        $(document).on('click', '.print-popover', function () {
+            $(this).parents().eq(2).remove(); // Hide the popover
+            var $dialog;
+
+            if (BackendCalendar.lastFocusedEventData.data.is_unavailable == false) {
+                var appointment = BackendCalendar.lastFocusedEventData.data;
+                $dialog = $('#manage-appointment');
+
+                BackendCalendar.resetAppointmentDialog();
+                console.log(appointment['id']);
+
+                var customer = appointment['customer'];
+                var html = '' +
+    '<body>' +
+        '<div>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NAME:' + customer['first_name'] + ' ' + customer['last_name'] + '</FONT></FONT><FONT FACE="Arial, serif"></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Start Time:' + Date.parseExact(appointment['start_datetime'],'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</FONT></FONT></P>' + 
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
+            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY </FONT></FONT>' + 'Empty' + '</font></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON</FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN   </FONT></FONT>' + customer['num_of_children'] + '<FONT SIZE=5>  Sizes _______                                                       </FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
+           '<P ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
+           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Clothing</SPAN></B></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
+           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Each</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5><B>Total</B></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
+           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Child</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>			</B></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B>Received</B></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   Shirts(including 2 uniform) 	     	________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   Pants (including 2 uniform   			________	</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><A NAME="_GoBack"></A><FONT FACE="Arial, serif"><FONT SIZE=5>2	Dresses/Skirts						________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>1   sweater/Sweatshirt					________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   onesies/underwear					________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   pr socks								________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>2   pj¡¯s									________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Pack¡®N Play      	         </SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><SPAN STYLE="background: #ffff00">	</SPAN></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt">	</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0">' +
+           '<FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Layette  Boy  Girl    ___</SPAN></B></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0">' +
+           '<FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Miscellaneous Other Items</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B></B></U></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Play Clothes    _______		Coat	________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Shoes</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">' +
+           '</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>_______</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">		</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>Hat    ________</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt"></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Gloves    _______		Scarf    ________</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Women¡¯s     Clothes _______     Men¡¯s Clothes ___                                   Fancy Socks	 _______         </FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><U> </U></P>' +
+        '</div>' +
+           
+    '</body>';
+
+                var printWin = window.open('', '', 'left=0,top=0,width=700,height=500,toolbar=0,scrollbars=0,status  =0');
+                printWin.document.write(html);
+                printWin.document.close();
+                printWin.focus();
+                printWin.print();
+                printWin.close();
+                // :: APPLY APPOINTMENT DATA AND SHOW TO MODAL DIALOG
+                //$dialog.find('.modal-header h3').text(EALang['edit_appointment_title']);
+                //$dialog.find('#appointment-id').val(appointment['id']);
+                //$dialog.find('#select-service').val(appointment['id_services']).trigger('change');
+                //$dialog.find('#select-provider').val(appointment['id_users_provider']);
+                //$dialog.find('#layette').val(appointment['layette']);
+                //$dialog.find('#backpack-qty').val(appointment['backpack_qty']);
+                //$dialog.find('#appointment-notes').val(appointment['notes']);
+                
+                //// Set the start and end datetime of the appointment.
+                //var startDatetime = Date.parseExact(appointment['start_datetime'],
+                //        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
+                //$dialog.find('#start-datetime').val(startDatetime);
+
+                //var endDatetime = Date.parseExact(appointment['end_datetime'],
+                //        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
+                //$dialog.find('#end-datetime').val(endDatetime);
+
+                //var customer = appointment['customer'];
+                //$dialog.find('#customer-id').val(appointment['id_users_customer']);
+                //$dialog.find('#first-name').val(customer['first_name']);
+                //$dialog.find('#last-name').val(customer['last_name']);
+                //$dialog.find('#email').val(customer['email']);
+                ////$dialog.find('#phone-number').val(customer['phone_number']);
+                ////$dialog.find('#address').val(customer['address']);
+                ////$dialog.find('#city').val(customer['city']);
+                ////$dialog.find('#zip-code').val(customer['zip_code']);
+                //$dialog.find('#dob').val(customer['dob']);
+                //$dialog.find('#num-of-children').val(customer['num_of_children']);
+                //$dialog.find('#num-noshow').val(customer['num_noshow']);
+                //$dialog.find('#customer-notes').val(customer['notes']);
+            } else {
+                var unavailable = BackendCalendar.lastFocusedEventData.data;
+
+                // Replace string date values with actual date objects.
+                unavailable.start_datetime = GeneralFunctions.clone(BackendCalendar.lastFocusedEventData.start);
+                unavailable.end_datetime = GeneralFunctions.clone(BackendCalendar.lastFocusedEventData.end);
+
+                $dialog = $('#manage-unavailable');
+                BackendCalendar.resetUnavailableDialog();
+
+                // :: APPLY UNAVAILABLE DATA TO DIALOG
+                //$dialog.find('.modal-header h3').text('Edit Unavailable Period');
+                //$dialog.find('#unavailable-id').val(unavailable.id);
+                //$dialog.find('#unavailable-start').val(unavailable.start_datetime.toString('MM/dd/yyyy HH:mm'));
+                //$dialog.find('#unavailable-end').val(unavailable.end_datetime.toString('MM/dd/yyyy HH:mm'));
+                //$dialog.find('#unavailable-notes').val(unavailable.notes);
+            }
+
+            // :: DISPLAY EDIT DIALOG
+            //$dialog.modal('show');
+        });
         /**
          * Event: Manage Appointments Dialog Cancel Button "Click"
          * 
@@ -800,7 +919,7 @@ var BackendCalendar = {
         $('#insert-appointment').click(function() {
             BackendCalendar.resetAppointmentDialog();
             var $dialog = $('#manage-appointment');
-            
+            document.getElementById("num-noshow").disabled = true;
             // Set the selected filter item and find the next appointment time
             // as the default modal values.
             if ($('#select-filter-item option:selected').attr('type') == 'provider') {
@@ -1567,6 +1686,7 @@ var BackendCalendar = {
                     '<center>' + 
                         '<button class="edit-popover btn btn-primary ' + displayEdit + '">' + EALang['edit'] + '</button>' +
                         '<button class="delete-popover btn btn-danger ' + displayDelete + '">' + EALang['delete'] + '</button>' +
+                        '<button class="print-popover btn btn-primary">' + EALang['print'] + '</button>' +
                         '<button class="close-popover btn" data-po=' + jsEvent.target + '>' + EALang['close'] + '</button>' +
                     '</center>';
         } else {   
@@ -1600,6 +1720,7 @@ var BackendCalendar = {
                     '<center>' + 
                         '<button class="edit-popover btn btn-primary ' + displayEdit + '">' + EALang['edit'] + '</button>' +
                         '<button class="delete-popover btn btn-danger ' + displayDelete + '">' + EALang['delete'] + '</button>' +
+                        '<button class="print-popover btn btn-primary">' + EALang['print'] + '</button>' +
                         '<button class="close-popover btn" data-po=' + jsEvent.target + '>' + EALang['close'] + '</button>' +
                     '</center>';
         }
