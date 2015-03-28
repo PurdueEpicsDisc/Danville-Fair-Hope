@@ -361,18 +361,18 @@ var BackendCalendar = {
                 var checked = appointment['no_show_flag'];
                 var rescheduled = appointment['reschedule'];
                 if (checked == 1) {
-                    $dialog.find('#no-show').attr("checked", true);
+                    $dialog.find('#no-show').prop("checked", true);
                 }
                 else
                 {
-                    $dialog.find('#no-show').attr("checked", false);
+                    $dialog.find('#no-show').prop("checked", false);
                 }
                 if (rescheduled == 1) {
-                    $dialog.find('#reschedule').attr("checked", true);
+                    $dialog.find('#reschedule').prop("checked", true);
                 }
                 else
                 {
-                    $dialog.find('#reschedule').attr("checked", false);
+                    $dialog.find('#reschedule').prop("checked", false);
                 }
                 // Set the start and end datetime of the appointment.
                 var startDatetime = Date.parseExact(appointment['start_datetime'],
@@ -843,8 +843,8 @@ var BackendCalendar = {
             $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#layette').val();
             $dialog.find('#backpack-qty').val();
-            $dialog.find('#no-show').attr('checked', false);
-            $dialog.find('#reschedule').attr('checked', false);
+            $dialog.find('#no-show').prop('checked', false);
+            $dialog.find('#reschedule').prop('checked', false);
             // Display modal form.
             $dialog.find('.modal-header h3').text(EALang['new_appointment_title']);
             $dialog.modal('show');
