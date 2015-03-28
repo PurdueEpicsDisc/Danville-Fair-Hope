@@ -528,7 +528,7 @@ var BackendCalendar = {
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
             '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY </FONT></FONT>' + 'Empty' + '</font></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON</FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN   </FONT></FONT>' + customer['num_of_children'] + '<FONT SIZE=5>  Sizes _______                                                       </FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:'+ customer['num_of_children'] + '</FONT></FONT> <FONT SIZE=5>  Sizes _______                                                       </FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
            '<P ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
            '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Clothing</SPAN></B></U></FONT></FONT></P>' +
@@ -571,37 +571,7 @@ var BackendCalendar = {
                 printWin.focus();
                 printWin.print();
                 printWin.close();
-                // :: APPLY APPOINTMENT DATA AND SHOW TO MODAL DIALOG
-                //$dialog.find('.modal-header h3').text(EALang['edit_appointment_title']);
-                //$dialog.find('#appointment-id').val(appointment['id']);
-                //$dialog.find('#select-service').val(appointment['id_services']).trigger('change');
-                //$dialog.find('#select-provider').val(appointment['id_users_provider']);
-                //$dialog.find('#layette').val(appointment['layette']);
-                //$dialog.find('#backpack-qty').val(appointment['backpack_qty']);
-                //$dialog.find('#appointment-notes').val(appointment['notes']);
                 
-                //// Set the start and end datetime of the appointment.
-                //var startDatetime = Date.parseExact(appointment['start_datetime'],
-                //        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
-                //$dialog.find('#start-datetime').val(startDatetime);
-
-                //var endDatetime = Date.parseExact(appointment['end_datetime'],
-                //        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
-                //$dialog.find('#end-datetime').val(endDatetime);
-
-                //var customer = appointment['customer'];
-                //$dialog.find('#customer-id').val(appointment['id_users_customer']);
-                //$dialog.find('#first-name').val(customer['first_name']);
-                //$dialog.find('#last-name').val(customer['last_name']);
-                //$dialog.find('#email').val(customer['email']);
-                ////$dialog.find('#phone-number').val(customer['phone_number']);
-                ////$dialog.find('#address').val(customer['address']);
-                ////$dialog.find('#city').val(customer['city']);
-                ////$dialog.find('#zip-code').val(customer['zip_code']);
-                //$dialog.find('#dob').val(customer['dob']);
-                //$dialog.find('#num-of-children').val(customer['num_of_children']);
-                //$dialog.find('#num-noshow').val(customer['num_noshow']);
-                //$dialog.find('#customer-notes').val(customer['notes']);
             } else {
                 var unavailable = BackendCalendar.lastFocusedEventData.data;
 
@@ -611,17 +581,7 @@ var BackendCalendar = {
 
                 $dialog = $('#manage-unavailable');
                 BackendCalendar.resetUnavailableDialog();
-
-                // :: APPLY UNAVAILABLE DATA TO DIALOG
-                //$dialog.find('.modal-header h3').text('Edit Unavailable Period');
-                //$dialog.find('#unavailable-id').val(unavailable.id);
-                //$dialog.find('#unavailable-start').val(unavailable.start_datetime.toString('MM/dd/yyyy HH:mm'));
-                //$dialog.find('#unavailable-end').val(unavailable.end_datetime.toString('MM/dd/yyyy HH:mm'));
-                //$dialog.find('#unavailable-notes').val(unavailable.notes);
             }
-
-            // :: DISPLAY EDIT DIALOG
-            //$dialog.modal('show');
         });
         /**
          * Event: Manage Appointments Dialog Cancel Button "Click"
@@ -1686,7 +1646,7 @@ var BackendCalendar = {
                     '<center>' + 
                         '<button class="edit-popover btn btn-primary ' + displayEdit + '">' + EALang['edit'] + '</button>' +
                         '<button class="delete-popover btn btn-danger ' + displayDelete + '">' + EALang['delete'] + '</button>' +
-                        '<button class="print-popover btn btn-primary">' + EALang['print'] + '</button>' +
+                        //'<button class="print-popover btn btn-primary">' + EALang['print'] + '</button>' +
                         '<button class="close-popover btn" data-po=' + jsEvent.target + '>' + EALang['close'] + '</button>' +
                     '</center>';
         } else {   
