@@ -87,6 +87,7 @@ $lang['break'] = 'Break';
 $lang['add'] = 'Add';
 $lang['edit'] = 'Edit';
 $lang['delete'] = 'Delete';
+$lang['print'] = 'Print';
 $lang['hello'] = 'Hello';
 $lang['all_day'] = 'All Day';
 $lang['manage_appointment_record_hint'] = 'Manage all the appointment records of the available providers and services.';
