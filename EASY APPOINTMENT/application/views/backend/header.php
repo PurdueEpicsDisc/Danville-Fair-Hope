@@ -144,6 +144,15 @@
                             <?php echo $this->lang->line('users'); ?>
                         </a>
                         
+                        <?php // Report MENU ITEM 
+                              // ------------------------------------------------------ ?>
+                        <?php $hidden = ($privileges[PRIV_REPORT]['view'] ==  TRUE) ? '' : 'hidden'; ?>
+                        <?php $active = ($active_menu == PRIV_REPORT) ? 'active' : ''; ?>
+                        <a href="<?php echo $base_url; ?>backend/report" class="menu-item <?php echo $hidden; ?><?php echo $active; ?>"
+                                title="<?php echo $this->lang->line('manage_report_hint'); ?>">
+                            <?php echo $this->lang->line('report'); ?>
+                        </a>
+
                         <?php // SETTINGS MENU ITEM 
                               // ------------------------------------------------------ ?>
                         <?php $hidden = ($privileges[PRIV_SYSTEM_SETTINGS]['view'] == TRUE 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 03, 2015 at 10:35 PM
+-- Generation Time: Apr 06, 2015 at 01:53 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -43,28 +43,21 @@ CREATE TABLE IF NOT EXISTS `ea_appointments` (
   `layette` varchar(256) NOT NULL,
   `backpack_qty` int(20) NOT NULL,
   `no_show_flag` tinyint(1) NOT NULL,
-  `reschedule` int(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+  `reschedule` tinyint(1) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_appointments`
 --
 
 INSERT INTO `ea_appointments` (`id`, `book_datetime`, `start_datetime`, `end_datetime`, `notes`, `hash`, `is_unavailable`, `id_users_provider`, `id_users_customer`, `id_services`, `id_google_calendar`, `referring_agency`, `contact_person`, `layette`, `backpack_qty`, `no_show_flag`, `reschedule`) VALUES
-(1, '2015-02-19 04:02:39', '2015-02-18 22:15:00', '2015-02-18 22:45:00', '', '9bc01d36462c0e9744e5f1a1deeb6959', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
-(2, '2015-02-19 04:12:33', '2015-02-18 10:11:00', '2015-02-18 12:16:00', '', '8eb1367ea71d42543150560591641e7e', 0, 85, 86, 1, NULL, '', '', '', 0, 0, 0),
-(3, '2015-02-24 23:39:46', '2015-02-24 17:45:00', '2015-02-24 18:15:00', '', 'c610eb4cc25e3b871060074b99598a4e', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
-(4, '2015-02-25 00:23:58', '2015-02-24 18:30:00', '2015-02-24 19:00:00', '', 'aa125d55e64ce139b43983e404c5a1c5', 0, 85, 89, 1, NULL, '', '', '', 0, 0, 0),
-(5, '2015-02-25 01:43:56', '2015-02-24 19:45:00', '2015-02-24 20:15:00', '', '02e7219c5c203d440e0227252bdf7bb8', 0, 85, 89, 1, NULL, '', '', '', 0, 0, 0),
-(6, '2015-02-25 02:09:24', '2015-02-24 20:15:00', '2015-02-24 20:45:00', '', '0c7d5bf230e55540b4799b566ac9e844', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
-(7, '2015-02-25 02:55:47', '2015-02-24 21:00:00', '2015-02-24 21:30:00', '', 'dcc332a0dfb15ecb82be15a0c6a07659', 0, 85, 87, 1, NULL, '', '', '', 0, 0, 0),
-(8, '2015-02-25 03:02:44', '2015-02-24 21:15:00', '2015-02-24 21:45:00', '', '022e17554de7e83d4e3b3e759211de45', 0, 85, 88, 1, NULL, '', '', '', 0, 0, 0),
-(9, '2015-02-25 03:48:59', '2015-02-24 21:45:00', '2015-02-24 22:15:00', '', 'b80274be31742a012dea2338ab680957', 0, 85, 88, 1, NULL, '', '', '', 0, 0, 0),
-(10, '2015-02-25 04:06:59', '2015-02-24 22:00:00', '2015-02-24 22:30:00', '', '25b6e633b06ef21e8a911c811f272e04', 0, 85, 89, 1, NULL, '', '', '', 0, 0, 0),
-(11, '2015-03-03 19:11:52', '2015-03-03 20:15:00', '2015-03-03 20:50:00', '', '1b2823ce6b4807fd290c00c0f80d7afa', 0, 85, 87, 1, NULL, '', '', '', 0, 0, 0),
-(12, '2015-03-03 20:04:12', '2015-03-03 14:15:00', '2015-03-03 14:45:00', '', 'd17444ba72068c12b05462aa9f4d08e7', 0, 85, 86, 1, NULL, '', '', '7', 8, 1, 0),
-(13, '2015-03-03 20:59:59', '2015-03-03 15:00:00', '2015-03-03 15:30:00', '', 'b7242f1ca977c72a3c32ed255e188706', 0, 85, 86, 1, NULL, '', '', '', 0, 0, 0),
-(14, '2015-03-03 21:00:47', '2015-03-03 16:00:00', '2015-03-03 16:30:00', '', 'eef707bd66f00518199f1984ed80352e', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0);
+(18, '2015-03-05 17:38:28', '2015-03-05 11:45:00', '2015-03-05 12:15:00', '', 'b6fbeea9222c08e62fa56e05964a7b81', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 1),
+(19, '2015-03-05 17:38:44', '2015-03-05 11:45:00', '2015-03-05 12:15:00', '', '99eaebf367c65179c2a64a54ee27fe2a', 0, 85, 90, 1, NULL, '', '', '', 0, 1, 0),
+(20, '2015-03-05 17:38:54', '2015-03-05 11:45:00', '2015-03-05 12:15:00', '', '346199f9d4b0727101352e959f66ecd5', 0, 85, 90, 1, NULL, '', '', '', 0, 1, 1),
+(25, '2015-03-29 08:24:51', '2015-03-27 10:30:00', '2015-03-27 11:00:00', '', '7d6fbbe999d58a7c78488418d88a582b', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
+(26, '2015-04-04 03:03:34', '2015-04-03 21:15:00', '2015-04-03 21:45:00', '', 'be2d463fc76ca389d0f0962ef0207d46', 0, 85, 90, 1, NULL, '', '', '', 0, 1, 0),
+(29, '2015-04-04 05:04:02', '2015-04-03 23:15:00', '2015-04-03 23:45:00', '', '7afe5360f425f3b13f5e162be6f5f2f4', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
+(31, '2015-04-04 05:05:53', '2015-04-03 23:15:00', '2015-04-03 23:45:00', '', 'a887317b5f5fec93383809fe85ca9e07', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -82,18 +75,19 @@ CREATE TABLE IF NOT EXISTS `ea_roles` (
   `services` int(4) DEFAULT NULL COMMENT '0',
   `users` int(4) DEFAULT NULL COMMENT '0',
   `system_settings` int(4) DEFAULT NULL COMMENT '0',
-  `user_settings` int(11) DEFAULT NULL
+  `user_settings` int(11) DEFAULT NULL,
+  `report` int(4) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_roles`
 --
 
-INSERT INTO `ea_roles` (`id`, `name`, `slug`, `is_admin`, `appointments`, `customers`, `services`, `users`, `system_settings`, `user_settings`) VALUES
-(1, 'Administrator', 'admin', 1, 15, 15, 15, 15, 15, 15),
-(2, 'Provider', 'provider', 0, 15, 15, 0, 0, 0, 15),
-(3, 'Customer', 'customer', 0, 0, 0, 0, 0, 0, 0),
-(4, 'Secretary', 'secretary', 0, 15, 15, 0, 0, 0, 15);
+INSERT INTO `ea_roles` (`id`, `name`, `slug`, `is_admin`, `appointments`, `customers`, `services`, `users`, `system_settings`, `user_settings`, `report`) VALUES
+(1, 'Administrator', 'admin', 1, 15, 15, 15, 15, 15, 15, 15),
+(2, 'Provider', 'provider', 0, 15, 15, 0, 0, 0, 15, 15),
+(3, 'Customer', 'customer', 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 'Secretary', 'secretary', 0, 15, 15, 0, 0, 0, 15, 15);
 
 -- --------------------------------------------------------
 
@@ -120,14 +114,15 @@ CREATE TABLE IF NOT EXISTS `ea_services` (
   `currency` varchar(32) DEFAULT NULL,
   `description` text,
   `id_service_categories` bigint(20) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_services`
 --
 
 INSERT INTO `ea_services` (`id`, `name`, `duration`, `price`, `currency`, `description`, `id_service_categories`) VALUES
-(1, 'General Appointment', 30, '0.00', '', '', NULL);
+(1, 'General Appointment', 30, '0.00', '', '', NULL),
+(2, 'Special Appointment', 20, '0.00', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -137,15 +132,17 @@ INSERT INTO `ea_services` (`id`, `name`, `duration`, `price`, `currency`, `descr
 
 CREATE TABLE IF NOT EXISTS `ea_services_providers` (
   `id_users` bigint(20) unsigned NOT NULL,
-  `id_services` bigint(20) unsigned NOT NULL
+  `id_services` bigint(20) unsigned NOT NULL,
+  `max_noshow_num` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_services_providers`
 --
 
-INSERT INTO `ea_services_providers` (`id_users`, `id_services`) VALUES
-(85, 1);
+INSERT INTO `ea_services_providers` (`id_users`, `id_services`, `max_noshow_num`) VALUES
+(85, 1, 0),
+(85, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -213,11 +210,10 @@ CREATE TABLE IF NOT EXISTS `ea_users` (
 INSERT INTO `ea_users` (`id`, `first_name`, `last_name`, `dob`, `email`, `mobile_number`, `phone_number`, `address`, `city`, `state`, `zip_code`, `notes`, `id_roles`, `num_of_children`, `num_noshow`) VALUES
 (84, 'Root', 'User', '0000-00-00', 'aharon@aharonhannan.com', '', '1234567890', '', '', '', '', '', 1, 0, 0),
 (85, 'Fair Hope', 'Children''s Ministry', '0000-00-00', 'null@null.com', '', '1234567890', '', '', '', '', '', 2, 0, 0),
-(86, 'Rob', 'Zoltowski', '55555', 'aharon@aharonhannan.com', NULL, NULL, NULL, NULL, NULL, NULL, 'This guy sucks', 3, 36, 0),
-(87, 'Austin', 'Appleby', '0000-00-00', 'quarterback@purdue.edu', NULL, NULL, NULL, NULL, NULL, NULL, '', 3, 21, 0),
-(88, 'Zhengyou', 'Wang', '', 'wang@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 1, 0),
-(89, 'Tom ', 'Swif', '', 'tom@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 1, 0),
-(90, 'FangJia', 'Zhu', '1993-2-2', 'zhu34@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 3, 2);
+(86, 'Rob', 'Zoltowski', '55555', 'aharon@aharonhannan.com', NULL, '8877', NULL, NULL, NULL, NULL, 'This guy sucks', 3, 36, 0),
+(87, 'Austin', 'Appleby', '1988-8-2', 'quarterba@purdue.edu', NULL, '2233', NULL, NULL, NULL, NULL, '', 3, 21, 0),
+(89, 'Tom ', 'Swif', '1955-2-5', 'tom@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 1, 0),
+(90, 'FangJia', 'Zhu', '1993-2-2', 'zhu34@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -245,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `ea_user_settings` (
 
 INSERT INTO `ea_user_settings` (`id_users`, `username`, `password`, `salt`, `working_plan`, `notifications`, `google_sync`, `google_token`, `google_calendar`, `sync_past_days`, `sync_future_days`) VALUES
 (84, 'root', 'b665cfe9ec5f07e22e7b118ce2372bffb68e954184c68609b60853d57ae57233', '7b2c3b691c565fa1369d21c016d787516e4111914824539559785449355e54b1', '{"monday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"tuesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"wednesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"thursday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"friday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"saturday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"sunday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]}}', 0, 0, NULL, NULL, 5, 5),
-(85, 'default', 'd9756e2f6926bd95020beae75078add39e307e86396ea9dfa1a6d3acb7d68467', 'd1f8026dab9fd09748d6b072234a9a112206d117fd34ce992ac8933b966ce5ce', '{"monday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"tuesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"wednesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"thursday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"friday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"saturday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"sunday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]}}', 0, 0, NULL, NULL, 5, 5);
+(85, 'default', 'd9756e2f6926bd95020beae75078add39e307e86396ea9dfa1a6d3acb7d68467', 'd1f8026dab9fd09748d6b072234a9a112206d117fd34ce992ac8933b966ce5ce', '{"monday":{"start":"05:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"tuesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"wednesday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"thursday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"friday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"saturday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]},"sunday":{"start":"09:00","end":"18:00","breaks":[{"start":"11:20","end":"11:30"},{"start":"14:30","end":"15:00"}]}}', 0, 0, NULL, NULL, 5, 5);
 
 --
 -- Indexes for dumped tables
@@ -313,7 +309,7 @@ ALTER TABLE `ea_user_settings`
 -- AUTO_INCREMENT for table `ea_appointments`
 --
 ALTER TABLE `ea_appointments`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `ea_roles`
 --
@@ -323,7 +319,7 @@ MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `ea_services`
 --
 ALTER TABLE `ea_services`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ea_service_categories`
 --

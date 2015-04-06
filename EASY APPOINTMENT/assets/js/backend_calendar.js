@@ -342,6 +342,8 @@ var BackendCalendar = {
         $(document).on('click', '.edit-popover', function() {
             $(this).parents().eq(2).remove(); // Hide the popover
             document.getElementById("num-noshow").disabled = true;
+            document.getElementById("no-show").disabled = false;
+            document.getElementById("reschedule").disabled = false;
             var $dialog; 
             
             if (BackendCalendar.lastFocusedEventData.data.is_unavailable == false) {
@@ -567,10 +569,10 @@ var BackendCalendar = {
 
                 var printWin = window.open('', '', 'left=0,top=0,width=700,height=500,toolbar=0,scrollbars=0,status  =0');
                 printWin.document.write(html);
-                printWin.document.close();
+                //printWin.document.close();
                 printWin.focus();
                 printWin.print();
-                printWin.close();
+                //printWin.close();
                 
             } else {
                 var unavailable = BackendCalendar.lastFocusedEventData.data;
@@ -880,6 +882,8 @@ var BackendCalendar = {
             BackendCalendar.resetAppointmentDialog();
             var $dialog = $('#manage-appointment');
             document.getElementById("num-noshow").disabled = true;
+            document.getElementById("no-show").disabled = true;
+            document.getElementById("reschedule").disabled = true;
             // Set the selected filter item and find the next appointment time
             // as the default modal values.
             if ($('#select-filter-item option:selected').attr('type') == 'provider') {

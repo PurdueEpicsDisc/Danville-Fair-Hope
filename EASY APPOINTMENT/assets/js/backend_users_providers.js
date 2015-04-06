@@ -141,9 +141,15 @@ ProvidersHelper.prototype.bindEventHandlers = function() {
 
         // Include provider services.
         provider.services = [];
-        $('#provider-services input[type="checkbox"]').each(function() {
+        $('#provider-services input[type="checkbox"]').each(function () {
             if ($(this).prop('checked')) {
+                $sid = $(this).attr('data-id');
                 provider.services.push($(this).attr('data-id'));
+                $('#provider-services input[type="text"]').each(function () {
+                    if ($(this).attr('data-id') == $sid) {
+                        provider.services.push(parseInt($(this).val()));
+                    }
+                });
             }
         });
 
@@ -364,12 +370,26 @@ ProvidersHelper.prototype.display = function(provider) {
     } else {
         $('#provider-notifications').removeClass('active');
     }
-    
+    console.log(provider.services);
+    var sid = [];
+    var max_num = [];
+    for(var i = 0;i<provider.services.id.length;i++)
+    {
+        sid[i] = provider.services.id[i];
+        max_num[i] = provider.services.max_noshow_num[i];
+    }
+    console.log(sid);
+    console.log(max_num);
     $('#provider-services input[type="checkbox"]').prop('checked', false);
-    $.each(provider.services, function(index, serviceId) {
+    $.each(sid, function (index, serviceId) {
         $('#provider-services input[type="checkbox"]').each(function() {
             if ($(this).attr('data-id') == serviceId) {
                 $(this).prop('checked', true);
+                $('#provider-services input[type="text"]').each(function () {
+                    if ($(this).attr('data-id') == serviceId) {
+                        $(this).val(max_num[index]);
+                    }
+                });
             }
         });
     });

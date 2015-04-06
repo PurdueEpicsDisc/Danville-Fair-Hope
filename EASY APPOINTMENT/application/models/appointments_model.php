@@ -76,7 +76,16 @@ class Appointments_Model extends CI_Model {
     private function insert($appointment) {
         $appointment['book_datetime'] = date('Y-m-d H:i:s');
         $appointment['hash'] = $this->generate_hash();
-        
+
+        // Validate number of no show
+		$customer = $this->db->get_where('ea_users', array('id' => $appointment['id_users_customer']))->row_array();
+		$services_provider = $this->db->get_where('ea_services_providers', 
+                    array('id_users' => $appointment['id_users_provider'],'id_services' => $appointment['id_services']))->row_array();
+		if(intval( $customer['num_noshow'] ) >= intval($services_provider['max_noshow_num']))
+		{
+			throw new Exception('Too many num of no show!! : ' 
+            . $customer['num_noshow']);
+		}
         if (!$this->db->insert('ea_appointments', $appointment)) {
             throw new Exception('Could not insert appointment record.');
         }

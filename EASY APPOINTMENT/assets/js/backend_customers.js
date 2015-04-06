@@ -128,7 +128,33 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 
         BackendCustomers.helper.displayAppointment(appointment);
     });
+    /**
+     * Event: Appointment Row "Click"
+     * 
+     * Display appointment data of the selected row.
+     */
+    $(document).on('click', '.appointment-row-noshow', function () {
+        $('#customer-appointments .selected-row').removeClass('selected-row');
+        $(this).addClass('selected-row');
 
+        var customerId = $('#filter-customers .selected-row').attr('data-id');
+        var appointmentId = $(this).attr('data-id');
+        var appointment = {};
+
+        $.each(BackendCustomers.helper.filterResults, function (index, c) {
+            if (c.id === customerId) {
+                $.each(c.appointments, function (index, a) {
+                    if (a.id == appointmentId) {
+                        appointment = a;
+                        return false;
+                    }
+                });
+                return false;
+            }
+        });
+
+        BackendCustomers.helper.displayAppointment(appointment);
+    });
     /**
      * Event: Add Customer Button "Click"
      */
@@ -337,12 +363,22 @@ CustomersHelper.prototype.display = function(customer) {
     $.each(customer.appointments, function(index, appointment) {
         var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
         var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
-        var html = 
-                '<div class="appointment-row" data-id="' + appointment.id + '">' + 
-                    start + ' - ' + end + '<br>' +
-                    appointment.service.name + ', ' + 
-                    appointment.provider.first_name + ' ' + appointment.provider.last_name +
-                '</div>';   
+        if (appointment.no_show_flag == 1) {
+            var html =
+                    '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
+                        start + ' - ' + end + '<br>' +
+                        appointment.service.name + ', ' +
+                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
+                    '</div>';
+        }
+        else {
+            var html =
+                    '<div class="appointment-row" data-id="' + appointment.id + '">' +
+                        start + ' - ' + end + '<br>' +
+                        appointment.service.name + ', ' +
+                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
+                    '</div>';
+        }
         $('#customer-appointments').append(html);
     });
     $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });

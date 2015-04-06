@@ -104,6 +104,13 @@ class Providers_Model extends CI_Model {
         
         // Store provider settings and services (must not be present on the $provider array).
         $services = $provider['services'];
+		$sid = array();
+		$max_num = array();
+		for($i = 0;$i<sizeof($services);$i+=2)
+		{
+		  $sid[] = $services[$i];
+		  $max_num[] =$services[$i+1]; 
+		}
         unset($provider['services']);
         $settings = $provider['settings'];
         unset($provider['settings']); 
@@ -118,7 +125,7 @@ class Providers_Model extends CI_Model {
         
         $provider['id'] = $this->db->insert_id();
         $this->save_settings($settings, $provider['id']);
-        $this->save_services($services, $provider['id']);
+        $this->save_services($sid,$max_num, $provider['id']);
         
         // Return the new record id.
         return intval($provider['id']);
@@ -136,6 +143,13 @@ class Providers_Model extends CI_Model {
         
         // Store service and settings (must not be present on the $provider array).
         $services = $provider['services'];
+		$sid = array();
+		$max_num = array();
+		for($i = 0;$i<sizeof($services);$i+=2)
+		{
+		  $sid[] = $services[$i];
+		  $max_num[] =$services[$i+1]; 
+		}
         unset($provider['services']);
         $settings = $provider['settings'];
         unset($provider['settings']);
@@ -151,7 +165,7 @@ class Providers_Model extends CI_Model {
             throw new Exception('Could not update provider record.');
         }
         
-        $this->save_services($services, $provider['id']);
+        $this->save_services($sid,$max_num, $provider['id']);
         $this->save_settings($settings, $provider['id']);
         
         // Return record id.
@@ -220,10 +234,16 @@ class Providers_Model extends CI_Model {
         if (!isset($provider['services']) || !is_array($provider['services'])) {
             throw new Exception('Invalid provider services given: ' . print_r($provider, TRUE));
         } else { // Check if services are valid numeric values.
-            foreach($provider['services'] as $service_id) {
+		$array = $provider['services'];
+		$sid = array();
+		for($i = 0;2*$i<sizeof($array);++$i)
+		{
+		  $sid[] = $array[$i*2];
+		}
+            foreach($sid as $service_id) {
                 if (!is_numeric($service_id)) {
                     throw new Exception('A provider service with invalid id was found: ' 
-                            . print_r($provider, TRUE));
+                            . print_r($sid, TRUE));
                 }
             }
         }
@@ -396,8 +416,11 @@ class Providers_Model extends CI_Model {
             $services = $this->db->get_where('ea_services_providers', 
                     array('id_users' => $provider['id']))->result_array();
             $provider['services'] = array();
-            foreach($services as $service) {
-                $provider['services'][] = $service['id_services'];
+			$provider['services']['id'] = array();
+			$provider['services']['max_noshow_num'] = array();
+            foreach($services as $index =>$service) {
+                $provider['services']['id'][] = $service['id_services'];
+				$provider['services']['max_noshow_num'][] = $service['max_noshow_num'];
             }
             
             // Settings
@@ -521,10 +544,10 @@ class Providers_Model extends CI_Model {
      * @throws Exception When the $services argument type is not array.
      * @throws Exception When the $provider_id argumetn type is not numeric.
      */
-    private function save_services($services, $provider_id) {
+    private function save_services($sid,$max_num, $provider_id) {
         // Validate method arguments.
-        if (!is_array($services)) {
-            throw new Exception('Invalid argument type $services: ' . $services);
+        if (!is_array($sid)|!is_array($max_num)) {
+            throw new Exception('Invalid argument type $sid or $max_num: ' . $sid,$max_num);
         }
         
         if (!is_numeric($provider_id)) {
@@ -533,10 +556,11 @@ class Providers_Model extends CI_Model {
         
         // Save provider services in the database (delete old records and add new).
         $this->db->delete('ea_services_providers', array('id_users' => $provider_id));
-        foreach($services as $service_id) {
+        foreach($sid as $index => $service_id) {
             $service_provider = array(
                 'id_users' => $provider_id,
-                'id_services' => $service_id
+                'id_services' => $service_id,
+				'max_noshow_num' => $max_num[$index]
             );
             $this->db->insert('ea_services_providers', $service_provider);
         } 

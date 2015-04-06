@@ -164,7 +164,40 @@ class Backend extends CI_Controller {
         $this->load->view('backend/users', $view);
         $this->load->view('backend/footer', $view);
     }
-    
+        
+    /**
+     * Display the backend report page.
+     * 
+     * In this page the user can manage all the customer records of the system.
+     */
+    public function report() {
+        $this->session->set_userdata('dest_url', $this->config->item('base_url') . 'backend/report');
+    	if (!$this->hasPrivileges(PRIV_REPORT)) return;
+    	
+        $this->load->model('appointments_model');
+        $this->load->model('providers_model');
+        $this->load->model('services_model');
+        $this->load->model('customers_model');
+        $this->load->model('settings_model');
+        $this->load->model('roles_model');
+        $this->load->model('user_model');
+        $this->load->model('secretaries_model');
+        
+        $view['base_url'] = $this->config->item('base_url');
+        $view['user_display_name'] = $this->user_model->get_user_display_name($this->session->userdata('user_id'));
+        $view['active_menu'] = PRIV_REPORT;
+        $view['company_name'] = $this->settings_model->get_setting('company_name');
+        $view['customers'] = $this->customers_model->get_batch();
+	$view['appointments'] = $this->appointments_model->get_batch();
+        $view['available_providers'] = $this->providers_model->get_available_providers();
+        $view['available_services'] = $this->services_model->get_available_services();
+        $this->setUserData($view);
+        
+        $this->load->view('backend/header', $view);
+        $this->load->view('backend/report', $view);
+        $this->load->view('backend/footer', $view);
+    }
+
     /**
      * Display the user/system settings.
      * 

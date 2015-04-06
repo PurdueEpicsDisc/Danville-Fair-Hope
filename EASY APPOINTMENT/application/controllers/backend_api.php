@@ -134,7 +134,6 @@ class Backend_api extends CI_Controller {
                 if (!isset($appointment['id_users_customer'])) {
                     $appointment['id_users_customer'] = $customer['id'];
                 }
-                
                 $appointment['id'] = $this->appointments_model->add($appointment);
 				mysql_query("UPDATE ea_users u 
                              INNER JOIN

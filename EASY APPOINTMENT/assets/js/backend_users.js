@@ -46,7 +46,7 @@ var BackendUsers = {
         // Fill the services and providers list boxes.
         $.each(GlobalVariables.services, function(index, service) {
             var html = '<label class="checkbox"><input type="checkbox" data-id="' + service.id + '" />' 
-                    + service.name + '</label>'; 
+                    + service.name + '<input type="text" id = "max-noshow-num" title="Maximum no show number" placeholder = "Max No Show"data-id="' + service.id + '" /></label>';
             $('#provider-services').append(html);
         });
         $('#provider-services').jScrollPane({ mouseWheelSpeed: 70 });

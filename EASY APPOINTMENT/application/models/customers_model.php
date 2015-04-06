@@ -275,6 +275,39 @@ class Customers_Model extends CI_Model {
         return $customer[$field_name];
     }
     
+	/**
+     * Set a specific field value from the database.
+     * 
+     * @param string $field_name The field name of the value to be
+     * returned.
+     * @param int $customer_id The selected record's id.
+     * @param $value is the value to be set
+     */
+    /*public function set_value($field_name, $customer_id, $value) {
+        if (!is_numeric($customer_id)) {
+            throw new Exception('Invalid argument provided as $customer_id : ' 
+                    . $customer_id);
+        }
+        
+        if (!is_string($field_name)) {
+            throw new Exception('$field_name argument is not a string : ' 
+                    . $field_name);
+        }
+        
+        if ($this->db->get_where('ea_users', array('id' => $customer_id))->num_rows() == 0) {
+            throw new Exception('The record with the $customer_id argument ' 
+                    . 'does not exist in the database : ' . $customer_id);
+        }
+        
+        $row_data = $this->db->get_where('ea_users', array('id' => $customer_id)
+                )->row_array();
+        if (!isset($row_data[$field_name])) {
+            throw new Exception('The given $field_name argument does not'
+                    . 'exist in the database : ' . $field_name);
+        } 
+        $customer = $this->db->update('ea_users', array($field_name => $value));
+    }*/
+
     /**
      * Get all, or specific records from appointment's table.
      * 

@@ -51,6 +51,7 @@ var Backend = {
     PRIV_CUSTOMERS: 'customers',
     PRIV_SERVICES: 'services',
     PRIV_USERS: 'users',
+    PRIV_REPORT: 'report',
     PRIV_SYSTEM_SETTINGS: 'system_settings',
     PRIV_USER_SETTINGS: 'user_settings',
     
