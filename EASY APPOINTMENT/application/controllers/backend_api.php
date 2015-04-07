@@ -135,15 +135,19 @@ class Backend_api extends CI_Controller {
                     $appointment['id_users_customer'] = $customer['id'];
                 }
                 $appointment['id'] = $this->appointments_model->add($appointment);
-				mysql_query("UPDATE ea_users u 
+				$services_provider = $this->db->get_where('ea_services_providers', 
+                    array('id_users' => $appointment['id_users_provider'],'id_services' => $appointment['id_services']))->row_array();
+				$period = intval($services_provider['no_show_count_period']);
+				$query = "UPDATE ea_users u 
                              INNER JOIN
                              (
                                SELECT id_users_customer, SUM(no_show_flag) 'sumf'
                                  FROM ea_appointments 
-								 where `start_datetime` >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) 
+								 where `start_datetime` >= DATE_SUB(CURDATE(), INTERVAL $period DAY) 
                                  GROUP BY id_users_customer
                              ) a ON u.id = a.id_users_customer
-                             SET u.num_noshow = a.sumf");
+                             SET u.num_noshow = a.sumf";
+				mysql_query($query);
             }
             
             $appointment = $this->appointments_model->get_row($appointment['id']);

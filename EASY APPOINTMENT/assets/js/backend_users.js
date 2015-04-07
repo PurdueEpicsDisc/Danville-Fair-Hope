@@ -42,11 +42,11 @@ var BackendUsers = {
         
         BackendUsers.wp = new WorkingPlan();
         BackendUsers.wp.bindEventHandlers();
-        
+        var text = "no show over";
         // Fill the services and providers list boxes.
         $.each(GlobalVariables.services, function(index, service) {
             var html = '<label class="checkbox"><input type="checkbox" data-id="' + service.id + '" />' 
-                    + service.name + '<input type="text" id = "max-noshow-num" title="Maximum no show number" placeholder = "Max No Show"data-id="' + service.id + '" /></label>';
+                    + service.name + '<input type="text" id = "max-noshow-num" title="Maximum no show number" placeholder = "Max" data-id="' + service.id + '" />'+text+'<input type="text" id = "no-show-count-period" title="No show count period" placeholder = "Days" data-id="' + service.id + '" /></label>';
             $('#provider-services').append(html);
         });
         $('#provider-services').jScrollPane({ mouseWheelSpeed: 70 });

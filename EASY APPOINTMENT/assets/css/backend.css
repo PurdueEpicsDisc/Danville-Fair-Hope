@@ -624,16 +624,21 @@ body .form-horizontal .controls {
     background-color: white; 
     cursor: pointer;
 }
-#users-page #max-noshow-num{
-    float:relative;
-    width:90px;
+#users-page .jspPane{
+    width:370px !important;
+}
+#users-page .jspPane input.checkbox,{
+    float:left;
+    width:30px;
     height:15px;
-    margin-left: 15px;
 }
-#users-page .jspPane label.checkbox{
-    float:relative;
+#users-page #max-noshow-num,
+#users-page #no-show-count-period{
+    width:30px;
+    height:15px;
+    margin: 7px;
 }
-
+}
 #users-page #secretary-notifications.active,
 #users-page #provider-notifications.active,
 #users-page #admin-notifications.active {
@@ -644,7 +649,7 @@ body .form-horizontal .controls {
 #users-page #secretary-providers,
 #users-page #provider-services { 
     border: 4px solid #ccc; 
-    width: 340px; 
+    width: 380px !important;
     height: 387px; 
     overflow-y: scroll; 
     padding: 7px;

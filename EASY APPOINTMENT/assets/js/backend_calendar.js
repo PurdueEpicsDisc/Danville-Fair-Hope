@@ -593,7 +593,22 @@ var BackendCalendar = {
         $('#manage-appointment #cancel-appointment').click(function() {
             $('#manage-appointment').modal('hide');
         });
-        
+        /**
+         * Event: Manage Appointments Dialog Save Button "Click" triggered by "Enter" keyup
+         * 
+         * Stores the appointment changes or inserts a new appointment depending the dialog
+         * mode.
+		 */
+		 $(document).unbind("keyup").keyup(function(e){ 
+			var code = e.which; // recommended to use e.which, it's normalized across browsers
+			if(code==13 && $('#manage-appointment #save-appointment').is(':visible'))
+				{
+					var $dialog = $('#manage-appointment');
+					if(!$dialog.find('.modal-message').is(':visible')){
+					$('#manage-appointment #save-appointment').click();
+					}
+				}
+		});
         /**
          * Event: Manage Appointments Dialog Save Button "Click"
          * 
@@ -655,6 +670,17 @@ var BackendCalendar = {
                 // Set the id value, only if we are editing an appointment.
                 customer['id'] = $dialog.find('#customer-id').val();
                 appointment['id_users_customer'] = customer['id'];
+				/*$.each(GlobalVariables.customers, function(index, c) {
+                if (c.id == customer['id']){
+				c.first_name = customer['first_name'];
+				c.last_name = customer['last_name'];
+				c.email = customer['email'];
+				c.num_of_children = customer['num_of_children'];
+				c.dob = customer['dob'];
+				c.notes = customer['notes']; 
+				c.num_noshow = appointment['no_show_flag'] ? parseInt(customer['num_noshow'])+1:parseInt(customer['num_noshow'])-1;
+				}
+				});*/
             }
             
             // :: DEFINE SUCCESS EVENT CALLBACK

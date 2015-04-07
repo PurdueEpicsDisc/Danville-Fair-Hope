@@ -140,19 +140,27 @@ ProvidersHelper.prototype.bindEventHandlers = function() {
         };
 
         // Include provider services.
-        provider.services = [];
+        provider.services = {};
+		provider.services.id = [];
+		provider.services.max_noshow_num = [];
+		provider.services.no_show_count_period = [];
         $('#provider-services input[type="checkbox"]').each(function () {
             if ($(this).prop('checked')) {
                 $sid = $(this).attr('data-id');
-                provider.services.push($(this).attr('data-id'));
+                provider.services.id.push($(this).attr('data-id'));
                 $('#provider-services input[type="text"]').each(function () {
                     if ($(this).attr('data-id') == $sid) {
-                        provider.services.push(parseInt($(this).val()));
+						if($(this).attr("id") == "max-noshow-num"){
+                        provider.services.max_noshow_num.push(parseInt($(this).val()));}
+						else if($(this).attr("id") == "no-show-count-period"){
+						provider.services.no_show_count_period.push(parseInt($(this).val()));
+						}
                     }
                 });
             }
         });
-
+		console.log(provider);
+		console.log(provider.services);
         // Include password if changed.
         if ($('#provider-password').val() !== '') {
             provider.settings.password = $('#provider-password').val();
@@ -373,13 +381,16 @@ ProvidersHelper.prototype.display = function(provider) {
     console.log(provider.services);
     var sid = [];
     var max_num = [];
+	var no_show_count_period = [];
     for(var i = 0;i<provider.services.id.length;i++)
     {
         sid[i] = provider.services.id[i];
         max_num[i] = provider.services.max_noshow_num[i];
+		no_show_count_period[i] = provider.services.no_show_count_period[i];
     }
     console.log(sid);
     console.log(max_num);
+	console.log(no_show_count_period);
     $('#provider-services input[type="checkbox"]').prop('checked', false);
     $.each(sid, function (index, serviceId) {
         $('#provider-services input[type="checkbox"]').each(function() {
@@ -387,7 +398,12 @@ ProvidersHelper.prototype.display = function(provider) {
                 $(this).prop('checked', true);
                 $('#provider-services input[type="text"]').each(function () {
                     if ($(this).attr('data-id') == serviceId) {
+						if($(this).attr("id") == "max-noshow-num"){
                         $(this).val(max_num[index]);
+						}
+						else if($(this).attr("id") == "no-show-count-period"){
+                        $(this).val(no_show_count_period[index]);
+						}
                     }
                 });
             }
