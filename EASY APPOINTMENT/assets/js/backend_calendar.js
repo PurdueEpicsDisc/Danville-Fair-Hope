@@ -593,22 +593,7 @@ var BackendCalendar = {
         $('#manage-appointment #cancel-appointment').click(function() {
             $('#manage-appointment').modal('hide');
         });
-        /**
-         * Event: Manage Appointments Dialog Save Button "Click" triggered by "Enter" keyup
-         * 
-         * Stores the appointment changes or inserts a new appointment depending the dialog
-         * mode.
-		 */
-		 $(document).unbind("keyup").keyup(function(e){ 
-			var code = e.which; // recommended to use e.which, it's normalized across browsers
-			if(code==13 && $('#manage-appointment #save-appointment').is(':visible'))
-				{
-					var $dialog = $('#manage-appointment');
-					if(!$dialog.find('.modal-message').is(':visible')){
-					$('#manage-appointment #save-appointment').click();
-					}
-				}
-		});
+
         /**
          * Event: Manage Appointments Dialog Save Button "Click"
          * 
