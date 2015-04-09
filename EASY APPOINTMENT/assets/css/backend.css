@@ -350,8 +350,9 @@ nav a#pull {
 }
 
 #manage-appointment {
-    width: 860px;
-    margin-left: -430px;
+/*    width: 860px;
+    margin-left: -430px;*/
+    overflow-y: auto;
 }
 
 #existing-customers-list { 

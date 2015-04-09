@@ -31,6 +31,9 @@
     });
 </script>
 
+
+<!-- Start customizing code here -->
+
 <div id="customers-page" class="row-fluid">
 	<div id="filter-customers" class="filter-records column span4">
 		<form class="input-append">
