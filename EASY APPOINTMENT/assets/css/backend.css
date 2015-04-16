@@ -353,6 +353,7 @@ nav a#pull {
 /*    width: 860px;
     margin-left: -430px;*/
     overflow-y: auto;
+    width: auto;
 }
 
 #existing-customers-list { 

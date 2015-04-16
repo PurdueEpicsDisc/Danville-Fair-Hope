@@ -1,140 +1,170 @@
-<link href="assets/js/libs/jquery/jquery.ui.css" rel="stylesheet" type="text/css" />
+<?php
+date_default_timezone_set('America/Chicago');
+?>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<link rel="stylesheet" 
+        src="<?php echo $base_url; ?>assets/css/datepicker.css"></script>
+
+<script type="text/javascript"
+        src="<?php echo $base_url; ?>assets/js/bootstrap-datepicker.js"></script>
+
 
 <script type="text/javascript" 
+        src="<?php echo $base_url; ?>assets/js/libs/jquery/fullcalendar.min.js"></script>
+
+        <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery-ui-timepicker-addon.js"></script>
-
-<script type="text/javascript" 
-        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.js"></script>
-
-<script type="text/javascript" 
-        src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery.ui.js"></script>
-
-<script type="text/javascript" 
-        src="<?php echo $base_url; ?>assets/js/backend_customers.js"></script>
-        
-<script type="text/javascript">    
-    var GlobalVariables = {
-        'availableProviders': <?php echo json_encode($available_providers); ?>,
-        'availableServices': <?php echo json_encode($available_services); ?>,
-        'baseUrl': <?php echo '"' . $base_url . '"'; ?>,
-        'customers': <?php echo json_encode($customers); ?>,
-        'user'                  : {
-            'id'        : <?php echo $user_id; ?>,
-            'email'     : <?php echo '"' . $user_email . '"'; ?>,
-            'role_slug' : <?php echo '"' . $role_slug . '"'; ?>,
-            'privileges': <?php echo json_encode($privileges); ?>
-        }
-    };
-    
-    $(document).ready(function() {
-        BackendCustomers.initialize(true);
-    });
-</script>
 
 
 <!-- Start customizing code here -->
+<div class="container">
+    <div class="container">
+        <div class="row">
+             <h1 class="page-header">Reports</h1>
 
-<div id="customers-page" class="row-fluid">
-	<div id="filter-customers" class="filter-records column span4">
-		<form class="input-append">
-			<input class="key span12" id="search" type="text" />
-            <button class="filter btn" type="submit" title="<?php echo $this->lang->line('filter'); ?>">
-                    <i class="icon-search"></i>
-                </button>
-                <button class="clear btn" type="button" title="<?php echo $this->lang->line('clear'); ?>">
-                    <i class="icon-repeat"></i>
-                </button>
-		</form>
-        
-        <h2><?php echo $this->lang->line('customers'); ?></h2>
-        <div class="results"></div>
-	</div>
 
-	<div class="details span7 row-fluid">
-        <div class="btn-toolbar">
-            <div id="add-edit-delete-group" class="btn-group">
-                <?php if ($privileges[PRIV_CUSTOMERS]['add'] == TRUE) { ?>
-                <button id="add-customer" class="btn btn-primary">
-                    <i class="icon-plus icon-white"></i>
-                    <?php echo $this->lang->line('add'); ?>
-                </button>
-                <?php } ?>
-                
-                <?php if ($privileges[PRIV_CUSTOMERS]['edit'] == TRUE) { ?>
-                <button id="edit-customer" class="btn" disabled="disabled">
-                    <i class="icon-pencil"></i>
-                    <?php echo $this->lang->line('edit'); ?>
-                </button>
-                <?php }?>
-                
-                <?php if ($privileges[PRIV_CUSTOMERS]['delete'] == TRUE) { ?>
-                <button id="delete-customer" class="btn" disabled="disabled">
-                    <i class="icon-remove"></i>
-                    <?php echo $this->lang->line('delete'); ?>
-                </button>
-                <?php } ?>
-            </div>
-            
-            <div id="save-cancel-group" class="btn-group" style="display:none;">
-                <button id="save-customer" class="btn btn-primary">
-                    <i class="icon-ok icon-white"></i>
-                    <?php echo $this->lang->line('save'); ?>
-                </button>
-                <button id="cancel-customer" class="btn">
-                    <i class="icon-ban-circle"></i>
-                    <?php echo $this->lang->line('cancel'); ?>
-                </button>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-default">
+                                 Daily Report
+                            </h4>
+                        </div>
+
+                            <div class="panel-body">This report generates the list of clients in a single business day.
+
+
+
+                                <form class="form-horizontal">
+                                <fieldset>
+
+                                <!-- Multiple Radios -->
+                                <div class="control-group">
+                                  <div class="controls">
+                                    <label class="radio" for="daily-radio-0">
+                                      <input type="radio" name="radios" id="daily-radio-0" value="Today" checked="checked">
+                                      Today (<?php echo date("M jS, Y"); ?>)
+                                    </label>
+                                    <label class="radio" for="daily-radio-1">
+                                      <input type="radio" name="radios" id="daily-radio-1" value="Date:">
+                                      Date: <input type="text" id="start-datetime" class="hasDatepicker">
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="control-group">
+                                  <label class="control-label" for="generateButton1"></label>
+                                  <div class="controls">
+                                    <button id="generateButton1" name="generateButton1" class="btn btn-primary">Generate</button>
+                                  </div>
+                                </div>
+
+                                </fieldset>
+                                </form>
+
+
+
+
+                            </div>
+                    </div>
+
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                Monthly / Range Report
+                            </h4>
+                        </div>
+                        <div class="panel-body">This report generates a tabulated view of appointments for a single
+                         month, or a range of two dates. 
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                            <!-- Multiple Radios -->
+                            <div class="control-group">
+                              <div class="controls">
+                                <label class="radio" for="noshow-radio-0">
+                                  <input type="radio" name="radios" id="noshow-radio-0" value="Option one" checked="checked">Single Month
+                                      <select id="selectbasic" name="selectbasic" class="input-xlarge">
+                                  <option>January 2015</option>
+                                  <option>February 2015</option>
+                                  <option>March 2015</option>
+                                  <option>April 2015</option>
+                                </select>
+                                </label>
+                                <label class="radio" for="noshow-radio-1">
+                                  <input type="radio" name="radios" id="noshow-radio-1" value="Range">
+                                  Date Range <input type="text" id="start-datetime" class="hasDatepicker"> to <input type="text" id="end-datetime" class="hasDatepicker">
+
+
+
+
+
+                                </label>
+                              </div>
+                            </div>
+
+
+                            <!-- Button -->
+                            <div class="control-group">
+                              <label class="control-label" for="generateButton2"></label>
+                              <div class="controls">
+                                <button id="generateButton2" name="generateButton2" class="btn btn-warning">Generate</button>
+                              </div>
+                            </div>
+
+                            </fieldset>
+                            </form>                                
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    No-Show Report
+                                </h4>
+                        </div>
+                            <div class="panel-body">This report generates a list of clients who have not shown up for an appointment, and have 
+                                failed to reschedule</div>
+                                    <form class="form-horizontal">
+                                    <fieldset>
+
+                                    <!-- Multiple Radios -->
+                                    <div class="control-group">
+                                      <label class="control-label" for="radios">Multiple Radios</label>
+                                      <div class="controls">
+                                        <label class="radio" for="noshow-radio-0">
+                                          <input type="radio" name="radios" id="noshow-radio-0" value="Active Policy (Within 30 days)" checked="checked">
+                                          Active Policy (Within 30 days)
+                                        </label>
+                                        <label class="radio" for="radios-1">
+                                          <input type="radio" name="radios" id="radios-1" value="Other">
+                                              <input type="radio" name="radios" id="radios-1" value="Range">
+                                              Date Range <input type="text" id="start-datetime" class="hasDatepicker"> to <input type="text" id="end-datetime" class="hasDatepicker">
+                                        </label>
+                                      </div>
+                                    </div>
+
+                                    <!-- Button -->
+                                    <div class="control-group">
+                                      <label class="control-label" for="generateButton3"></label>
+                                      <div class="controls">
+                                        <button id="generateButton3" name="generateButton3" class="btn btn-danger">Generate</button>
+                                      </div>
+                                    </div>
+
+                                    </fieldset>
+                                    </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <input id="customer-id" type="hidden" />
-        
-        <div class="span6" style="margin-left: 0;">
-            <h2><?php echo $this->lang->line('details'); ?></h2>
-            <div id="form-message" class="alert" style="display:none;"></div>
-            
-            <label for="first-name"><?php echo $this->lang->line('first_name'); ?> *</label>
-            <input type="text" id="first-name" class="span11 required" />
-
-            <label for="last-name"><?php echo $this->lang->line('last_name'); ?> *</label>
-            <input type="text" id="last-name" class="span11 required" />
-
-            <label for="email"><?php echo $this->lang->line('email'); ?> *</label>
-            <input type="text" id="email" class="span11 required" />
-
-            <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
-            <input type="text" id="phone-number" class="span11 required" />
-            
-<!--             <label for="address"><?php echo $this->lang->line('address'); ?></label>
-            <input type="text" id="address" class="span11" />
-
-            <label for="city"><?php echo $this->lang->line('city'); ?></label>
-            <input type="text" id="city" class="span11" />
-
-            <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
-            <input type="text" id="zip-code" class="span11" /> 
-			
--->
-		
-			
-            <label for="number-of-children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
-            <input type="text" id="num-of-children" class="span11 required" />
-			
-				<label for="date-of-birth"><?php echo $this->lang->line('dob'); ?> *</label>
-            <input type="text" id="date-of-birth" class="span11" />
-
-            <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
-            <textarea id="notes" rows="4" class="span11"></textarea>
-            
-            <br/><br/>
-            <center><em id="form-message" class="text-error">
-                <?php echo $this->lang->line('fields_are_required'); ?></em></center>
-        </div> 
-        
-        <div class="span5">
-            <h2><?php echo $this->lang->line('appointments'); ?></h2>
-            <div id="customer-appointments"></div>
-            <div id="appointment-details"></div>
-        </div>
-	</div>
+    </div>
 </div>
