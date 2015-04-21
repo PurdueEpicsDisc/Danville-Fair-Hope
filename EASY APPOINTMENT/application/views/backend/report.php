@@ -1,7 +1,6 @@
 <?php
 date_default_timezone_set('America/Chicago');
 ?>
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 <link rel="stylesheet" 
@@ -9,22 +8,41 @@ date_default_timezone_set('America/Chicago');
 
 <script type="text/javascript"
         src="<?php echo $base_url; ?>assets/js/bootstrap-datepicker.js"></script>
-
+<script type="text/javascript"
+        src="<?php echo $base_url; ?>assets/js/backend_report.js"></script>
 
 <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/libs/jquery/fullcalendar.min.js"></script>
 
         <script type="text/javascript" 
         src="<?php echo $base_url; ?>assets/js/libs/jquery/jquery-ui-timepicker-addon.js"></script>
-
-
+<script type="text/javascript">    
+    var GlobalVariables = {
+        'availableProviders'    : <?php echo json_encode($available_providers); ?>,
+        'availableServices'     : <?php echo json_encode($available_services); ?>,
+        'baseUrl'               : <?php echo '"' . $base_url . '"'; ?>,
+        'appointments'           : <?php echo json_encode($appointments); ?>,
+        'customers'             : <?php echo json_encode($customers); ?>,
+        'secretaryProviders'    : <?php echo json_encode($secretary_providers); ?>,
+        'user'                  : {
+            'id'        : <?php echo $user_id; ?>,
+            'email'     : <?php echo '"' . $user_email . '"'; ?>,
+            'role_slug' : <?php echo '"' . $role_slug . '"'; ?>,
+            'privileges': <?php echo json_encode($privileges); ?>
+        }
+    };
+    
+    //$(document).ready(function() {
+     //   BackendCalendar.initialize(true);
+    //});
+</script>
 <!-- Start customizing code here -->
-<div class="container">
+<div class="report-page">
     <div class="container">
         <div class="row">
              <h1 class="page-header">Reports</h1>
 
-
+			
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-primary">
@@ -42,14 +60,14 @@ date_default_timezone_set('America/Chicago');
                                 <fieldset>
 
                                 <!-- Multiple Radios -->
-                                <div class="control-group">
+                                <div class="control-group" id="daily-report">
                                   <div class="controls">
-                                    <label class="radio" for="daily-radio-0">
-                                      <input type="radio" name="radios" id="daily-radio-0" value="Today" checked="checked">
+                                    <label class="radio">
+                                      <input type="radio" name="radios" id="daily-radio-today" value="Today" checked="checked">
                                       Today (<?php echo date("M jS, Y"); ?>)
                                     </label>
-                                    <label class="radio" for="daily-radio-1">
-                                      <input type="radio" name="radios" id="daily-radio-1" value="Date:">
+                                    <label class="radio">
+                                      <input type="radio" name="radios" id="daily-radio-daypicker" value="Date:">
                                       Date: <input type="text" id="start-datetime" class="hasDatepicker">
                                     </label>
                                   </div>
@@ -57,9 +75,8 @@ date_default_timezone_set('America/Chicago');
 
                                 <!-- Button -->
                                 <div class="control-group">
-                                  <label class="control-label" for="generateButton1"></label>
                                   <div class="controls">
-                                    <button id="generateButton1" name="generateButton1" class="btn btn-primary">Generate</button>
+								  <input type="button" value="Generate" id="generate-daily" class="btn btn-primary">
                                   </div>
                                 </div>
 
@@ -84,10 +101,10 @@ date_default_timezone_set('America/Chicago');
                             <fieldset>
 
                             <!-- Multiple Radios -->
-                            <div class="control-group">
+                            <div class="control-group"  id="monthly-report">
                               <div class="controls">
-                                <label class="radio" for="noshow-radio-0">
-                                  <input type="radio" name="radios" id="noshow-radio-0" value="Option one" checked="checked">Single Month
+                                <label class="radio">
+                                  <input type="radio" name="radios" id="monthly-radio-single" value="Option one" checked="checked">Single Month
                                       <select id="selectbasic" name="selectbasic" class="input-xlarge">
                                   <option>January 2015</option>
                                   <option>February 2015</option>
@@ -95,8 +112,8 @@ date_default_timezone_set('America/Chicago');
                                   <option>April 2015</option>
                                 </select>
                                 </label>
-                                <label class="radio" for="noshow-radio-1">
-                                  <input type="radio" name="radios" id="noshow-radio-1" value="Range">
+                                <label class="radio">
+                                  <input type="radio" name="radios" id="monthly-radio-ranged" value="Range">
                                   Date Range <input type="text" id="start-datetime" class="hasDatepicker"> to <input type="text" id="end-datetime" class="hasDatepicker">
 
 
@@ -110,11 +127,10 @@ date_default_timezone_set('America/Chicago');
 
                             <!-- Button -->
                             <div class="control-group">
-                              <label class="control-label" for="generateButton2"></label>
-                              <div class="controls">
-                                <button id="generateButton2" name="generateButton2" class="btn btn-warning">Generate</button>
-                              </div>
-                            </div>
+                                  <div class="controls">
+								  <input type="button" value="Generate" id="generate-monthly" class="btn btn-warning">
+                                  </div>
+                                </div>
 
                             </fieldset>
                             </form>                                
@@ -136,28 +152,28 @@ date_default_timezone_set('America/Chicago');
                                     <fieldset>
 
                                     <!-- Multiple Radios -->
-                                    <div class="control-group">
-                                      <label class="control-label" for="radios">Multiple Radios</label>
+                                    <div class="control-group" id="noshow-report">
+                                      <!-- Multiple Radios <label class="control-label" for="radios">Multiple Radios</label>-->
                                       <div class="controls">
-                                        <label class="radio" for="noshow-radio-0">
-                                          <input type="radio" name="radios" id="noshow-radio-0" value="Active Policy (Within 30 days)" checked="checked">
-                                          Active Policy (Within 30 days)
+                                        <label class="radio">
+                                          <input type="radio" name="radios" id="noshow-radio-active" value="Active Policy" checked="checked">
+                                          Active Policy
                                         </label>
-                                        <label class="radio" for="radios-1">
-                                          <input type="radio" name="radios" id="radios-1" value="Other">
-                                              <input type="radio" name="radios" id="radios-1" value="Range">
+                                        <label class="radio">
+                                          <input type="radio" name="radios" id="noshow-radio-select" value="Other">
+                                              
                                               Date Range <input type="text" id="start-datetime" class="hasDatepicker"> to <input type="text" id="end-datetime" class="hasDatepicker">
                                         </label>
                                       </div>
                                     </div>
 
                                     <!-- Button -->
-                                    <div class="control-group">
-                                      <label class="control-label" for="generateButton3"></label>
-                                      <div class="controls">
-                                        <button id="generateButton3" name="generateButton3" class="btn btn-danger">Generate</button>
-                                      </div>
+									
+                                  <div class="control-group">
+                                    <div class="controls">
+								    <input type="button" value="Generate" id="generate-noshow" class="btn btn-danger">
                                     </div>
+                                  </div>
 
                                     </fieldset>
                                     </form>

@@ -188,11 +188,18 @@ class Backend extends CI_Controller {
         $view['active_menu'] = PRIV_REPORT;
         $view['company_name'] = $this->settings_model->get_setting('company_name');
         $view['customers'] = $this->customers_model->get_batch();
-	$view['appointments'] = $this->appointments_model->get_batch();
+		$view['appointments'] = $this->appointments_model->get_batch();
         $view['available_providers'] = $this->providers_model->get_available_providers();
         $view['available_services'] = $this->services_model->get_available_services();
         $this->setUserData($view);
-        
+		
+        if ($this->session->userdata('role_slug') == DB_SLUG_SECRETARY) {
+            $secretary = $this->secretaries_model->get_row($this->session->userdata('user_id'));
+            $view['secretary_providers'] = $secretary['providers'];
+        } else {
+            $view['secretary_providers'] = array();
+        }
+		
         $this->load->view('backend/header', $view);
         $this->load->view('backend/report', $view);
         $this->load->view('backend/footer', $view);

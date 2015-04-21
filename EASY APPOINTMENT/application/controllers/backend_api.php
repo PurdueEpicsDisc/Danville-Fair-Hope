@@ -87,6 +87,71 @@ class Backend_api extends CI_Controller {
         }
     }
     
+	/**
+     * [AJAX] Get the registered appointments for the given date period and record.
+     * 
+     * This method returns the database appointments and unavailable periods for the 
+     * user selected date period and record type (provider or service). 
+     * 
+     * @param {numeric} $_POST['record_id'] Selected record id. 
+     * @param {string} $_POST['filter_type'] Could be either FILTER_TYPE_PROVIDER or FILTER_TYPE_SERVICE.
+     * @param {string} $_POST['start_date'] The user selected start date.
+     * @param {string} $_POST['end_date'] The user selected end date.
+     */
+    public function ajax_get_appointments() {
+        try {
+            if ($this->privileges[PRIV_APPOINTMENTS]['view'] == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $this->load->model('appointments_model');
+            $this->load->model('providers_model');
+            $this->load->model('services_model');
+            $this->load->model('customers_model');
+            
+            if ($_POST['filter_type'] == FILTER_TYPE_PROVIDER) {
+                $where_id = 'id_users_provider';
+            } else { 
+                $where_id = 'id_services';
+            }            
+            
+            // Get appointments
+            $where_clause = array(
+                $where_id => $_POST['record_id'],
+                //'start_datetime >=' => $_POST['start_date'],
+                //'end_datetime <=' => $_POST['end_date'],
+                'is_unavailable' => FALSE
+            );
+            
+            $response['appointments'] = $this->appointments_model->get_batch($where_clause);
+
+            foreach($response['appointments'] as &$appointment) {
+                $appointment['provider'] = $this->providers_model->get_row($appointment['id_users_provider']);
+                $appointment['service'] = $this->services_model->get_row($appointment['id_services']);
+                $appointment['customer'] = $this->customers_model->get_row($appointment['id_users_customer']);
+            }
+            
+            // Get unavailable periods (only for provider).
+            if ($_POST['filter_type'] == FILTER_TYPE_PROVIDER) {
+                $where_clause = array(
+                    $where_id => $_POST['record_id'],
+                    //'start_datetime >=' => $_POST['start_date'],
+                    //'end_datetime <=' => $_POST['end_date'],
+                    'is_unavailable' => TRUE
+                );
+                
+                $response['unavailables'] = $this->appointments_model->get_batch($where_clause);
+            }
+                
+            echo json_encode($response);
+            
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+	
     /**
      * [AJAX] Save appointment changes that are made from the backend calendar
      * page.
