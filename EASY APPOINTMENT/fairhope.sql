@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2015 at 01:53 AM
+-- Generation Time: Apr 22, 2015 at 12:28 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `ea_appointments` (
   `backpack_qty` int(20) NOT NULL,
   `no_show_flag` tinyint(1) NOT NULL,
   `reschedule` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_appointments`
@@ -57,7 +57,10 @@ INSERT INTO `ea_appointments` (`id`, `book_datetime`, `start_datetime`, `end_dat
 (25, '2015-03-29 08:24:51', '2015-03-27 10:30:00', '2015-03-27 11:00:00', '', '7d6fbbe999d58a7c78488418d88a582b', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
 (26, '2015-04-04 03:03:34', '2015-04-03 21:15:00', '2015-04-03 21:45:00', '', 'be2d463fc76ca389d0f0962ef0207d46', 0, 85, 90, 1, NULL, '', '', '', 0, 1, 0),
 (29, '2015-04-04 05:04:02', '2015-04-03 23:15:00', '2015-04-03 23:45:00', '', '7afe5360f425f3b13f5e162be6f5f2f4', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
-(31, '2015-04-04 05:05:53', '2015-04-03 23:15:00', '2015-04-03 23:45:00', '', 'a887317b5f5fec93383809fe85ca9e07', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0);
+(31, '2015-04-04 05:05:53', '2015-04-03 23:15:00', '2015-04-03 23:45:00', '', 'a887317b5f5fec93383809fe85ca9e07', 0, 85, 90, 1, NULL, '', '', '', 0, 0, 0),
+(33, '2015-04-07 19:07:27', '2015-04-07 13:15:00', '2015-04-07 13:45:00', '', 'b978391127bced4c98f5af8f804f40c5', 0, 85, 87, 1, NULL, '', '', '', 0, 0, 0),
+(34, '2015-04-21 20:51:58', '2015-04-21 15:00:00', '2015-04-21 15:30:00', '', 'da34050ea0f690c5c3112b248dacb79b', 0, 85, 86, 1, NULL, '', '', '', 0, 0, 0),
+(35, '2015-04-21 20:52:10', '2015-04-21 12:30:00', '2015-04-21 13:00:00', '', '684ac64fb9d9274ee4dc310a710d2c3a', 0, 85, 87, 1, NULL, '', '', '', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -133,16 +136,17 @@ INSERT INTO `ea_services` (`id`, `name`, `duration`, `price`, `currency`, `descr
 CREATE TABLE IF NOT EXISTS `ea_services_providers` (
   `id_users` bigint(20) unsigned NOT NULL,
   `id_services` bigint(20) unsigned NOT NULL,
-  `max_noshow_num` bigint(20) NOT NULL
+  `max_noshow_num` bigint(20) NOT NULL,
+  `no_show_count_period` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ea_services_providers`
 --
 
-INSERT INTO `ea_services_providers` (`id_users`, `id_services`, `max_noshow_num`) VALUES
-(85, 1, 0),
-(85, 2, 1);
+INSERT INTO `ea_services_providers` (`id_users`, `id_services`, `max_noshow_num`, `no_show_count_period`) VALUES
+(85, 1, 2, 90),
+(85, 2, 2, 80);
 
 -- --------------------------------------------------------
 
@@ -213,7 +217,7 @@ INSERT INTO `ea_users` (`id`, `first_name`, `last_name`, `dob`, `email`, `mobile
 (86, 'Rob', 'Zoltowski', '55555', 'aharon@aharonhannan.com', NULL, '8877', NULL, NULL, NULL, NULL, 'This guy sucks', 3, 36, 0),
 (87, 'Austin', 'Appleby', '1988-8-2', 'quarterba@purdue.edu', NULL, '2233', NULL, NULL, NULL, NULL, '', 3, 21, 0),
 (89, 'Tom ', 'Swif', '1955-2-5', 'tom@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 1, 0),
-(90, 'FangJia', 'Zhu', '1993-2-2', 'zhu34@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 3, 1);
+(90, 'FangJia', 'Zhu', '1993-2-2', 'zhu34@purdue.edu', NULL, '7777777777', NULL, NULL, NULL, NULL, '', 3, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -309,7 +313,7 @@ ALTER TABLE `ea_user_settings`
 -- AUTO_INCREMENT for table `ea_appointments`
 --
 ALTER TABLE `ea_appointments`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `ea_roles`
 --
