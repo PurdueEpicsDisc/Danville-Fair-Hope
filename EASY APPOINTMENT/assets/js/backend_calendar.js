@@ -525,41 +525,16 @@ var BackendCalendar = {
                 var html = '' +
     '<body>' +
         '<div>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NAME:' + customer['first_name'] + ' ' + customer['last_name'] + '</FONT></FONT><FONT FACE="Arial, serif"></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Start Time:' + Date.parseExact(appointment['start_datetime'],'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</FONT></FONT></P>' + 
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
-            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY </FONT></FONT>' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON</FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:'+ customer['num_of_children'] + '</FONT></FONT> <FONT SIZE=5>  Sizes _______                                                       </FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NAME:  <em>' + customer['first_name'] + ' ' + customer['last_name'] + '</em></FONT></FONT><FONT FACE="Arial, serif"></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Start Time:  <em>' + Date.parseExact(appointment['start_datetime'],'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</em></FONT></FONT></P>' + 
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:  <em>' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</em></FONT></FONT></P>' +
+            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY: <FONT></FONT>' + ' Empty' + '</font></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON: </FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:  <em>'+ customer['num_of_children'] + '</em></FONT></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Note:  </FONT></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<em>'+ appointment['notes'] + '</em></FONT></FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' + 
            '<P ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
-           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Clothing</SPAN></B></U></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
-           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Each</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5><B>Total</B></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
-           '<FONT FACE="Arial, serif"><FONT SIZE=5><U><B><SPAN STYLE="background: #ffff00">Child</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>			</B></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B>Received</B></U></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   Shirts(including 2 uniform) 	     	________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   Pants (including 2 uniform   			________	</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><A NAME="_GoBack"></A><FONT FACE="Arial, serif"><FONT SIZE=5>2	Dresses/Skirts						________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>1   sweater/Sweatshirt					________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   onesies/underwear					________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>4   pr socks								________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>2   pj&#39s									________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Pack&#39N Play      	         </SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><SPAN STYLE="background: #ffff00">	</SPAN></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt">	</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U></U></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0">' +
-           '<FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Layette  Boy  Girl    ___</SPAN></B></U></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0">' +
-           '<FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B><SPAN STYLE="background: #ffff00">Miscellaneous Other Items</SPAN></B></U></FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=4 STYLE="font-size: 16pt"><U><B></B></U></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Play Clothes    _______		Coat	________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Shoes</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">' +
-           '</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>_______</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt">		</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5>Hat    ________</FONT></FONT><FONT FACE="Arial, serif"><FONT SIZE=5 STYLE="font-size: 20pt"></FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Gloves    _______		Scarf    ________</FONT></FONT></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Women&#39s     Clothes _______     Men&#39s Clothes ________                                   Fancy Socks	 _______         </FONT></FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><U> </U></P>' +
@@ -1073,8 +1048,8 @@ var BackendCalendar = {
          * Event: Enter New Customer Button "Click"
          */
         $('#new-customer').click(function() {
-            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, #num_noshow'
-                    + '#phone-number, #address, #city, #zip-code, #dob,#num-of-children, #customer-notes').val('');
+            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email, '
+                    + '#phone-number, #address, #city, #zip-code, #dob,#num-of-children, #customer-notes,#num-noshow').val('');
         });
         
         /**
