@@ -442,8 +442,13 @@ class Providers_Model extends CI_Model {
             $services = $this->db->get_where('ea_services_providers', 
                     array('id_users' => $provider['id']))->result_array();
             $provider['services'] = array();
-            foreach($services as $service) {
-                $provider['services'][] = $service['id_services'];
+            $provider['services']['id'] = array();
+	    $provider['services']['max_noshow_num'] = array();
+	    $provider['services']['no_show_count_period'] = array();
+            foreach($services as $index =>$service) {
+                $provider['services']['id'][] = $service['id_services'];
+		$provider['services']['max_noshow_num'][] = $service['max_noshow_num'];
+		$provider['services']['no_show_count_period'][] = $service['no_show_count_period'];
             }
             
             // Settings

@@ -24,49 +24,69 @@
 			}
 			else if($('#daily-radio-daypicker').prop('checked')){
 			start = Date.parseExact($('#daily-report #start-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 23:59:59');
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 23:59:59');
 			start = new Date(start);
 			end = Date.parseExact($('#daily-report #start-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 00:00:00');
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 00:00:00');
 			end = new Date(end);
 			}
+			var serviceId = $('#daily-report #select-service').val();
+			
+			var divi =  document.createElement("div"); divi.setAttribute("id","Daily-Report");
+			var table = document.createElement("table");table.setAttribute("id","datagrid");table.style.whiteSpace = "nowrap";table.style.textAlign = "center";
+			var tableBody = document.createElement("tbody");
+			var headtext = ["First Name ","Last Name ","Date of Birth ","No show ","Date ","Referral "];
+			var header = document.createElement("tr");
+			header.className = "header";
+			header.style.fontSize = "15px";header.style.background = "#0070A8";
+			
+			for (var i = 0; i < 6; i++) {
+			var headercell = document.createElement("th");
+			var headerText = document.createTextNode(headtext[i]);
+			headercell.appendChild(headerText);
+			header.appendChild(headercell);
+			}	
+			tableBody.appendChild(header);
+			
+			
 			var appointment = GlobalVariables.appointments;
 			var customers =  GlobalVariables.customers;
-			var row = 0;
-			var html = '<body>' +
-			'<div id = "daily-report">'
-           '<div class="datagrid">'+
-		   '<table>'+
-		   '<thead><tr><th>Name</th><th>Date of Birth</th><th>No show</th><th>Date</th><th>Referral</th></tr></thead>'+
-		   '<tbody>';
+			var row;
+			var rownum = 0;
 			$.each(appointment, function(index, a) {
 				var sdt = a.start_datetime.toString('yyyy,MM,dd HH:mm:ss');
 					sdt = new Date(sdt);
-                if (sdt <= start & sdt >= end) {
+                if (sdt <= start & sdt >= end & serviceId == a.id_services) {
 					$.each(customers, function(index, c) {
 						if(c.id == a.id_users_customer)
 						{
-							if(row % 2 == 0)
+							var content = [c.first_name,c.last_name,c.dob,a.no_show_flag,a.start_datetime.toString('yyyy/MM/dd')];
+							row = document.createElement("tr");
+							if(rownum % 2 == 0)
 							{
-								html = html + 
-								'<tr><td>'+ c.first_name +' '+c.last_name+'</td><td>'+c.dob+'</td><td>'+a.no_show_flag+'</td><td>'+a.start_datetime.toString('yyyy/MM/dd')+'</td><td></td></tr>';
+								row.className = "alt";
+								row.style.background = "#E1EEF4";
 							}
-							else{
-								html = html + 		
-								'<tr><td>'+ c.first_name +' '+c.last_name+'</td><td>'+c.dob+'</td><td>'+a.no_show_flag+'</td><td>'+a.start_datetime.toString('yyyy/MM/dd')+'</td><td></td></tr>';
+							for (var i = 0; i < 5; i++) {
+							var cell = document.createElement("td");
+							var cellText = document.createTextNode(content[i]);
+							cell.appendChild(cellText);
+							row.appendChild(cell);
+							tableBody.appendChild(row);
+							rownum = rownum + 1;
 							}
-							row = row + 1;
 						}
 					});		
                 }
             });
-			html = html + '</tbody>'+
-				'</table>'+
-				'</div>'+
-				'</div>'+
-				'</body>';
+	
+			table.appendChild(tableBody);
+			divi.appendChild(table);
+
 			var printWin = window.open('', '', 'left=0,top=0,width=700,height=500,toolbar=0,scrollbars=0,status  =0');
-                printWin.document.write(html);
+			//printWin.document.write(html);
+
+			printWin.document.body.appendChild(divi);
     });
 	$('#generate-monthly').click(function() {
             var date = new Date();
@@ -86,57 +106,77 @@
 			}
 			else if($('#monthly-radio-ranged').prop('checked')){
 			end = Date.parseExact($('#monthly-report #start-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 23:59:59');
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 23:59:59');
 			end = new Date(end);
 			start = Date.parseExact($('#monthly-report #end-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 00:00:00');
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 00:00:00');
 			start= new Date(start);
 			}
+			var serviceId = $('#monthly-report #select-service').val();
+			
+			var divi =  document.createElement("div"); divi.setAttribute("id","Monthly-Report");
+			var table = document.createElement("table");table.setAttribute("id","datagrid");table.style.whiteSpace = "nowrap";table.style.textAlign = "center";
+			var tableBody = document.createElement("tbody");
+			var headtext = ["First Name ","Last Name ","Date of Birth ","No show ","Date ","Referral "];
+			var header = document.createElement("tr");
+			header.className = "header";
+			header.style.fontSize = "15px";header.style.background = "#0070A8";
+			
+			for (var i = 0; i < 6; i++) {
+			var headercell = document.createElement("th");
+			var headerText = document.createTextNode(headtext[i]);
+			headercell.appendChild(headerText);
+			header.appendChild(headercell);
+			}	
+			tableBody.appendChild(header);
+			
+			
 			var appointment = GlobalVariables.appointments;
 			var customers =  GlobalVariables.customers;
-			var row = 0;
-			var html = '<html><head><title>Monthly Report</title>'
-			'<link rel="stylesheet" type="text/css"href="<?php echo $base_url; ?>assets/css/report.css" /></head>'+
-			'<body>' +
-			'<div id = "monly-report">'
-           '<div class="datagrid">'+
-		   '<table>'+
-		   '<thead><tr><th>Name</th><th>Date of Birth</th><th>No show</th><th>Date</th><th>Referral</th></tr></thead>'+
-		   '<tbody>';
+			var row;
+			var rownum = 0;
 			$.each(appointment, function(index, a) {
 				var sdt = a.start_datetime.toString('yyyy,MM,dd HH:mm:ss');
 					sdt = new Date(sdt);
-                if (sdt <= start & sdt >= end) {
+					console.log(serviceId,a.id_services);
+                if (sdt <= start & sdt >= end & serviceId == a.id_services) {
 					$.each(customers, function(index, c) {
 						if(c.id == a.id_users_customer)
 						{
-							if(row % 2 == 0)
+							var content = [c.first_name,c.last_name,c.dob,a.no_show_flag,a.start_datetime.toString('yyyy/MM/dd')];
+							row = document.createElement("tr");
+							if(rownum % 2 == 0)
 							{
-								html = html + 
-								'<tr><td>'+ c.first_name +' '+c.last_name+'</td><td>'+c.dob+'</td><td>'+a.no_show_flag+'</td><td>'+a.start_datetime.toString('yyyy/MM/dd')+'</td><td></td></tr>';
+								row.className = "alt";
+								row.style.background = "#E1EEF4";
 							}
-							else{
-								html = html + 		
-								'<tr><td>'+ c.first_name +' '+c.last_name+'</td><td>'+c.dob+'</td><td>'+a.no_show_flag+'</td><td>'+a.start_datetime.toString('yyyy/MM/dd')+'</td><td></td></tr>';
+							for (var i = 0; i < 5; i++) {
+							var cell = document.createElement("td");
+							var cellText = document.createTextNode(content[i]);
+							cell.appendChild(cellText);
+							row.appendChild(cell);
+							tableBody.appendChild(row);
+							rownum = rownum + 1;
 							}
-							row = row + 1;
 						}
 					});		
                 }
             });
-			html = html + '</tbody>'+
-				'</table>'+
-				'</div>'+
-				'</div>'+
-				'</body></html>';
+	
+			table.appendChild(tableBody);
+			divi.appendChild(table);
+
 			var printWin = window.open('', '', 'left=0,top=0,width=700,height=500,toolbar=0,scrollbars=0,status  =0');
-                printWin.document.write(html);
+			//printWin.document.write(html);
+
+			printWin.document.body.appendChild(divi);
     });
 	$('#generate-noshow').click(function() {
             var start;
 			var end;
 			var appointment = GlobalVariables.appointments;
 			var customers =  GlobalVariables.customers;
+			var serviceId = $('#monthly-report #select-service').val();
 			
 			if($('#noshow-radio-active').prop('checked'))
 			{
@@ -145,28 +185,162 @@
 			start.set({ 'minute': 59 });
 			start.set({ 'second': 59 });
 			
-			$.each(GlobalVariables.availableProviders, function(index, p) {
+			var dayadd = 0;
+			$.each(GlobalVariables.availableProviders, function(index, provider) {
+				$.each(provider['services']['id'], function(si, id) {
+					if(serviceId == id){
+						dayadd = provider['services']['no_show_count_period'][si];
+					}
+				});
 			});
-			end = start;
-			end.setDate(myDate.getDate() + GlobalVariables.availableProviders);
+			end = new Date();
+			end.setDate(end.getDate() - dayadd);
+			
 			end.set({ 'hour': 00 });
 			end.set({ 'minute': 00 });
 			end.set({ 'second': 00 });
 			}
 			else if($('#noshow-radio-select').prop('checked')){
-			end = Date.parseExact($('#monthly-report #start-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 23:59:59');
+			end = Date.parseExact($('#noshow-report #start-datetime').val(),
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 23:59:59');
 			end = new Date(end);
-			start = Date.parseExact($('#monthly-report #end-datetime').val(),
-                    'MM/dd/yyyy HH:mm').toString('yyyy,MM,dd 00:00:00');
+			start = Date.parseExact($('#noshow-report #end-datetime').val(),
+                    'MM/dd/yyyy').toString('yyyy,MM,dd 00:00:00');
 			start= new Date(start);
 			}
 			
+			var serviceId = $('#noshow-report #select-service').val();
+			
+			var divi =  document.createElement("div"); divi.setAttribute("id","Noshow-Report");
+			var table = document.createElement("table");table.setAttribute("id","datagrid");table.style.whiteSpace = "nowrap";table.style.textAlign = "center";
+			var tableBody = document.createElement("tbody");
+			var headtext = ["First Name ","Last Name ","Date of Birth ","No show ","Date ","Referral "];
+			var header = document.createElement("tr");
+			header.className = "header";
+			header.style.fontSize = "15px";header.style.background = "#0070A8";
+			
+			for (var i = 0; i < 6; i++) {
+			var headercell = document.createElement("th");
+			var headerText = document.createTextNode(headtext[i]);
+			headercell.appendChild(headerText);
+			header.appendChild(headercell);
+			}	
+			tableBody.appendChild(header);
+			
+			
+			var appointment = GlobalVariables.appointments;
+			var customers =  GlobalVariables.customers;
+			var row;
+			var rownum = 0;
+			$.each(appointment, function(index, a) {
+				var sdt = a.start_datetime.toString('yyyy,MM,dd HH:mm:ss');
+					sdt = new Date(sdt);
+					//console.log(serviceId,a.id_services);
+                if (sdt <= start & sdt >= end & serviceId == a.id_services & a.no_show_flag == 1) {
+					$.each(customers, function(index, c) {
+						if(c.id == a.id_users_customer)
+						{
+							var content = [c.first_name,c.last_name,c.dob,a.no_show_flag,a.start_datetime.toString('yyyy/MM/dd')];
+							row = document.createElement("tr");
+							if(rownum % 2 == 0)
+							{
+								row.className = "alt";
+								row.style.background = "#E1EEF4";
+							}
+							for (var i = 0; i < 5; i++) {
+							var cell = document.createElement("td");
+							var cellText = document.createTextNode(content[i]);
+							cell.appendChild(cellText);
+							row.appendChild(cell);
+							tableBody.appendChild(row);
+							rownum = rownum + 1;
+							}
+						}
+					});		
+                }
+            });
+	
+			table.appendChild(tableBody);
+			divi.appendChild(table);
+
+			var printWin = window.open('', '', 'left=0,top=0,width=700,height=500,toolbar=0,scrollbars=0,status  =0');
+			//printWin.document.write(html);
+
+			printWin.document.body.appendChild(divi);
     });
+	
+	Datepicker($('#daily-report #start-datetime'),$(),0);
+	Datepicker($('#monthly-report #start-datetime'),$('#monthly-report #end-datetime'),30);
+	Datepicker($('#noshow-report #start-datetime'),$('#noshow-report #end-datetime'),30);
 	$('#selectbasic').click(function() {
 		console.log($('#selectbasic option:selected').text());
 	});
 });
+function Datepicker($start_pick,$end_pick,interval){
+		var startDatetime = new Date();
+		startDatetime.setDate(startDatetime.getDate() - interval);
+        startDatetime = startDatetime.toString('MM/dd/yyyy');
+        var endDatetime  = new Date().toString('MM/dd/yyyy');
+		
+        $start_pick.datetimepicker({
+            'dateFormat': 'mm/dd/yy',
+            // Translation
+            dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
+                    EALang['thursday'], EALang['friday'], EALang['saturday']],
+            dayNamesShort: [EALang['sunday'].substr(0,3), EALang['monday'].substr(0,3), 
+                    EALang['tuesday'].substr(0,3), EALang['wednesday'].substr(0,3), 
+                    EALang['thursday'].substr(0,3), EALang['friday'].substr(0,3),
+                    EALang['saturday'].substr(0,3)],
+            dayNamesMin: [EALang['sunday'].substr(0,2), EALang['monday'].substr(0,2), 
+                    EALang['tuesday'].substr(0,2), EALang['wednesday'].substr(0,2), 
+                    EALang['thursday'].substr(0,2), EALang['friday'].substr(0,2),
+                    EALang['saturday'].substr(0,2)],
+            monthNames: [EALang['january'], EALang['february'], EALang['march'], EALang['april'],
+                    EALang['may'], EALang['june'], EALang['july'], EALang['august'], EALang['september'],
+                    EALang['october'], EALang['november'], EALang['december']],
+            prevText: EALang['previous'],
+            nextText: EALang['next'],
+            currentText: EALang['now'],
+            closeText: EALang['close'],
+            timeOnlyTitle: EALang['select_time'],
+            timeText: EALang['time'],
+            hourText: EALang['hour'],
+            minuteText: EALang['minutes'],
+            firstDay: 1
+        });
+        $start_pick.val(startDatetime);
+        if($end_pick != $())
+		{
+			$end_pick.datetimepicker({
+				'dateFormat': 'mm/dd/yy',
+				// Translation
+				dayNames: [EALang['sunday'], EALang['monday'], EALang['tuesday'], EALang['wednesday'], 
+						EALang['thursday'], EALang['friday'], EALang['saturday']],
+				dayNamesShort: [EALang['sunday'].substr(0,3), EALang['monday'].substr(0,3), 
+						EALang['tuesday'].substr(0,3), EALang['wednesday'].substr(0,3), 
+						EALang['thursday'].substr(0,3), EALang['friday'].substr(0,3),
+						EALang['saturday'].substr(0,3)],
+				dayNamesMin: [EALang['sunday'].substr(0,2), EALang['monday'].substr(0,2), 
+						EALang['tuesday'].substr(0,2), EALang['wednesday'].substr(0,2), 
+						EALang['thursday'].substr(0,2), EALang['friday'].substr(0,2),
+						EALang['saturday'].substr(0,2)],
+				monthNames: [EALang['january'], EALang['february'], EALang['march'], EALang['april'],
+						EALang['may'], EALang['june'], EALang['july'], EALang['august'], EALang['september'],
+						EALang['october'], EALang['november'], EALang['december']],
+				prevText: EALang['previous'],
+				nextText: EALang['next'],
+				currentText: EALang['now'],
+				closeText: EALang['close'],
+				timeOnlyTitle: EALang['select_time'],
+				timeText: EALang['time'],
+				hourText: EALang['hour'],
+				minuteText: EALang['minutes'],
+				firstDay: 1
+			});
+			$end_pick.val(endDatetime);
+		}
+}
+
 		/*
 var BackendReport = {
     // :: CONSTANTS
