@@ -228,6 +228,7 @@ $lang['delete_unavailable'] = 'Delete Unavailable Period';
 $lang['delete'] = 'Delete';
 $lang['unexpected_issues'] = 'Unexpected Isasues';
 $lang['unexpected_issues_message'] = 'The operation could not complete due to unexpected issues.';
+$lang['override'] = 'Override';
 $lang['close'] = 'Close';
 $lang['page_not_found'] = 'Page Not Found';
 $lang['page_not_found_message'] = 'Unfortunately the page you requested does not exist. Please check your browser URL or head to another location using the buttons below.';

@@ -360,7 +360,16 @@ var BackendCalendar = {
                 $dialog.find('#layette').val(appointment['layette']);
                 $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
                 $dialog.find('#appointment-notes').val(appointment['notes']);
-                var checked = appointment['no_show_flag'];
+                
+                // Set the start and end datetime of the appointment.
+                var startDatetime = Date.parseExact(appointment['start_datetime'],
+                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');            
+                $dialog.find('#start-datetime').val(startDatetime);					
+                var endDatetime = Date.parseExact(appointment['end_datetime'],
+                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
+                $dialog.find('#end-datetime').val(endDatetime);
+
+				var checked = appointment['no_show_flag'];
                 var rescheduled = appointment['reschedule'];
                 if (checked == 1) {
                     $dialog.find('#no-show').prop("checked", true);
@@ -376,15 +385,7 @@ var BackendCalendar = {
                 {
                     $dialog.find('#reschedule').prop("checked", false);
                 }
-                // Set the start and end datetime of the appointment.
-                var startDatetime = Date.parseExact(appointment['start_datetime'],
-                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');            
-                $dialog.find('#start-datetime').val(startDatetime);
-
-                var endDatetime = Date.parseExact(appointment['end_datetime'],
-                        'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
-                $dialog.find('#end-datetime').val(endDatetime);
-
+				
                 var customer = appointment['customer'];
                 $dialog.find('#customer-id').val(appointment['id_users_customer']);
                 $dialog.find('#first-name').val(customer['first_name']);
@@ -573,7 +574,7 @@ var BackendCalendar = {
          * Stores the appointment changes or inserts a new appointment depending the dialog
          * mode.
          */
-        $('#manage-appointment #save-appointment').click(function() {
+        $('#manage-appointment #save-appointment').click(function() {	
             // Before doing anything the appointment data need to be validated.
             if (!BackendCalendar.validateAppointmentForm()) {
                 return; // validation failed
@@ -590,8 +591,7 @@ var BackendCalendar = {
             var endDatetime = Date.parseExact($dialog.find('#end-datetime').val(),
                     'MM/dd/yyyy HH:mm').toString('yyyy-MM-dd HH:mm:ss');
             var checked = $('#no-show').is(':checked') ? 1 : 0;
-            var rescheduled = $('#reschedule').is(':checked') ? 1 : 0;
-            //console.log(checked);
+            var rescheduled = $('#reschedule').is(':checked') ? 1 : 0;			
             var appointment = {
                 'id_services': $dialog.find('#select-service').val(),
                 'id_users_provider': $dialog.find('#select-provider').val(),
@@ -616,7 +616,6 @@ var BackendCalendar = {
                 'email': $dialog.find('#email').val(),
                 'num_of_children': $dialog.find('#num-of-children').val(),
                 'dob': $dialog.find('#dob').val(),
-                'num_noshow': $dialog.find('#num-noshow').val(),
                 // 'phone_number': $dialog.find('#phone-number').val(),
                 // 'address': $dialog.find('#address').val(),
                 // 'city': $dialog.find('#city').val(),
@@ -1353,7 +1352,7 @@ var BackendCalendar = {
             }
         }, 'json');
     },
-    
+	
     /**
      * This method stores the changes of an already registered appointment 
      * into the database, via an ajax call.

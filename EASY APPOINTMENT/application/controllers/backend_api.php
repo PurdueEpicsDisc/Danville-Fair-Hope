@@ -308,7 +308,45 @@ class Backend_api extends CI_Controller {
             ));
         }
     }
-    
+     /**
+     * [AJAX] Temporarily override number of no show from the backend calendar
+     * page.
+     * 
+     * @param array $_POST['noshow_data'] in the customer 
+     * data.
+     */
+    public function ajax_override_noshow() {
+        try {
+        	$this->load->model('customers_model');
+            // :: SAVE CUSTOMER CHANGES TO DATABASE
+            if (isset($_POST['noshow_data'])) {
+                $customer_id = json_decode(stripcslashes($_POST['noshow_data']), true);
+                
+                $REQUIRED_PRIV = (!isset($customer_id)) 
+                        ? $this->privileges[PRIV_CUSTOMERS]['add'] 
+                        : $this->privileges[PRIV_CUSTOMERS]['edit'];
+                if ($REQUIRED_PRIV == FALSE) {
+                    throw new Exception('You do not have the required privileges for this task.');
+                }
+                if(!isset($customer_id)){
+					throw new Exception('Error,customer id not specified.');
+				}
+				$data = 0;
+                $this->customers_model->set_value('num_noshow', $customer_id, $data);
+            }    
+            if (!isset($warnings)) {
+                echo json_encode(AJAX_SUCCESS);
+            } else {
+                echo json_encode(array(
+                    'warnings' => $warnings
+                ));
+            }
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }   
     /**
      * [AJAX] Delete appointment from the database.
      * 

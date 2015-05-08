@@ -254,10 +254,50 @@ var GeneralFunctions = {
      * stop, due to critical server exceptions.
      */
     handleAjaxExceptions: function(response) {
+		var spectext = 'Too many num of no show!!';
+		var Id;
         if (response.exceptions) {
             response.exceptions = GeneralFunctions.parseExceptions(response.exceptions);
             GeneralFunctions.displayMessageBox(GeneralFunctions.EXCEPTIONS_TITLE, GeneralFunctions.EXCEPTIONS_MESSAGE);
             $('#message_box').append(GeneralFunctions.exceptionsToHtml(response.exceptions));
+			$.each(response.exceptions, function(index, exception) {
+             if(exception['message'].slice(0,spectext.length) == spectext){
+				 //privilege check might be needed for the override button to appear only when admin logged in.
+				jQuery(".ui-dialog .ui-dialog-buttonpane").append(
+				"<button type='button' class='btn' id='override'>Override</button>"
+				);   
+				var p = exception['message'].indexOf("|");
+				Id = exception['message'].substring(p+"| Id : ".length);
+			 }
+			});
+			$('.ui-dialog .ui-dialog-buttonpane #override').click(function() {
+				console.log(Id);
+				jQuery("#message_box").dialog("close");
+				
+				// :: DEFINE SUCCESS EVENT CALLBACK
+				var successCallback = function(response) {                
+					if (!GeneralFunctions.handleAjaxExceptions(response)) {
+						$dialog.find('.modal-message').text(EALang['unexpected_issues_occurred']);
+						$dialog.find('.modal-message').addClass('alert-error');
+						$dialog.find('.modal-message').fadeIn();
+						return false;
+					}
+				};
+				
+				// :: DEFINE AJAX ERROR EVENT CALLBACK
+				var errorCallback = function() {
+					$dialog.find('.modal-message').text(EALang['server_communication_error']);
+					$dialog.find('.modal-message').addClass('alert-error');
+					$dialog.find('.modal-message').fadeIn();
+					$dialog.find('.modal-body').scrollTop(0);
+				};
+				
+				// :: CALL THE OVERRIDE METHOD
+				GeneralFunctions.OverrideNoshow(Id, successCallback, errorCallback);
+
+				$('#manage-appointment #save-appointment').click();
+			});
+			
             return false;
         }
 
@@ -269,7 +309,48 @@ var GeneralFunctions = {
         
         return true;
     },
-    
+	/**
+     * The method used to override no show number of a specific customer_id
+	 * @param {object} Id Contain a existing customer's id
+     * @param {function} successCallback (OPTIONAL) If defined, this function is
+     * going to be executed on post success.
+     * @param {function} errorCallback (OPTIONAL) If defined, this function is 
+     * going to be executed on post failure.
+     */
+    OverrideNoshow: function(customer_id, successCallback, errorCallback) {
+        var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_override_noshow';
+        
+        var postData = {};
+        
+        postData['noshow_data'] = JSON.stringify(customer_id);
+        
+        $.ajax({
+            'type': 'POST',
+            'url': postUrl,
+            'data': postData,
+            'dataType': 'json',
+            'success': function(response) {
+                /////////////////////////////////////////////////////////////
+                console.log('Save Appointment Data Response:', response);
+                /////////////////////////////////////////////////////////////            
+                
+                if (successCallback !== undefined) {
+                    successCallback(response);
+                }
+            },
+            'error': function(jqXHR, textStatus, errorThrown) {
+                //////////////////////////////////////////////////////////////////
+                console.log('Save Appointment Data Error:', jqXHR, textStatus, 
+                        errorThrown);
+                //////////////////////////////////////////////////////////////////
+                
+                if (errorCallback !== undefined) {
+                    errorCallback();
+                }
+            }
+        });
+    },
+	
     /**
      * Enables the language selection functionality. Must be called on every page has a
      * language selection button. This method requires the global variable 'availableLanguages'

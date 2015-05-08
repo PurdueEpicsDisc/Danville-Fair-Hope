@@ -84,7 +84,7 @@ class Appointments_Model extends CI_Model {
 		if(intval( $customer['num_noshow'] ) >= intval($services_provider['max_noshow_num']))
 		{
 			throw new Exception('Too many num of no show!! : ' 
-            . $customer['num_noshow']);
+            . $customer['num_noshow'] . ' | Id : ' . $customer['id']);
 		}
         if (!$this->db->insert('ea_appointments', $appointment)) {
             throw new Exception('Could not insert appointment record.');

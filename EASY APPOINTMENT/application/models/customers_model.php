@@ -283,7 +283,7 @@ class Customers_Model extends CI_Model {
      * @param int $customer_id The selected record's id.
      * @param $value is the value to be set
      */
-    /*public function set_value($field_name, $customer_id, $value) {
+    public function set_value($field_name, $customer_id, $value) {
         if (!is_numeric($customer_id)) {
             throw new Exception('Invalid argument provided as $customer_id : ' 
                     . $customer_id);
@@ -306,7 +306,7 @@ class Customers_Model extends CI_Model {
                     . 'exist in the database : ' . $field_name);
         } 
         $customer = $this->db->update('ea_users', array($field_name => $value));
-    }*/
+    }
 
     /**
      * Get all, or specific records from appointment's table.
