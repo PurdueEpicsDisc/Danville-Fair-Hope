@@ -531,7 +531,7 @@ var BackendCalendar = {
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
             '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY </FONT></FONT>' + 'Empty' + '</font></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON</FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:'+ customer['num_of_children'] + '</FONT></FONT> <FONT SIZE=5>  Sizes _______                                                       </FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:'+ customer['num_of_children'] + '</FONT></FONT> </FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
            '<P ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
