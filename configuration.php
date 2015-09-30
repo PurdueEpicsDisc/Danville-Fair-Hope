@@ -1,13 +1,13 @@
 <?php
 class SystemConfiguration {
     // General Settings
-    public static $base_url    = 'http://localhost:8888/fairhope/';
+    public static $base_url    = 'http://ea.fairhopedanville.org/';
     
     // Database Settings
     public static $db_host     = 'localhost';
     public static $db_name     = 'fairhope';
     public static $db_username = 'root';
-    public static $db_password = 'root';
+    public static $db_password = 'password';
     
     // Google Calendar API Settings
     public static $google_sync_feature  = FALSE; // Enter TRUE or FALSE;
