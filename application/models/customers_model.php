@@ -24,7 +24,7 @@ class Customers_Model extends CI_Model {
         $this->validate($customer);
         
         // :: CHECK IF CUSTOMER ALREADY EXIST (FROM EMAIL).	
-        if ($this->exists($customer) && !isset($customer['id'])) {
+        if ( /*$this->exists($customer) &&*/ !isset($customer['id'])) {
         	// Find the customer id from the database.
         	$customer['id'] = $this->find_record_id($customer);
         }
@@ -185,7 +185,7 @@ class Customers_Model extends CI_Model {
         }
         
         // When inserting a record the email address must be unique.
-        $customer_id = (isset($customer['id'])) ? $customer['id'] : '';
+        /*$customer_id = (isset($customer['id'])) ? $customer['id'] : '';
         
         $num_rows = $this->db
                 ->select('*')
@@ -200,7 +200,7 @@ class Customers_Model extends CI_Model {
         if ($num_rows > 0) {
             throw new Exception('Given email address belongs to another customer record. ' 
                     . 'Please use a different email.');
-        }
+        }*/
 
         return TRUE;
     }

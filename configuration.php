@@ -1,7 +1,7 @@
 <?php
 class SystemConfiguration {
     // General Settings
-    public static $base_url    = 'http://ea.fairhopedanville.org/';
+    public static $base_url    = '/Danville-Fair-Hope/';
     
     // Database Settings
     public static $db_host     = 'localhost';
