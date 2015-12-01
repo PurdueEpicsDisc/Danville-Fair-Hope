@@ -197,13 +197,24 @@
                 <div class="control-group">
                     <label for="layette" class="control-label"><?php echo $this->lang->line('layette'); ?></label>
                     <div class="controls">
-                        <input type="text" id="layette" />
+                        <input type="number" id="layette"  onkeydown="return ( event.ctrlKey || event.altKey 
+                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                    || (95<event.keyCode && event.keyCode<106)
+                    || (event.keyCode==8) || (event.keyCode==9) 
+                    || (event.keyCode>34 && event.keyCode<40) 
+                    || (event.keyCode==46) )">
+                        
                     </div>
                 </div>
                 <div class="control-group">
                     <label for="backpack-qty" class="control-label"><?php echo $this->lang->line('backpack_qty'); ?></label>
                     <div class="controls">
-                        <input type="text" id="backpack-qty" />
+                        <input type="number" id="backpack-qty" onkeydown="return ( event.ctrlKey || event.altKey 
+                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                    || (95<event.keyCode && event.keyCode<106)
+                    || (event.keyCode==8) || (event.keyCode==9) 
+                    || (event.keyCode>34 && event.keyCode<40) 
+                    || (event.keyCode==46) )">
                     </div>
                 </div>
 
