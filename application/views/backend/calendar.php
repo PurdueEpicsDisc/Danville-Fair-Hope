@@ -321,7 +321,12 @@
                         <?php echo $this->lang->line('num_of_children'); ?>
                     </label>
                     <div class="controls">
-                        <input type="text" id="num-of-children" class="required" />
+                        <input type="number" id="num-of-children" class="required" onkeydown="return ( event.ctrlKey || event.altKey 
+                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                    || (95<event.keyCode && event.keyCode<106)
+                    || (event.keyCode==8) || (event.keyCode==9) 
+                    || (event.keyCode>34 && event.keyCode<40) 
+                    || (event.keyCode==46) )"> 
                     </div>
                 </div>
 
