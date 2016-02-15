@@ -22,9 +22,9 @@ class Customers_Model extends CI_Model {
     public function add($customer) {
         // Validate the customer data before doing anything.
         $this->validate($customer);
-        
-        // :: CHECK IF CUSTOMER ALREADY EXIST (FROM EMAIL).	
-        if ( /*$this->exists($customer) &&*/ !isset($customer['id'])) {
+
+        // :: CHECK IF CUSTOMER ALREADY EXIST (FROM NAME & DOB).	
+        if ( $this->exists($customer) && !isset($customer['id'])) {
         	// Find the customer id from the database.
         	$customer['id'] = $this->find_record_id($customer);
         }
@@ -44,18 +44,28 @@ class Customers_Model extends CI_Model {
      * 
      * This method checks wether the given customer already exists in 
      * the database. It doesn't search with the id, but with the following
-     * fields: "email"
+     * fields: "first_name", "last_name" and "dob"
      * 
      * @param array $customer Associative array with the customer's 
      * data. Each key has the same name with the database fields.
      * @return bool Returns wether the record exists or not.
      */
+
     public function exists($customer) {
         if (!isset($customer['email'])) {
-            throw new Exception('Customer\'s email is not provided.');
+            throw new Exception('Referrer\'s email is not provided.');
         }
         
+        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
+        if (!isset($customer['first_name']) || !isset($customer['last_name']) || !isset($customer['dob'])) {
+            throw new Exception('Please fill in the required particulars: first name, last name and date of birth.');
+        }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////CHANGE VALIDATION/////////////////////////////////////////////////////
+
         // This method shouldn't depend on another method of this class.
+        /*
         $num_rows = $this->db
                 ->select('*')
                 ->from('ea_users')
@@ -63,8 +73,25 @@ class Customers_Model extends CI_Model {
                 ->where('ea_users.email', $customer['email'])
                 ->where('ea_roles.slug', DB_SLUG_CUSTOMER)
                 ->get()->num_rows();
+        */
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
+
+        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
+        $num_rows = $this->db
+                ->select('*')
+                ->from('ea_users')
+                ->join('ea_roles', 'ea_roles.id = ea_users.id_roles', 'inner')
+                ->where('ea_users.last_name', $customer['last_name'])
+                ->where('ea_users.first_name', $customer['first_name'])
+                ->where('ea_users.dob', $customer['dob'])
+                ->where('ea_roles.slug', DB_SLUG_CUSTOMER)
+                ->get()->num_rows();
+
         return ($num_rows > 0) ? TRUE : FALSE;
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     }
     
     /**
@@ -173,7 +200,7 @@ class Customers_Model extends CI_Model {
         }
         // Validate required fields
         if (!isset($customer['last_name'])
-                || !isset($customer['email'])) { 
+                || !isset($customer['email']) || !isset($customer['dob'])) { 
             throw new Exception('Not all required fields are provided : ' 
                     . print_r($customer, TRUE));
         }
@@ -184,7 +211,8 @@ class Customers_Model extends CI_Model {
                     . $customer['email']);
         }
         
-        // When inserting a record the email address must be unique.
+        /////////////////////////// NOT REQUIRED; EMAIL ADDRESS BELONGS TO REFERRER! ///////////////////////////////
+        // When inserting a record the email address must be unique./
         /*$customer_id = (isset($customer['id'])) ? $customer['id'] : '';
         
         $num_rows = $this->db
@@ -201,6 +229,20 @@ class Customers_Model extends CI_Model {
             throw new Exception('Given email address belongs to another customer record. ' 
                     . 'Please use a different email.');
         }*/
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
+
+        // Validate dob using regex
+        $myDOBregex = '~^\d{2}/\d{2}/\d{4}$~';
+        if (!preg_match($myDOBregex, $customer['dob'])) {
+            throw new Exception('Invalid DOB format! Please follow the following format:
+                mm\dd\yyyy');
+        }
+
+ 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return TRUE;
     }

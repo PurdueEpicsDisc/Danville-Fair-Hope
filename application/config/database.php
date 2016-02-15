@@ -52,7 +52,7 @@ require_once dirname(dirname(dirname(__FILE__))) . '/configuration.php';
 
 $db['default']['hostname'] = SystemConfiguration::$db_host;     
 $db['default']['username'] = SystemConfiguration::$db_username; 
-$db['default']['password'] = SystemConfiguration::$db_password; 
+$db['default']['password'] = 'root'; 
 $db['default']['database'] = SystemConfiguration::$db_name;     
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
