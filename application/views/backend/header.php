@@ -152,6 +152,22 @@
                                 title="<?php echo $this->lang->line('manage_report_hint'); ?>">
                             <?php echo $this->lang->line('report'); ?>
                         </a>
+                        
+                        <!--            Learning to add link to menu bar          -->
+                        <!--
+                        <?php // Report MENU ITEM 
+                              // ------------------------------------------------------ ?>
+                        <?php $hidden = ($privileges[PRIV_REPORT]['view'] ==  TRUE) ? '' : 'hidden'; ?>
+                        <?php $active = ($active_menu == PRIV_REPORT) ? 'active' : ''; ?>
+                        <a href="<?php echo $base_url; ?>backend/reportOne" class="menu-item <?php echo $hidden; ?><?php echo $active; ?>"
+                                title="<?php echo $this->lang->line('manage_report_hint'); ?>">
+                        -->
+                                <!-- This line changes menu name -->
+                        <!--
+                            <?php echo $this->lang->line('reportOne'); ?> 
+                        </a>
+                        -->
+                        <!--           Learning to add link to menu bar end         -->
 
                         <?php // SETTINGS MENU ITEM 
                               // ------------------------------------------------------ ?>

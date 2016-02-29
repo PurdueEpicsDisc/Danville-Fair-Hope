@@ -168,7 +168,7 @@ class Backend extends CI_Controller {
     /**
      * Display the backend report page.
      * 
-     * In this page the user can manage all the customer records of the system.
+     * In this page the user can manage all reports in the system.
      */
     public function report() {
         $this->session->set_userdata('dest_url', $this->config->item('base_url') . 'backend/report');
@@ -204,6 +204,71 @@ class Backend extends CI_Controller {
         $this->load->view('backend/report', $view);
         $this->load->view('backend/footer', $view);
     }
+
+
+    //////////////////LEARNING TO ADD NEW PAGE TO WEB APP////////////////////////////
+    /**
+     * Display the backend referrers page.
+     *
+     * In this page the user can manage all referrer recorts of the system.
+     */
+        public function referrers() {
+        // This line determines the url
+        $this->session->set_userdata('dest_url', $this->config->item('base_url') . 'backend/referrers');
+        
+        // What is this? 
+        // Originally: PRIV_CUSTOMERS. Changed it to PRIV_REFERRERS.
+        // Tried accessing /backend/referrers.
+        // Encountered "No Privileges" page.
+        // I suppose I gotta set the privileges somewhere.
+        
+        // Setting privileges to PRIV_CUSTOMERS for now for easy access & developing.
+        // "Error was encountered" : Unable to load the requested file: backend/referrers.php
+        // I am guessing that's what the line "$this->load->view('backend/referrers')" refer to.
+        // TODO:: Fix privileges
+        if (!$this->hasPrivileges(PRIV_CUSTOMERS)) return;
+        
+        // What is load model?
+        // - Models are PHP classes that are designed to work with info. in your database.
+        // - For example, let's say you are managing a blog.
+        // - You might have a model class that contains functions to insert, update,
+        //    and retrieve your blog data.
+        // - These model files are stored in application/models/ folder.
+        // - Models are loaded from within controller functions (hey, that's where this file is located!)
+        // TLDR: the model classes contain the functions to be used in /backend/______ pages.
+        // However, these have already been written by EA.
+        $this->load->model('appointments_model');
+        $this->load->model('providers_model');
+        $this->load->model('services_model');
+        $this->load->model('customers_model');
+        $this->load->model('settings_model');
+        $this->load->model('roles_model');
+        $this->load->model('user_model');
+        $this->load->model('secretaries_model');
+        
+        // What is view?
+        $view['base_url'] = $this->config->item('base_url');
+        $view['user_display_name'] = $this->user_model->get_user_display_name($this->session->userdata('user_id'));
+        $view['active_menu'] = PRIV_CUSTOMERS;
+        $view['company_name'] = $this->settings_model->get_setting('company_name');
+        $view['customers'] = $this->customers_model->get_batch();
+        $view['appointments'] = $this->appointments_model->get_batch();
+        $view['available_providers'] = $this->providers_model->get_available_providers();
+        $view['available_services'] = $this->services_model->get_available_services();
+        $this->setUserData($view);
+        
+        // When $this->view() is called, then the method in the current/parent class is called.
+        // The 'load' member is an instance of CI_Loader which is responsible for loading additional
+        // models, views and library.
+        $this->load->view('backend/header', $view);
+        // This line loads the page view.
+        // These files are located at application/views/backend
+        // Let's get hacking!
+        $this->load->view('backend/referrers', $view); 
+        $this->load->view('backend/footer', $view);
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Display the user/system settings.
