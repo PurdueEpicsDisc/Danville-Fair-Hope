@@ -127,11 +127,8 @@ Just remember to delete them!-->
             <h2><?php echo $this->lang->line('details'); ?></h2>
             <div id="form-message" class="alert" style="display:none;"></div>
             
-            <label for="first-name"><?php echo $this->lang->line('first_name'); ?> *</label>
-            <input type="text" id="first-name" class="span11 required" />
-
-            <label for="last-name"><?php echo $this->lang->line('last_name'); ?> *</label>
-            <input type="text" id="last-name" class="span11 required" />
+            <label for="name"><?php echo $this->lang->line('name'); ?> *</label>
+            <input type="text" id="name" class="span11 required" />
 
             <!-- TODO:: REFERRER AGENCY: Implement this! -->
             <label for="agency"><?php echo $this->lang->line('referring_agency'); ?> *</label>

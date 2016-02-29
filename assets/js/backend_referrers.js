@@ -40,7 +40,7 @@ var BackendReferrers = {
 	},
     
     /**
-     * Default event handlers declaration for backend customers page.
+     * Default event handlers declaration for backend referrers page.
      */
 	bindEventHandlers: function() {
         ReferrersHelper.prototype.bindEventHandlers();
@@ -86,7 +86,7 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
      */
     $(document).on('click', '.referrer-row', function() {
         if ($('#filter-referrers .filter').prop('disabled')) {
-            return; // Do nothing when user edits a customer record.
+            return; // Do nothing when user edits a referrer record.
         }
         
         /***************************************************************************
@@ -119,12 +119,12 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
         $('#clients-referred .selected-row').removeClass('selected-row');
         $(this).addClass('selected-row');
 
-        var Id = $('#filter-customers .selected-row').attr('data-id');
+        var Id = $('#filter-referrers .selected-row').attr('data-id');
         var appointmentId = $(this).attr('data-id');
         var appointment = {};
 
         $.each(BackendCustomers.helper.filterResults, function(index, c) {
-            if (c.id === customerId) {
+            if (c.id === referrerId) {
                 $.each(c.appointments, function(index, a) {
                     if (a.id == appointmentId) {
                         appointment = a;
@@ -147,15 +147,15 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
      * Display appointment data of the selected row.
      */
     $(document).on('click', '.appointment-row-noshow', function () {
-        $('#customer-appointments .selected-row').removeClass('selected-row');
+        $('#referrer-appointments .selected-row').removeClass('selected-row');
         $(this).addClass('selected-row');
 
-        var customerId = $('#filter-customers .selected-row').attr('data-id');
+        var referrerId = $('#filter-referrers .selected-row').attr('data-id');
         var appointmentId = $(this).attr('data-id');
         var appointment = {};
 
         $.each(BackendCustomers.helper.filterResults, function (index, c) {
-            if (c.id === customerId) {
+            if (c.id === referrerId) {
                 $.each(c.appointments, function (index, a) {
                     if (a.id == appointmentId) {
                         appointment = a;
@@ -211,8 +211,7 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
      */
     $('#save-referrer').click(function() {
         var referrer = {
-            'first_name': $('#first-name').val(),
-            'last_name': $('#last-name').val(),
+            'name': $('#name').val(),
             'agency' : $('#agency').val(),
             'email': $('#email').val(),
             'phone_number': $('#phone-number').val(),
@@ -251,13 +250,13 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
 /**
  * Save a referrer record to the database (via ajax post).
  * 
- * @param {object} customer Contains the customer data.
+ * @param {object} referrer Contains the referrer data.
  */
 ReferrersHelper.prototype.save = function(referrer) {
     /****************************************************************
      * WARNING: NOT SURE IF CAN USE THE SAME AJAX TO SAVE REFERRERS.
      ****************************************************************/
-    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_customer';
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_referrer';
     var postData = { 'referrer': JSON.stringify(referrer) };
     
     $.post(postUrl, postData, function(response) {
@@ -268,7 +267,7 @@ ReferrersHelper.prototype.save = function(referrer) {
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
         
         Backend.displayNotification(EALang['referrer_saved']);
-        BackendReferrerrs.helper.resetForm();
+        BackendReferrers.helper.resetForm();
         $('#filter-referrers .key').val('');
         BackendReferrers.helper.filter('', response.id, true);
     }, 'json');
@@ -283,12 +282,12 @@ ReferrersHelper.prototype.delete = function(id) {
     /****************************************************************
      * WARNING: NOT SURE IF CAN USE THE SAME AJAX TO DELETE REFERRERS.
      ****************************************************************/
-    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_delete_customer';
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_delete_referrer';
     var postData = { 'referrer_id': id };
     
     $.post(postUrl, postData, function(response) {
         ////////////////////////////////////////////////////
-        //console.log('Delete customer response:', response);
+        //console.log('Delete referrer response:', response);
         ////////////////////////////////////////////////////
         
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
@@ -347,7 +346,7 @@ ReferrersHelper.prototype.resetForm = function() {
     $('.details').find('input, textarea').prop('readonly', true); 
     
     // NEED TO IMPLEMENT LIST OF CLIENTS
-    //$('#customer-appointments').html('');
+    //$('#referrer-appointments').html('');
     //$('#appointment-details').html('');
     $('#edit-referrer, #delete-referrer').prop('disabled', true);
     $('#add-edit-delete-group').show();
@@ -368,12 +367,11 @@ ReferrersHelper.prototype.resetForm = function() {
 /**
  * Display a referrer record into the form.
  * 
- * @param {object} customer Contains the customer record data.
+ * @param {object} referrer Contains the referrer record data.
  */
 ReferrersHelper.prototype.display = function(referrer) {
     $('#referrer-id').val(referrer.id);
-    $('#first-name').val(referrer.first_name);
-    $('#last-name').val(referrer.last_name);
+    $('#name').val(referrer.name);
     $('#email').val(referrer.email);
     $('#phone-number').val(referrer.phone_number);
     $('#notes').val(referrer.notes);
@@ -384,9 +382,9 @@ ReferrersHelper.prototype.display = function(referrer) {
      * 
      * This is supposed to display client details into the form.
      *******************************************************************************/
-    /*$('#customer-appointments').data('jsp').destroy();
-    $('#customer-appointments').empty();
-    $.each(customer.appointments, function(index, appointment) {
+    /*$('#referrer-appointments').data('jsp').destroy();
+    $('#referrer-appointments').empty();
+    $.each(referrer.appointments, function(index, appointment) {
         var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
         var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
         if (appointment.no_show_flag == 1) {
@@ -405,9 +403,9 @@ ReferrersHelper.prototype.display = function(referrer) {
                         appointment.provider.first_name + ' ' + appointment.provider.last_name +
                     '</div>';
         }
-        $('#customer-appointments').append(html);
+        $('#referrer-appointments').append(html);
     });
-    $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
+    $('#referrer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
     
     $('#appointment-details').empty(); */
 };
@@ -427,7 +425,7 @@ ReferrersHelper.prototype.filter = function(key, selectId, display) {
     /****************************************************************
      * WARNING: NOT SURE IF CAN USE THE SAME AJAX TO FILTER REFERRERS.
      ****************************************************************/
-    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_filter_customers';
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_filter_referrers';
     var postData = { 'key': key };
     
     $.post(postUrl, postData, function(response) {
@@ -461,13 +459,13 @@ ReferrersHelper.prototype.filter = function(key, selectId, display) {
 /**
  * Get the filter results row html code.
  * 
- * @param {object} customer Contains the customer data.
+ * @param {object} referrer Contains the referrer data.
  * @return {string} Returns the record html code.
  */
 
  /************************control how it appear on backend referrer page, left column   */
 ReferrersHelper.prototype.getFilterHtml = function(referrer) {
-    var name = referrer.first_name + ' ' + customer.last_name;
+    var name = referrer.name;
     var info = referrer.agency; 
     info = (referrer.phone_number != '' && referrer.phone_number != null) 
             ? info + ', ' + referrer.phone_number : info;
@@ -484,7 +482,7 @@ ReferrersHelper.prototype.getFilterHtml = function(referrer) {
 };
  
 /**
- * Select a specific record from the current filter results. If the customer id does not exist 
+ * Select a specific record from the current filter results. If the referrer id does not exist 
  * in the list then no record will be selected. 
  * 
  * @param {numeric} id The record id to be selected from the filter results.
@@ -519,10 +517,10 @@ ReferrersHelper.prototype.select = function(id, display) {
 /*******************************************************************************
 * TODO:: NOT SURE HOW TO IMPLEMENT THIS YET. WILL COME BACK LATER.
 * 
-* This is supposed to display customer details.
+* This is supposed to display referrer details.
 *******************************************************************************/
 /**
- * Display appointment details on customers backend page.
+ * Display appointment details on referrers backend page.
  * 
  * @param {object} appointment Appointment data
  */

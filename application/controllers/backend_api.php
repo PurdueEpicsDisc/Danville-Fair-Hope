@@ -1254,6 +1254,123 @@ class Backend_api extends CI_Controller {
             ));
         }
     }
+
+    ///////////////////////////////MODIFY THESE FUNCTIONS FOR REFERRERS/////////////////////////////////////
+    /**
+     * [AJAX] Filter the referrers records with the given key string.
+     * 
+     * @param string $_POST['key'] The filter key string
+     * @return array Returns the search results.
+     */
+
+    public function ajax_filter_referrers() {
+        try {
+            //////////////////////////TODO:: SERIOUSLY, GET THIS DONE ASAP!///////////////////////////////////////
+            if ($this->privileges[PRIV_CUSTOMERS]['view'] == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $this->load->model('appointments_model');
+            $this->load->model('services_model');
+            $this->load->model('providers_model');
+            $this->load->model('customers_model');
+            
+            // ADDED THIS PART. AS OF NOW, HAVE YET TO WRITE A REFERRERS_MODEL //
+            $this->load->model('referrers_model');
+            
+            // WHAT IS THIS KEY.
+            $key = mysql_real_escape_string($_POST['key']); 
+            
+            // COME BACK AND IMPLEMENT NUM_CLIENTS
+            // ALSO LIST OF CLIENTS
+            $where_clause = 
+                    '(name LIKE "%' . $key . '%" OR ' . 
+                    'agency LIKE "%' . $key . '%" OR ' . 
+                    'phone_number LIKE "%' . $key . '%" OR ' . 
+                    'email LIKE "%' . $key . '%" OR ' .
+                    'notes LIKE "%' . $key . '%")';        
+            
+            // NEED TO WRITE THIS GET_BATCH FUNCTION IN REFERRERS_MODEL
+            $referrers = $this->referrers_model->get_batch($where_clause);
+            
+            // THIS PART SHOULD BE MODIFIED TO DISPLAY CLIENT LIST
+            ///////////////////////////TODO////////////////////////////////
+            /*foreach($referrers as &$referrer) {
+                $appointments = $this->appointments_model
+                        ->get_batch(array('id_users_customer' => $customer['id']));
+                
+                foreach($appointments as &$appointment) {
+                    $appointment['service'] = $this->services_model
+                            ->get_row($appointment['id_services']);
+                    $appointment['provider'] = $this->providers_model
+                            ->get_row($appointment['id_users_provider']);
+                }
+                
+                $customer['appointments'] = $appointments;
+            }*/
+            
+            echo json_encode($referrers);
+            
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    } 
+
+    /**
+     * [AJAX] Save (insert or update) a customer record.
+     * 
+     * @param array $_POST['customer'] JSON encoded array that contains the customer's data.
+     */
+    public function ajax_save_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $referrer = json_decode($_POST['referrer'], true);
+            
+            $REQUIRED_PRIV = (!isset($referrer['id'])) 
+            ////////////TODO: COME BACK ONCE PRIVILEGES IS WRITTEN///////////////
+                    ? $this->privileges[PRIV_CUSTOMERS]['add'] 
+                    : $this->privileges[PRIV_CUSTOMERS]['edit'];
+            if ($REQUIRED_PRIV == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $referrer_id = $this->referrers_model->add($referrer);
+            echo json_encode(array(
+                'status' => AJAX_SUCCESS,
+                'id' => $referrer_id
+            ));
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+    
+    /**
+     * [AJAX] Delete customer from database.
+     * 
+     * @param numeric $_POST['customer_id'] Customer record id to be deleted.
+     */
+    public function ajax_delete_referrer() {
+        try {
+            ////////////////////TODO:FIX THIS PRIVILEGES THING////////////////////
+            if ($this->privileges[PRIV_CUSTOMERS]['delete'] == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $this->load->model('referrers_model');
+            $this->referrers_model->delete($_POST['referrer_id']);
+            echo json_encode(AJAX_SUCCESS);
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+
+/* End of class. */
 }
 
 /* End of file backend_api.php */
