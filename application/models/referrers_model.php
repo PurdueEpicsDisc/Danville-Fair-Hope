@@ -24,19 +24,19 @@ class Referrers_Model extends CI_Model {
         $this->validate($referrer);
 
         // :: CHECK IF CUSTOMER ALREADY EXIST (FROM NAME & DOB).	
-        if ( $this->exists($referrer) && !isset($referrer['id'])) {
+        if ( $this->exists($referrer) && !isset($referrer['id_referrer'])) {
         	// Find the customer id from the database.
-        	$referrer['id'] = $this->find_record_id($referrer);
+        	$referrer['id_referrer'] = $this->find_record_id($referrer);
         }
 
         // :: INSERT OR UPDATE CUSTOMER RECORD
-        if (!isset($referrer['id'])) {
-            $referrer['id'] = $this->insert($referrer);
+        if (!isset($referrer['id_referrer'])) {
+            $referrer['id_referrer'] = $this->insert($referrer);
         } else {
             $this->update($referrer);
         }
 
-        return $referrer['id'];
+        return $referrer['id_referrer'];
     }
     
     /**
@@ -117,12 +117,12 @@ class Referrers_Model extends CI_Model {
                 unset($referrer[$key]);
         }
         
-        $this->db->where('id', $referrer['id']);
+        $this->db->where('id_referrer', $referrer['id_referrer']);
         if (!$this->db->update('fairhope_referrers', $referrer)) {
             throw new Exception('Could not update referrer to the database.');
         }
         
-        return intval($referrer['id']);
+        return intval($referrer['id_referrer']);
     }
     
     /**
@@ -157,7 +157,7 @@ class Referrers_Model extends CI_Model {
             throw new Exception('Could not find customer record id.');
         }
         
-        return $result->row()->id;
+        return $result->row()->id_referrer;
     }
     
     /**
@@ -171,9 +171,9 @@ class Referrers_Model extends CI_Model {
         
         // If a customer id is provided, check whether the record
         // exist in the database.
-        if (isset($referrer['id'])) {
+        if (isset($referrer['id_referrer'])) {
             $num_rows = $this->db->get_where('fairhope_referrers', 
-                    array('id' => $referrer['id']))->num_rows();
+                    array('id_referrer' => $referrer['id_referrer']))->num_rows();
             if ($num_rows == 0) {
                 throw new Exception('Provided referrer id does not ' 
                         . 'exist in the database.');
@@ -195,17 +195,17 @@ class Referrers_Model extends CI_Model {
      * @param numeric $customer_id The record id to be deleted.
      * @return bool Returns the delete operation result.
      */
-    public function delete($referrer_id) {
-        if (!is_numeric($referrer_id)) {
-            throw new Exception('Invalid argument type $referrer_id : ' . $referrer_id);
+    public function delete($id_referrer) {
+        if (!is_numeric($id_referrer)) {
+            throw new Exception('Invalid argument type $id_referrer : ' . $id_referrer);
         }
         
-        $num_rows = $this->db->get_where('fairhope_referrers', array('id' => $referrer_id))->num_rows();
+        $num_rows = $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->num_rows();
         if ($num_rows == 0) {
             return FALSE;
         }
         
-        return $this->db->delete('fairhope_referrers', array('id' => $referrer_id));
+        return $this->db->delete('fairhope_referrers', array('id_referrer' => $id_referrer));
     }
     
     /**
@@ -216,11 +216,11 @@ class Referrers_Model extends CI_Model {
      * record's data. Each key has the same name as the database 
      * field names.
      */
-    public function get_row($referrer_id) {
-        if (!is_numeric($referrer_id)) {
-            throw new Exception('Invalid argument provided as $referrer_id : ' . $referrer_id);
+    public function get_row($id_referrer) {
+        if (!is_numeric($id_referrer)) {
+            throw new Exception('Invalid argument provided as $id_referrer : ' . $id_referrer);
         }
-        return $this->db->get_where('fairhope_referrers', array('id' => $referrer_id))->row_array();
+        return $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->row_array();
     }
     
     /**
@@ -231,9 +231,9 @@ class Referrers_Model extends CI_Model {
      * @param int $customer_id The selected record's id.
      * @return string Returns the records value from the database.
      */
-    public function get_value($field_name, $referrer_id) {
-        if (!is_numeric($referrer_id)) {
-            throw new Exception('Invalid argument provided as $referrer_id : ' 
+    public function get_value($field_name, $id_referrer) {
+        if (!is_numeric($id_referrer)) {
+            throw new Exception('Invalid argument provided as $id_referrer : ' 
                     . $customer_id);
         }
         
@@ -242,19 +242,19 @@ class Referrers_Model extends CI_Model {
                     . $field_name);
         }
         
-        if ($this->db->get_where('fairhope_referrers', array('id' => $referrer_id))->num_rows() == 0) {
-            throw new Exception('The record with the $referrer_id argument ' 
-                    . 'does not exist in the database : ' . $referrer_id);
+        if ($this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->num_rows() == 0) {
+            throw new Exception('The record with the $id_referrer argument ' 
+                    . 'does not exist in the database : ' . $id_referrer);
         }
         
-        $row_data = $this->db->get_where('fairhope_referrers', array('id' => $referrer_id)
+        $row_data = $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer)
                 )->row_array();
         if (!isset($row_data[$field_name])) {
             throw new Exception('The given $field_name argument does not'
                     . 'exist in the database : ' . $field_name);
         }
         
-        $referrer = $this->db->get_where('fairhope_referrers', array('id' => $referrer_id))->row_array();
+        $referrer = $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->row_array();
         
         return $referrer[$field_name];
     }
@@ -267,10 +267,10 @@ class Referrers_Model extends CI_Model {
      * @param int $customer_id The selected record's id.
      * @param $value is the value to be set
      */
-    public function set_value($field_name, $referrer_id, $value) {
-        if (!is_numeric($referrer_id)) {
-            throw new Exception('Invalid argument provided as $referrer_id : ' 
-                    . $referrer_id);
+    public function set_value($field_name, $id_referrer, $value) {
+        if (!is_numeric($id_referrer)) {
+            throw new Exception('Invalid argument provided as $id_referrer : ' 
+                    . $id_referrer);
         }
         
         if (!is_string($field_name)) {
@@ -278,12 +278,12 @@ class Referrers_Model extends CI_Model {
                     . $field_name);
         }
         
-        if ($this->db->get_where('fairhope_referrers', array('id' => $referrer_id))->num_rows() == 0) {
-            throw new Exception('The record with the $referrer_id argument ' 
-                    . 'does not exist in the database : ' . $referrer_id);
+        if ($this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->num_rows() == 0) {
+            throw new Exception('The record with the $id_referrer argument ' 
+                    . 'does not exist in the database : ' . $id_referrer);
         }
         
-        $row_data = $this->db->get_where('fairhope_referrers', array('id' => $referrer_id)
+        $row_data = $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer)
                 )->row_array();
         if (!isset($row_data[$field_name])) {
             throw new Exception('The given $field_name argument does not'
@@ -311,6 +311,9 @@ class Referrers_Model extends CI_Model {
         
         //$this->db->where('id_roles', $customers_role_id);
         
+        ///////////////////////////////////////////////////////
+        // console.log('DEBUGGING YO', $this->db->get('fairhope_referrers')->result_array());
+        ///////////////////////////////////////////////////////
         return $this->db->get('fairhope_referrers')->result_array();
     }
     

@@ -35,7 +35,7 @@ Just remember to delete them!-->
         }
     };
     
-    // TODO:: What is this? Commented out until usability is determined.
+    // COMMENCE PAGE LOADING
      $(document).ready(function() {
         BackendReferrers.initialize(true);
     });
@@ -130,12 +130,11 @@ Just remember to delete them!-->
             <label for="name"><?php echo $this->lang->line('name'); ?> *</label>
             <input type="text" id="name" class="span11 required" />
 
-            <!-- TODO:: REFERRER AGENCY: Implement this! -->
             <label for="agency"><?php echo $this->lang->line('referring_agency'); ?> *</label>
             <input type="text" id="agency" class="span11 required" />
 
             <label for="email"><?php echo $this->lang->line('email'); ?> </label>
-            <input type="text" id="email" class="span11 required" />
+            <input type="text" id="email" class="span11" />
 
             <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> </label>
             <input type="text" id="phone-number" class="span11" />

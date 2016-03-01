@@ -159,6 +159,7 @@ $lang['service_category_saved'] = 'Service category saved successfully!';
 $lang['service_deleted'] = 'Service deleted successfully!';
 $lang['service_category_deleted'] = 'Service category deleted successfully!';
 $lang['customer_saved'] = 'Client saved successfully!';
+$lang['referrer_saved'] = 'Referrer saved successfully!';
 $lang['customer_deleted'] = 'Client deleted successfully!';
 $lang['referrer_deleted'] = 'Referrer deleted successfully!';
 $lang['current_view'] = 'Current View';

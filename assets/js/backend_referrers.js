@@ -24,9 +24,6 @@ var BackendReferrers = {
 	initialize: function(defaultEventHandlers) {
 		if (defaultEventHandlers == undefined) defaultEventHandlers = false; 
 		
-        /************************************************** 
-         * WARNING: NOT SURE IF THE CONSTRUCTOR IS RIGHT! 
-         **************************************************/
         BackendReferrers.helper = new ReferrersHelper();
 		BackendReferrers.helper.resetForm();
 		BackendReferrers.helper.filter('');
@@ -89,19 +86,18 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
             return; // Do nothing when user edits a referrer record.
         }
         
-        /***************************************************************************
-         * WARNING! Is this the right way to obtain referrerID? If so, how to implement?
-         ***************************************************************************/
         var referrerId = $(this).attr('data-id');
         var referrer = {};
         $.each(BackendReferrers.helper.filterResults, function(index, item) {
-            if (item.id == referrerId) {
+
+            if (item.id_referrer == referrerId) {
                 referrer = item;
                 return false;
             }
         });
         
         BackendReferrers.helper.display(referrer);
+
         $('#filter-referrers .selected-row').removeClass('selected-row');
         $(this).addClass('selected-row');
         $('#edit-referrer, #delete-referrer').prop('disabled', false);
@@ -219,7 +215,7 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
         };
 
         if ($('#referrer-id').val() != '') {
-            referrer.id = $('#referrer-id').val();
+            referrer.id_referrer = $('#referrer-id').val();
         }
         
         if (!BackendReferrers.helper.validate(referrer)) return;
@@ -283,7 +279,7 @@ ReferrersHelper.prototype.delete = function(id) {
      * WARNING: NOT SURE IF CAN USE THE SAME AJAX TO DELETE REFERRERS.
      ****************************************************************/
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_delete_referrer';
-    var postData = { 'referrer_id': id };
+    var postData = { 'id_referrer': id };
     
     $.post(postUrl, postData, function(response) {
         ////////////////////////////////////////////////////
@@ -293,8 +289,8 @@ ReferrersHelper.prototype.delete = function(id) {
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
 
         Backend.displayNotification(EALang['referrer_deleted']);
-        BackendCustomers.helper.resetForm();
-        BackendCustomers.helper.filter($('#filter-referrers .key').val());
+        BackendReferrers.helper.resetForm();
+        BackendReferrers.helper.filter($('#filter-referrers .key').val());
     }, 'json');
 };
 
@@ -320,14 +316,12 @@ ReferrersHelper.prototype.validate = function(referrer) {
             throw EALang['fields_are_required'];
         }
 
-        /****************************************************************
-         * TODO:: MIGHT DELETE THIS FUNCTION. ASK ROBERTA IF EMAIL ADD OF
-         *        REFERRERS ARE REQUIRED.
-         ****************************************************************/
+        if ($('#email').val() != '') {
         // Validate email address.
-        if (!GeneralFunctions.validateEmail($('#email').val())) {
-            $('#email').css('border', '2px solid red');
-            throw EALang['invalid_email'];
+            if (!GeneralFunctions.validateEmail($('#email').val())) {
+                $('#email').css('border', '2px solid red');
+                throw EALang['invalid_email'];
+            }
         }
 
         return true;
@@ -370,7 +364,7 @@ ReferrersHelper.prototype.resetForm = function() {
  * @param {object} referrer Contains the referrer record data.
  */
 ReferrersHelper.prototype.display = function(referrer) {
-    $('#referrer-id').val(referrer.id);
+    $('#referrer-id').val(referrer.id_referrer);
     $('#name').val(referrer.name);
     $('#email').val(referrer.email);
     $('#phone-number').val(referrer.phone_number);
@@ -422,9 +416,6 @@ ReferrersHelper.prototype.display = function(referrer) {
 ReferrersHelper.prototype.filter = function(key, selectId, display) {
     if (display == undefined) display = false;
     
-    /****************************************************************
-     * WARNING: NOT SURE IF CAN USE THE SAME AJAX TO FILTER REFERRERS.
-     ****************************************************************/
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_filter_referrers';
     var postData = { 'key': key };
     
@@ -439,6 +430,7 @@ ReferrersHelper.prototype.filter = function(key, selectId, display) {
         
         $('#filter-referrers .results').data('jsp').destroy(); 
         $('#filter-referrers .results').html('');
+        ///////////////////WHICH MEANS THIS REFERRER ID IS UNDEFINED///////////////////
         $.each(response, function(index, referrer) {
            var html = BackendReferrers.helper.getFilterHtml(referrer);
            $('#filter-referrers .results').append(html);
@@ -462,16 +454,17 @@ ReferrersHelper.prototype.filter = function(key, selectId, display) {
  * @param {object} referrer Contains the referrer data.
  * @return {string} Returns the record html code.
  */
-
- /************************control how it appear on backend referrer page, left column   */
+                                ///THAT MEANS THIS REFERRER.ID IS UNDEFINED///
 ReferrersHelper.prototype.getFilterHtml = function(referrer) {
     var name = referrer.name;
     var info = referrer.agency; 
+    ////////////////////////////THIS IS WHAT IS DISPLAYED IN JSCROLLPANE//////////////////////////
     info = (referrer.phone_number != '' && referrer.phone_number != null) 
             ? info + ', ' + referrer.phone_number : info;
     
+    ////////////////////////////PROBLEM RIGHT HERE REFERRER.ID IS UNDEFINED///////////////////////
     var html = 
-            '<div class="referrer-row" data-id="' + referrer.id + '">' +
+            '<div class="referrer-row" data-id="' + referrer.id_referrer + '">' +
                 '<strong>' + 
                     name + 
                 '</strong><br>' + 
@@ -503,7 +496,7 @@ ReferrersHelper.prototype.select = function(id, display) {
     
     if (display) { 
         $.each(BackendReferrers.helper.filterResults, function(index, referrer) {
-            if (referrer.id == id) {
+            if (referrer.id_referrer == id) {
                 BackendReferrers.helper.display(referrer);
                 $('#edit-referrer, #delete-referrer').prop('disabled', false);
                 return false;

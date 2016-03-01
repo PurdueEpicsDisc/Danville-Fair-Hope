@@ -1308,9 +1308,8 @@ class Backend_api extends CI_Controller {
                 
                 $customer['appointments'] = $appointments;
             }*/
-            
+
             echo json_encode($referrers);
-            
         } catch(Exception $exc) {
             echo json_encode(array(
                 'exceptions' => array(exceptionToJavaScript($exc))
@@ -1328,7 +1327,7 @@ class Backend_api extends CI_Controller {
             $this->load->model('referrers_model');
             $referrer = json_decode($_POST['referrer'], true);
             
-            $REQUIRED_PRIV = (!isset($referrer['id'])) 
+            $REQUIRED_PRIV = (!isset($referrer['id_referrer'])) 
             ////////////TODO: COME BACK ONCE PRIVILEGES IS WRITTEN///////////////
                     ? $this->privileges[PRIV_CUSTOMERS]['add'] 
                     : $this->privileges[PRIV_CUSTOMERS]['edit'];
@@ -1336,10 +1335,10 @@ class Backend_api extends CI_Controller {
                 throw new Exception('You do not have the required privileges for this task.');
             }
             
-            $referrer_id = $this->referrers_model->add($referrer);
+            $id_referrer = $this->referrers_model->add($referrer);
             echo json_encode(array(
                 'status' => AJAX_SUCCESS,
-                'id' => $referrer_id
+                'id' => $id_referrer
             ));
         } catch(Exception $exc) {
             echo json_encode(array(
@@ -1361,7 +1360,13 @@ class Backend_api extends CI_Controller {
             }
             
             $this->load->model('referrers_model');
-            $this->referrers_model->delete($_POST['referrer_id']);
+            $this->referrers_model->delete($_POST['id_referrer']);
+
+            //////////////////////////DEBUG//////////////////////////////
+            $foo = '12345';
+            error_log(print_r($foo, TRUE)); 
+            /////////////////////////////////////////////////////////////
+            
             echo json_encode(AJAX_SUCCESS);
         } catch(Exception $exc) {
             echo json_encode(array(
