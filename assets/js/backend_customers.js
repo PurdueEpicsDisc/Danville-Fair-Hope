@@ -128,6 +128,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 
         BackendCustomers.helper.displayAppointment(appointment);
     });
+    
     /**
      * Event: Appointment Row "Click"
      * 
@@ -196,15 +197,27 @@ CustomersHelper.prototype.bindEventHandlers = function() {
      Left is database value, right is the form label
      */
     $('#save-customer').click(function() {
+        var referrer = {
+            'name' : $('#referrer').val(),
+            'agency': $('#referring-agency').val()
+        };
+
+        /////////////////////
+        console.log('Referrer to be added: ', referrer);
+        ////////////////////
+
+        // Validate referrer
+        var id_referrer = BackendCustomers.helper.validateReferrer(referrer);
+        
+        if (id_referrer == -1) {
+            id_referrer = BackendCustomers.helper.addReferrer(referrer); 
+        }
+
         var customer = {
             'first_name': $('#first-name').val(),
             'last_name': $('#last-name').val(),
-            'email': $('#email').val(),
-            'phone_number': $('#phone-number').val(),
-            'address': $('#address').val(),
-            'city': $('#city').val(),
+            'id_referrer': id_referrer,
             'num_of_children': $('#num-of-children').val(),
-            'zip_code': $('#zip-code').val(),
 			'dob': $('#date-of-birth').val(),
             'notes': $('#notes').val()
         };
@@ -262,6 +275,59 @@ CustomersHelper.prototype.save = function(customer) {
 };
 
 /**
+ * Validate if referrer exists.
+ *
+ * @param {object} referrer Contains referrer data.
+ */
+ CustomersHelper.prototype.validateReferrer = function(referrer) {
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_validate_referrer';
+    var postData = { 'referrer' : JSON.stringify(referrer) };
+    var id_referrer;
+
+    $.post(postUrl, postData, function(response) {
+        ///////////////////////////////////////////////////////////
+        console.log('Validate Referrer Response:', response);
+        ///////////////////////////////////////////////////////////
+        
+        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+    
+        id_referrer = response.id;
+
+        ///////////////////////////////////////////////////////////
+        console.log("id_referrer: " , id_referrer);
+        ///////////////////////////////////////////////////////////
+    }, 'json');
+
+        ///////////////////////////////////////////////////////////
+        console.log("id_referrer: " , id_referrer);
+        ///////////////////////////////////////////////////////////
+    return id_referrer;
+ }
+
+ /**
+ * Add referrer if referrer does not exist.
+ *
+ * @param {object} referrer Contains referrer data.
+ */
+ CustomersHelper.prototype.addReferrer = function(referrer) {
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_referrer';
+    var postData = { 'referrer' : JSON.stringify(referrer) };
+    var id_referrer;
+
+    $.post(postUrl, postData, function(response) {
+        ///////////////////////////////////////////////////////////
+        console.log('Save Referrer Response:', response);
+        ///////////////////////////////////////////////////////////
+        
+        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+            
+        id_referrer = response.id;
+    }, 'json');
+
+    return id_referrer;
+ }
+
+/**
  * Delete a customer record from database.
  * 
  * @param {numeric} id Record id to be deleted. 
@@ -306,10 +372,10 @@ CustomersHelper.prototype.validate = function(customer) {
         }
 
         // Validate email address.
-        if (!GeneralFunctions.validateEmail($('#email').val())) {
+        /* if (!GeneralFunctions.validateEmail($('#email').val())) {
             $('#email').css('border', '2px solid red');
             throw EALang['invalid_email'];
-        }
+        } */
 
         return true;
 
@@ -349,17 +415,15 @@ CustomersHelper.prototype.display = function(customer) {
     $('#customer-id').val(customer.id);
     $('#first-name').val(customer.first_name);
     $('#last-name').val(customer.last_name);
-    $('#email').val(customer.email);
-    $('#phone-number').val(customer.phone_number);
-    $('#address').val(customer.address);
-    $('#city').val(customer.city);
-    $('#zip-code').val(customer.zip_code);
     $('#num-of-children').val(customer.num_of_children);
-	 $('#date-of-birth').val(customer.dob);
+	$('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
+    ///////////////////TODO:: WRITE A FUNCTION TO OBTAIN REFERRER NAME AND AGENCY/////////////////////////////
 
     $('#customer-appointments').data('jsp').destroy();
     $('#customer-appointments').empty();
+    ///////////////////TODO:: ADD REFERRER'S NAME AND AGENCY TO THIS (APPT. DETAILS AS WELL//////////////////
+    ///////////////////TODO:: ADD APPT. NOTES FEATURE SUCH AS PNP AND ETC. //////////////////////////////////
     $.each(customer.appointments, function(index, appointment) {
         var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
         var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
@@ -495,6 +559,9 @@ CustomersHelper.prototype.displayAppointment = function(appointment) {
     var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
     var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
 
+    /////////THIS IS THE LITTLE BOX THAT APPEARS BELOW THE JSCROLLPANE WHEN AN APPT. IS SELECTED/////////////
+    ///////////////////TODO:: ADD REFERRER'S NAME AND AGENCY TO THIS (APPT. DETAILS AS WELL//////////////////
+    ///////////////////TODO:: ADD APPT. NOTES FEATURE SUCH AS PNP AND ETC. //////////////////////////////////
     var html = 
             '<div>' + 
                 '<strong>' + appointment.service.name + '</strong><br>' + 

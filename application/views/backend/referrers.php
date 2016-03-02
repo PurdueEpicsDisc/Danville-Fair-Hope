@@ -118,7 +118,6 @@ Just remember to delete them!-->
         </div>
 
         <!-- Note: A hidden field is not visible to a user. It can store value changed by JS -->
-        <!-- TODO:: Gotta implement this referrer-id in "assets/js/backend_referrers.js" file -->
 	    <input id="referrer-id" type="hidden" />
 
 	    <!--                      PART D [Details Form]

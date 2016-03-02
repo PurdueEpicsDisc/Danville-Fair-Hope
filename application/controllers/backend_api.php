@@ -496,13 +496,8 @@ class Backend_api extends CI_Controller {
             
 	    	$where_clause = 
 	    			'(first_name LIKE "%' . $key . '%" OR ' . 
-	    			'last_name LIKE "%' . $key . '%" 
-					/*OR ' . 
-	    			'email LIKE "%' . $key . '%" OR ' .	
-	    			'phone_number LIKE "%' . $key . '%" OR ' .
-	    			'address LIKE "%' . $key . '%" OR ' .
-	    			'city LIKE "%' . $key . '%" OR ' .
-	    			'zip_code LIKE "%' . $key . '%"*/)';		
+	    			'last_name LIKE "%' . $key . '%" OR ' . 
+	    			'num_of_children LIKE "%' . $key . '%")';		
             
             $customers = $this->customers_model->get_batch($where_clause);
             
@@ -686,6 +681,43 @@ class Backend_api extends CI_Controller {
             $this->load->model('customers_model');
             $this->customers_model->delete($_POST['customer_id']);
             echo json_encode(AJAX_SUCCESS);
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+
+    /**
+     * [AJAX] Validate if referrer exists in database for backend_customers.
+     * 
+     * @param numeric $_POST['referrer'] referrer to be compared against.
+     */
+    public function ajax_validate_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $referrer = json_decode($_POST['referrer'], true);
+            
+            ////////////////////////DEBUGGING//////////////////////////
+            error_log($referrer['name'] . ' ' . $referrer['agency']);
+
+            $id_referrer;
+
+            if($this->referrers_model->exists($referrer)) {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer exists');
+                $id_referrer = $this->referrers_model->find_record_id($referrer);
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer id: ' . $id_referrer);
+            } else {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer does not exist');
+                $id_referrer = -1;
+            }
+            echo json_encode(array(
+                    'status' => AJAX_SUCCESS,
+                    'id' => $id_referrer
+            ));
         } catch(Exception $exc) {
             echo json_encode(array(
                 'exceptions' => array(exceptionToJavaScript($exc))
@@ -1278,7 +1310,7 @@ class Backend_api extends CI_Controller {
             // ADDED THIS PART. AS OF NOW, HAVE YET TO WRITE A REFERRERS_MODEL //
             $this->load->model('referrers_model');
             
-            // WHAT IS THIS KEY.
+            // Key is input from user.
             $key = mysql_real_escape_string($_POST['key']); 
             
             // COME BACK AND IMPLEMENT NUM_CLIENTS
@@ -1361,11 +1393,6 @@ class Backend_api extends CI_Controller {
             
             $this->load->model('referrers_model');
             $this->referrers_model->delete($_POST['id_referrer']);
-
-            //////////////////////////DEBUG//////////////////////////////
-            $foo = '12345';
-            error_log(print_r($foo, TRUE)); 
-            /////////////////////////////////////////////////////////////
             
             echo json_encode(AJAX_SUCCESS);
         } catch(Exception $exc) {

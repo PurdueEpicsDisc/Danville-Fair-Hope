@@ -139,10 +139,13 @@ class Referrers_Model extends CI_Model {
      * @return int Returns the id.
      */
     public function find_record_id($referrer) {
-        if (!isset($referrer['name'])) {
-            throw new Exception('Referrer\'s name was not provided : ' 
+        if (!isset($referrer['name']) || !isset($referrer['agency'])) {
+            throw new Exception('Please fill in the required particulars: referrer name, agency: ' 
                     . print_r($referrer, TRUE));
         }
+
+        ///////////////////////////////
+        error_log("what's the matter");
         
         // Get customer's role id
         //////////////////////////////////TODO::SLUG AGAIN///////////////////////////////////
@@ -150,9 +153,12 @@ class Referrers_Model extends CI_Model {
                 ->select('fairhope_referrers.id_referrer')
                 ->from('fairhope_referrers')
                 ->where('fairhope_referrers.name', $referrer['name'])
-                ->where('ea_roles.slug', DB_SLUG_CUSTOMER)
+                ->where('fairhope_referrers.agency', $referrer['agency'])
                 ->get();
-        
+
+        ////////////////////////////////
+        error_log("database access success");
+
         if ($result->num_rows() == 0) {
             throw new Exception('Could not find customer record id.');
         }

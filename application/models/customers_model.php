@@ -52,33 +52,12 @@ class Customers_Model extends CI_Model {
      */
 
     public function exists($customer) {
-        if (!isset($customer['email'])) {
-            throw new Exception('Referrer\'s email is not provided.');
-        }
-        
-        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
+        // Validate necessary fields.
         if (!isset($customer['first_name']) || !isset($customer['last_name']) || !isset($customer['dob'])) {
             throw new Exception('Please fill in the required particulars: first name, last name and date of birth.');
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //////////////////////////////////////CHANGE VALIDATION/////////////////////////////////////////////////////
-
-        // This method shouldn't depend on another method of this class.
-        /*
-        $num_rows = $this->db
-                ->select('*')
-                ->from('ea_users')
-                ->join('ea_roles', 'ea_roles.id = ea_users.id_roles', 'inner')
-                ->where('ea_users.email', $customer['email'])
-                ->where('ea_roles.slug', DB_SLUG_CUSTOMER)
-                ->get()->num_rows();
-        */
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-
-        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
+        // Search for customer in DB
         $num_rows = $this->db
                 ->select('*')
                 ->from('ea_users')
@@ -90,8 +69,6 @@ class Customers_Model extends CI_Model {
                 ->get()->num_rows();
 
         return ($num_rows > 0) ? TRUE : FALSE;
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     }
     
     /**
@@ -158,11 +135,6 @@ class Customers_Model extends CI_Model {
      * @return int Returns the id.
      */
     public function find_record_id($customer) {
-        if (!isset($customer['email'])) {
-            throw new Exception('Customer\'s email was not provided : ' 
-                    . print_r($customer, TRUE));
-        }
-        
         // Get customer's role id
         $result = $this->db
                 ->select('ea_users.id')
@@ -199,16 +171,9 @@ class Customers_Model extends CI_Model {
             }
         }
         // Validate required fields
-        if (!isset($customer['last_name'])
-                || !isset($customer['email']) || !isset($customer['dob'])) { 
+        if (!isset($customer['last_name']) || !isset($customer['first_name']) || !isset($customer['dob'])) { 
             throw new Exception('Not all required fields are provided : ' 
                     . print_r($customer, TRUE));
-        }
-
-        // Validate email address
-        if (!filter_var($customer['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Invalid email address provided : ' 
-                    . $customer['email']);
         }
         
         /////////////////////////// NOT REQUIRED; EMAIL ADDRESS BELONGS TO REFERRER! ///////////////////////////////
@@ -231,19 +196,13 @@ class Customers_Model extends CI_Model {
         }*/
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-        ///////////////////////////////////////////////ADDED THIS PART//////////////////////////////////////////////
-
         // Validate dob using regex
         $myDOBregex = '~^\d{2}/\d{2}/\d{4}$~';
         if (!preg_match($myDOBregex, $customer['dob'])) {
             throw new Exception('Invalid DOB format! Please follow the following format:
                 mm\dd\yyyy');
         }
-
- 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        
         return TRUE;
     }
     
