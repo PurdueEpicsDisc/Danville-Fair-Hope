@@ -203,20 +203,13 @@ CustomersHelper.prototype.bindEventHandlers = function() {
         };
 
         /////////////////////
-        console.log('Referrer to be added: ', referrer);
+        // console.log('Referrer to be added: ', referrer);
         ////////////////////
 
         // Validate referrer
-        var id_referrer = BackendCustomers.helper.validateReferrer(referrer);
-        
-        if (id_referrer == -1) {
-            id_referrer = BackendCustomers.helper.addReferrer(referrer); 
-        }
-
         var customer = {
             'first_name': $('#first-name').val(),
             'last_name': $('#last-name').val(),
-            'id_referrer': id_referrer,
             'num_of_children': $('#num-of-children').val(),
 			'dob': $('#date-of-birth').val(),
             'notes': $('#notes').val()
@@ -225,10 +218,16 @@ CustomersHelper.prototype.bindEventHandlers = function() {
         if ($('#customer-id').val() != '') {
             customer.id = $('#customer-id').val();
         }
-        
+
+        if ($('#referrer-id').val() != '') {
+            customer.id_referrer = $('#referrer-id').val();
+        }
+
         if (!BackendCustomers.helper.validate(customer)) return;
-            
-        BackendCustomers.helper.save(customer);
+        
+        BackendCustomers.helper.validateReferrer(customer, referrer);
+
+        //BackendCustomers.helper.save(customer);
     });
 
     /**
@@ -279,10 +278,9 @@ CustomersHelper.prototype.save = function(customer) {
  *
  * @param {object} referrer Contains referrer data.
  */
- CustomersHelper.prototype.validateReferrer = function(referrer) {
+ CustomersHelper.prototype.validateReferrer = function(customer, referrer) {
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_validate_referrer';
     var postData = { 'referrer' : JSON.stringify(referrer) };
-    var id_referrer;
 
     $.post(postUrl, postData, function(response) {
         ///////////////////////////////////////////////////////////
@@ -290,18 +288,19 @@ CustomersHelper.prototype.save = function(customer) {
         ///////////////////////////////////////////////////////////
         
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
-    
-        id_referrer = response.id;
+
+        if (response.id == -1) {
+            BackendCustomers.helper.addReferrer(customer, Sreferrer); 
+        } else {
+            $('#referrer-id').val(response.id);
+            customer.id_referrer = response.id;
+            BackendCustomers.helper.save(customer);
+        }
 
         ///////////////////////////////////////////////////////////
-        console.log("id_referrer: " , id_referrer);
+        console.log("id_referrer: " , response.id);
         ///////////////////////////////////////////////////////////
     }, 'json');
-
-        ///////////////////////////////////////////////////////////
-        console.log("id_referrer: " , id_referrer);
-        ///////////////////////////////////////////////////////////
-    return id_referrer;
  }
 
  /**
@@ -309,7 +308,7 @@ CustomersHelper.prototype.save = function(customer) {
  *
  * @param {object} referrer Contains referrer data.
  */
- CustomersHelper.prototype.addReferrer = function(referrer) {
+ CustomersHelper.prototype.addReferrer = function(customer, referrer) {
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_referrer';
     var postData = { 'referrer' : JSON.stringify(referrer) };
     var id_referrer;
@@ -321,10 +320,11 @@ CustomersHelper.prototype.save = function(customer) {
         
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
             
-        id_referrer = response.id;
-    }, 'json');
+        $('#referrer-id').val(response.id);
+        customer.id_referrer = response.id;
+        BackendCustomers.helper.save(customer);
 
-    return id_referrer;
+    }, 'json');
  }
 
 /**
@@ -413,6 +413,7 @@ CustomersHelper.prototype.resetForm = function() {
  */
 CustomersHelper.prototype.display = function(customer) {
     $('#customer-id').val(customer.id);
+    $('#referrer-id').val(customer.id_referrer);
     $('#first-name').val(customer.first_name);
     $('#last-name').val(customer.last_name);
     $('#num-of-children').val(customer.num_of_children);

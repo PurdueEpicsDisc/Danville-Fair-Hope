@@ -85,7 +85,8 @@
         </div>
         
         <input id="customer-id" type="hidden" />
-        
+        <input id="referrer-id" type="hidden" />
+
         <div class="span6" style="margin-left: 0;">
             <h2><?php echo $this->lang->line('details'); ?></h2>
             <div id="form-message" class="alert" style="display:none;"></div>
