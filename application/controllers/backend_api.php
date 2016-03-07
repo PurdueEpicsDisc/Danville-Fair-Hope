@@ -687,43 +687,6 @@ class Backend_api extends CI_Controller {
             ));
         }
     }
-
-    /**
-     * [AJAX] Validate if referrer exists in database for backend_customers.
-     * 
-     * @param numeric $_POST['referrer'] referrer to be compared against.
-     */
-    public function ajax_validate_referrer() {
-        try {
-            $this->load->model('referrers_model');
-            $referrer = json_decode($_POST['referrer'], true);
-            
-            ////////////////////////DEBUGGING//////////////////////////
-            error_log($referrer['name'] . ' ' . $referrer['agency']);
-
-            $id_referrer;
-
-            if($this->referrers_model->exists($referrer)) {
-                /////////////////////DEBUGGING////////////////////////
-                error_log('referrer exists');
-                $id_referrer = $this->referrers_model->find_record_id($referrer);
-                /////////////////////DEBUGGING////////////////////////
-                error_log('referrer id: ' . $id_referrer);
-            } else {
-                /////////////////////DEBUGGING////////////////////////
-                error_log('referrer does not exist');
-                $id_referrer = -1;
-            }
-            echo json_encode(array(
-                    'status' => AJAX_SUCCESS,
-                    'id' => $id_referrer
-            ));
-        } catch(Exception $exc) {
-            echo json_encode(array(
-                'exceptions' => array(exceptionToJavaScript($exc))
-            ));
-        }
-    }
     
     /**
      * [AJAX] Save (insert or update) service record.
@@ -1395,6 +1358,67 @@ class Backend_api extends CI_Controller {
             $this->referrers_model->delete($_POST['id_referrer']);
             
             echo json_encode(AJAX_SUCCESS);
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+
+
+    /**
+     * [AJAX] Validate if referrer exists in database for backend_customers.
+     * 
+     * @param numeric $_POST['referrer'] referrer to be compared against.
+     */
+    public function ajax_validate_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $referrer = json_decode($_POST['referrer'], true);
+            
+            ////////////////////////DEBUGGING//////////////////////////
+            error_log($referrer['name'] . ' ' . $referrer['agency']);
+
+            $id_referrer;
+
+            if($this->referrers_model->exists($referrer)) {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer exists');
+                $id_referrer = $this->referrers_model->find_record_id($referrer);
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer id: ' . $id_referrer);
+            } else {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer does not exist');
+                $id_referrer = -1;
+            }
+            echo json_encode(array(
+                    'status' => AJAX_SUCCESS,
+                    'id' => $id_referrer
+            ));
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+
+    /**
+     * [AJAX] Get referrer from database using referrer id.
+     *
+     * @param numeric $_POST['referrer'] referrer to be compared against.
+     */
+    public function ajax_get_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $id_referrer = json_decode($_POST['id_referrer'], true);
+            $referrer = $this->referrers_model->get_row($id_referrer);
+            $referrer_name = $referrer['name'];
+            echo json_encode(array(
+                'status' => AJAX_SUCCESS,
+                'referrer' => $referrer['name'],
+                'agency' => $referrer['agency']
+            ));
         } catch(Exception $exc) {
             echo json_encode(array(
                 'exceptions' => array(exceptionToJavaScript($exc))

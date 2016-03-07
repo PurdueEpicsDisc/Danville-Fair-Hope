@@ -290,7 +290,7 @@ CustomersHelper.prototype.save = function(customer) {
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
 
         if (response.id == -1) {
-            BackendCustomers.helper.addReferrer(customer, Sreferrer); 
+            BackendCustomers.helper.addReferrer(customer, referrer); 
         } else {
             $('#referrer-id').val(response.id);
             customer.id_referrer = response.id;
@@ -338,7 +338,7 @@ CustomersHelper.prototype.delete = function(id) {
     
     $.post(postUrl, postData, function(response) {
         ////////////////////////////////////////////////////
-        //console.log('Delete customer response:', response);
+        console.log('Delete customer response:', response);
         ////////////////////////////////////////////////////
         
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
@@ -346,6 +346,36 @@ CustomersHelper.prototype.delete = function(id) {
         Backend.displayNotification(EALang['customer_deleted']);
         BackendCustomers.helper.resetForm();
         BackendCustomers.helper.filter($('#filter-customers .key').val());
+    }, 'json');
+};
+
+/**
+ * Delete a customer record from database.
+ * 
+ * @param {numeric} id Record id to be deleted. 
+ */
+CustomersHelper.prototype.displayReferrer = function(id) {
+    if (id == null) {
+        $('#referrer').val('');
+        $('#referring-agency').val('');
+        return;
+    }
+
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_get_referrer';
+    var postData = { 'id_referrer': id };
+
+    $.post(postUrl, postData, function(response) {
+        ////////////////////////////////////////////////////
+        console.log('displayReferrer response:', response);
+        console.log(response.status);
+        console.log(response.referrer);
+        console.log(response.agency);
+        ////////////////////////////////////////////////////
+
+        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+        
+        $('#referrer').val(response.referrer);
+        $('#referring-agency').val(response.agency);
     }, 'json');
 };
 
@@ -420,6 +450,7 @@ CustomersHelper.prototype.display = function(customer) {
 	$('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
     ///////////////////TODO:: WRITE A FUNCTION TO OBTAIN REFERRER NAME AND AGENCY/////////////////////////////
+    BackendCustomers.helper.displayReferrer(customer.id_referrer);
 
     $('#customer-appointments').data('jsp').destroy();
     $('#customer-appointments').empty();
@@ -447,7 +478,6 @@ CustomersHelper.prototype.display = function(customer) {
         $('#customer-appointments').append(html);
     });
     $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
-    
     $('#appointment-details').empty();
 };
 
