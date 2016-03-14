@@ -491,6 +491,7 @@ class Backend_api extends CI_Controller {
             $this->load->model('services_model');
             $this->load->model('providers_model');
 	    	$this->load->model('customers_model');
+            $this->load->model('referrers_model');
             
 	    	$key = mysql_real_escape_string($_POST['key']); 
             
@@ -513,6 +514,9 @@ class Backend_api extends CI_Controller {
                 }
                 
                 $customer['appointments'] = $appointments;
+
+                $referrer = $this->referrers_model->get_row($customer['id_referrer']);
+                $customer['referrer'] = $referrer;
             }
             
 	    	echo json_encode($customers);
@@ -1269,15 +1273,11 @@ class Backend_api extends CI_Controller {
             $this->load->model('services_model');
             $this->load->model('providers_model');
             $this->load->model('customers_model');
-            
-            // ADDED THIS PART. AS OF NOW, HAVE YET TO WRITE A REFERRERS_MODEL //
             $this->load->model('referrers_model');
             
             // Key is input from user.
             $key = mysql_real_escape_string($_POST['key']); 
             
-            // COME BACK AND IMPLEMENT NUM_CLIENTS
-            // ALSO LIST OF CLIENTS
             $where_clause = 
                     '(name LIKE "%' . $key . '%" OR ' . 
                     'agency LIKE "%' . $key . '%" OR ' . 
@@ -1285,24 +1285,27 @@ class Backend_api extends CI_Controller {
                     'email LIKE "%' . $key . '%" OR ' .
                     'notes LIKE "%' . $key . '%")';        
             
-            // NEED TO WRITE THIS GET_BATCH FUNCTION IN REFERRERS_MODEL
             $referrers = $this->referrers_model->get_batch($where_clause);
             
-            // THIS PART SHOULD BE MODIFIED TO DISPLAY CLIENT LIST
-            ///////////////////////////TODO////////////////////////////////
-            /*foreach($referrers as &$referrer) {
+            /****************VERY BAD ALGORITHM! O(n^3)! NEED BETTER WAY!*********/
+            foreach($referrers as &$referrer) {
+                $customers = $this->customers_model
+                    ->get_batch(array('id_referrer' => $referrer['id_referrer']));
+
+                foreach($customers as &$customer) {
                 $appointments = $this->appointments_model
                         ->get_batch(array('id_users_customer' => $customer['id']));
                 
-                foreach($appointments as &$appointment) {
-                    $appointment['service'] = $this->services_model
-                            ->get_row($appointment['id_services']);
-                    $appointment['provider'] = $this->providers_model
-                            ->get_row($appointment['id_users_provider']);
+                    foreach($appointments as &$appointment) {
+                        $appointment['service'] = $this->services_model
+                                ->get_row($appointment['id_services']);
+                        $appointment['provider'] = $this->providers_model
+                                ->get_row($appointment['id_users_provider']);
+                    }
+                    $customer['appointments'] = $appointments;
                 }
-                
-                $customer['appointments'] = $appointments;
-            }*/
+                $referrer['customers'] = $customers;
+            }
 
             echo json_encode($referrers);
         } catch(Exception $exc) {
@@ -1356,7 +1359,7 @@ class Backend_api extends CI_Controller {
             
             $this->load->model('referrers_model');
             $this->referrers_model->delete($_POST['id_referrer']);
-            
+
             echo json_encode(AJAX_SUCCESS);
         } catch(Exception $exc) {
             echo json_encode(array(
@@ -1402,30 +1405,6 @@ class Backend_api extends CI_Controller {
             ));
         }
     }
-
-    /**
-     * [AJAX] Get referrer from database using referrer id.
-     *
-     * @param numeric $_POST['referrer'] referrer to be compared against.
-     */
-    public function ajax_get_referrer() {
-        try {
-            $this->load->model('referrers_model');
-            $id_referrer = json_decode($_POST['id_referrer'], true);
-            $referrer = $this->referrers_model->get_row($id_referrer);
-            $referrer_name = $referrer['name'];
-            echo json_encode(array(
-                'status' => AJAX_SUCCESS,
-                'referrer' => $referrer['name'],
-                'agency' => $referrer['agency']
-            ));
-        } catch(Exception $exc) {
-            echo json_encode(array(
-                'exceptions' => array(exceptionToJavaScript($exc))
-            ));
-        }
-    }
-
 /* End of class. */
 }
 

@@ -879,39 +879,38 @@ padding: 4px 7px;
 
 /*********************************************************************************
  * TODO:: RETURN TO THIS PORTION ONCE I HAVE IMPLEMENTED CLIENTS REFERRED FEATURE.
-/*********************************************************************************
+/*********************************************************************************/
 
-#referrers-page #clients-referred .appointment-row { 
+#referrers-page #clients-referred .clients-row { 
     padding: 7px; 
     border-bottom: 4px solid #E2E2E2;
 }
 
-#referrers-page #clients-referred .appointment-row:hover:not(.selected-row) { 
+#referrers-page #clients-referred .clients-row:hover:not(.selected-row) { 
     background-color: #F3F3F3; 
     cursor: pointer; 
 }
 
-#customers-page #customer-appointments .appointment-row-noshow { 
+#referrers-page #clients-referred .clients-row-noshow { 
     padding: 7px;
     border-bottom: 4px solid #E2E2E2; 
     background-color: #ee5f5b;
 }
 
-#customers-page #customer-appointments .appointment-row-noshow:hover:not(.selected-row) { 
+#referrers-page #clients-referred .clients-row-noshow:hover:not(.selected-row) { 
     background-color: #bd362f; 
     cursor: pointer; 
 }
 
-#customers-page #appointment-details {
+#referrers-page #client-details {
     width: 338px;
 }
 
-#customers-page #appointment-details div {
+#referrers-page #client-details div {
     padding: 10px;
     background: #F8F8F8;
     border-bottom: 4px solid #EEE;
 }
-*/
 
 #referrers-page .details input,
 #referrers-page .details textarea { 

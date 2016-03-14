@@ -206,11 +206,20 @@ class Referrers_Model extends CI_Model {
             throw new Exception('Invalid argument type $id_referrer : ' . $id_referrer);
         }
         
+        // Check if id exists for referrer
         $num_rows = $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->num_rows();
         if ($num_rows == 0) {
             return FALSE;
         }
-        
+
+        // Check if there exists a customer record under this referrer. Do not allow deletion if there is one.
+        $num_rows = $this->db->get_where('ea_users', array('id_referrer' => $id_referrer))->num_rows();
+        if ($num_rows != 0) {
+            throw new Exception("Error: Cannot delete referrer. \nThere exists a customer record under this referrer. " .
+                'An attempt to delete this referrer will result in the loss of customer data. Please delete '. 
+                'customer data manually before deleting this referrer.');
+        }
+ 
         return $this->db->delete('fairhope_referrers', array('id_referrer' => $id_referrer));
     }
     

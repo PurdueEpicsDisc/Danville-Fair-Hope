@@ -350,36 +350,6 @@ CustomersHelper.prototype.delete = function(id) {
 };
 
 /**
- * Delete a customer record from database.
- * 
- * @param {numeric} id Record id to be deleted. 
- */
-CustomersHelper.prototype.displayReferrer = function(id) {
-    if (id == null) {
-        $('#referrer').val('');
-        $('#referring-agency').val('');
-        return;
-    }
-
-    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_get_referrer';
-    var postData = { 'id_referrer': id };
-
-    $.post(postUrl, postData, function(response) {
-        ////////////////////////////////////////////////////
-        console.log('displayReferrer response:', response);
-        console.log(response.status);
-        console.log(response.referrer);
-        console.log(response.agency);
-        ////////////////////////////////////////////////////
-
-        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
-        
-        $('#referrer').val(response.referrer);
-        $('#referring-agency').val(response.agency);
-    }, 'json');
-};
-
-/**
  * Validate customer data before save (insert or update).
  * 
  * @param {object} customer Contains the customer data.
@@ -400,13 +370,6 @@ CustomersHelper.prototype.validate = function(customer) {
         if (missingRequired) {
             throw EALang['fields_are_required'];
         }
-
-        // Validate email address.
-        /* if (!GeneralFunctions.validateEmail($('#email').val())) {
-            $('#email').css('border', '2px solid red');
-            throw EALang['invalid_email'];
-        } */
-
         return true;
 
     } catch(exc) {
@@ -449,37 +412,42 @@ CustomersHelper.prototype.display = function(customer) {
     $('#num-of-children').val(customer.num_of_children);
 	$('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
-    ///////////////////TODO:: WRITE A FUNCTION TO OBTAIN REFERRER NAME AND AGENCY/////////////////////////////
-    BackendCustomers.helper.displayReferrer(customer.id_referrer);
-
+    $('#referrer').val(customer.referrer.name);
+    $('#referring-agency').val(customer.referrer.agency);
     $('#customer-appointments').data('jsp').destroy();
     $('#customer-appointments').empty();
-    ///////////////////TODO:: ADD REFERRER'S NAME AND AGENCY TO THIS (APPT. DETAILS AS WELL//////////////////
-    ///////////////////TODO:: ADD APPT. NOTES FEATURE SUCH AS PNP AND ETC. //////////////////////////////////
+
+    if (customer.id_referrer == null) {
+        $('#referrer').val('');
+        $('#referring-agency').val('');
+        return;
+    }
+
+    /* Display customer appt. details */
     $.each(customer.appointments, function(index, appointment) {
-        var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
-        var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
-        if (appointment.no_show_flag == 1) {
-            var html =
-                    '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
-                        start + ' - ' + end + '<br>' +
-                        appointment.service.name + ', ' +
-                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
-                    '</div>';
-        }
-        else {
-            var html =
-                    '<div class="appointment-row" data-id="' + appointment.id + '">' +
-                        start + ' - ' + end + '<br>' +
-                        appointment.service.name + ', ' +
-                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
-                    '</div>';
-        }
-        $('#customer-appointments').append(html);
-    });
+            var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
+            var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
+            if (appointment.no_show_flag == 1) {
+                var html =
+                        '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
+                            '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                            $('#referring-agency').val() + ' ' + $('#referrer').val() + '<br>' +
+                            appointment.service.name +
+                        '</div>';
+            }
+            else {
+                var html =
+                        '<div class="appointment-row" data-id="' + appointment.id + '">' +
+                            '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                            $('#referring-agency').val() + ' ' + $('#referrer').val() + '<br>' +
+                            appointment.service.name +
+                        '</div>';
+            }
+            $('#customer-appointments').append(html);
+        });
     $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
-    $('#appointment-details').empty();
-};
+    $('#appointment-details').empty();    
+}
 
 /**
  * Filter customer records.
@@ -530,9 +498,6 @@ CustomersHelper.prototype.filter = function(key, selectId, display) {
  * @param {object} customer Contains the customer data.
  * @return {string} Returns the record html code.
  */
-
-
- /************************control how it appear on backend costumer page, left column   */
 CustomersHelper.prototype.getFilterHtml = function(customer) {
     var name = customer.first_name + ' ' + customer.last_name;
     var info = customer.dob; 
@@ -590,15 +555,29 @@ CustomersHelper.prototype.displayAppointment = function(appointment) {
     var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
     var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
 
-    /////////THIS IS THE LITTLE BOX THAT APPEARS BELOW THE JSCROLLPANE WHEN AN APPT. IS SELECTED/////////////
-    ///////////////////TODO:: ADD REFERRER'S NAME AND AGENCY TO THIS (APPT. DETAILS AS WELL//////////////////
-    ///////////////////TODO:: ADD APPT. NOTES FEATURE SUCH AS PNP AND ETC. //////////////////////////////////
+    var notes;
+    if (appointment.notes != '') {
+        notes = appointment.notes + '<br>';
+    } else {
+        notes = '';
+    }
+
+    var layette = 'Layette(s): ';
+    var backpack = 'Backpack(s): ';
+
     var html = 
             '<div>' + 
                 '<strong>' + appointment.service.name + '</strong><br>' + 
-                appointment.provider.first_name + ' ' + appointment.provider.last_name + '<br>' +
+                layette + appointment.layette + '<br>' +
+                backpack + appointment.backpack_qty + '<br>' +
+                notes + 
                 start + ' - ' + end + '<br>' +
             '</div>';
 
     $('#appointment-details').html(html);
 };
+
+
+
+
+
