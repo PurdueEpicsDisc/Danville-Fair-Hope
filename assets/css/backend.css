@@ -350,8 +350,8 @@ nav a#pull {
 }
 
 #manage-appointment {
-/*    width: 860px;
-    margin-left: -430px;*/
+    /*width: 860px;*/
+    margin-left: -400px;
     overflow-y: auto;
     width: auto;
 }
@@ -391,6 +391,35 @@ body .form-horizontal .control-label {
 
 body .form-horizontal .controls {
     margin-left: 158px;
+}
+
+
+body .form-horizontal .layette-controls-boy {
+    float:left;
+    margin-left: 23px;
+    width: 35%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+body .form-horizontal .layette-controls-girl{
+    float:left;
+    width: 35%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+body .form-horizontal .span5 {
+    margin-left: -10px;
+
+}
+
+body .form-horizontal .span6 {
+    margin-left: 60px;
+}
+
+body .form-horizontal .span7 {
+    float:right;
 }
 
 /* BACKEND CUSTOMERS PAGE
@@ -876,10 +905,6 @@ padding: 4px 7px;
     margin-bottom: 20px; 
     overflow-y: auto; 
 }
-
-/*********************************************************************************
- * TODO:: RETURN TO THIS PORTION ONCE I HAVE IMPLEMENTED CLIENTS REFERRED FEATURE.
-/*********************************************************************************/
 
 #referrers-page #clients-referred .clients-row { 
     padding: 7px; 

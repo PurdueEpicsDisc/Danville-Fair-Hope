@@ -168,8 +168,11 @@ var BackendCalendar = {
             $dialog.find('#appointment-id').val(appointment['id']);
             $dialog.find('#select-service').val(appointment['id_services']).change();
             $dialog.find('#select-provider').val(appointment['id_users_provider']);
-            $dialog.find('#layette').val(appointment['layette']);
+            //$dialog.find('#layette').val(appointment['layette']);
+            $dialog.find('#layette-boy').val(appointment['layette_boy']);
+            $dialog.find('#layette-girl').val(appointment['layette_girl']);
             $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
+            $dialog.find('#pnp-qty').val(appointment['pnp_qty']);
             //$dialog.find('#no-show').val(appointment['no_show_flag']);
             $dialog.find('#appointment-notes').val(appointment['notes']);
 
@@ -182,6 +185,7 @@ var BackendCalendar = {
                     'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
             $dialog.find('#end-datetime').val(endDatetime);
 
+            /* Customer */
             var customer = appointment['customer'];
             $dialog.find('#customer-id').val(appointment['id_users_customer']);
             $dialog.find('#first-name').val(customer['first_name']);
@@ -196,6 +200,12 @@ var BackendCalendar = {
             $dialog.find('#num-noshow').val(customer['num_noshow']);           
             $dialog.find('#customer-notes').val(customer['notes']);
             
+            /* Referrer */
+            var referrer = customer['referrer'];
+            $dialog.find('#referrer-id').val(referrer['id_referrer']);
+            $dialog.find('#first-name').val(referrer['name']);
+            $dialog.find('#last-name').val(referrer['agency']);
+
             $dialog.modal('show');
         }
         
@@ -357,8 +367,11 @@ var BackendCalendar = {
                 $dialog.find('#appointment-id').val(appointment['id']);
                 $dialog.find('#select-service').val(appointment['id_services']).trigger('change');
                 $dialog.find('#select-provider').val(appointment['id_users_provider']);
-                $dialog.find('#layette').val(appointment['layette']);
+                //$dialog.find('#layette').val(appointment['layette']);
+                $dialog.find('#layette-boy').val(appointment['layette_boy']);
+                $dialog.find('#layette-girl').val(appointment['layette_girl']);
                 $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
+                $dialog.find('#pnp-qty').val(appointment['pnp_qty']);
                 $dialog.find('#appointment-notes').val(appointment['notes']);
                 
                 // Set the start and end datetime of the appointment.
@@ -598,8 +611,11 @@ var BackendCalendar = {
                 'start_datetime': startDatetime,
                 'end_datetime': endDatetime,
                 'notes': $dialog.find('#appointment-notes').val(),
-                'layette': $dialog.find('#layette').val(),
+                //'layette': $dialog.find('#layette').val(),
+                'layette_boy': $dialog.find('#layette-boy').val(),
+                'layette_girl': $dialog.find('#layette-girl').val(),
                 'backpack_qty': $dialog.find('#backpack-qty').val(),
+                'pnp_qty': $dialog.find('#pnp-qty').val(),
                 'no_show_flag': checked,
                 'reschedule': rescheduled,
                 'is_unavailable': false
@@ -892,23 +908,31 @@ var BackendCalendar = {
                     return false; // exit loop
                 }
             });
-            
+ 
             var start = new Date();
             var currentMin = parseInt(start.toString('mm'));
             
-            if (currentMin > 0 && currentMin < 15) 
+            if (currentMin >= 0 && currentMin < 30) 
+                start.set({ 'minute': 0 });
+            else
+                start.set({ 'minute': 30 });
+
+            /*if (currentMin > 0 && currentMin < 15) 
                 start.set({ 'minute': 15 });
             else if (currentMin > 15 && currentMin < 30)
                 start.set({ 'minute': 30 });
             else if (currentMin > 30 && currentMin < 45)
                 start.set({ 'minute': 45 });
             else 
-                start.addHours(1).set({ 'minute': 0 });
+                start.addHours(1).set({ 'minute': 0 });*/
             
             $dialog.find('#start-datetime').val(start.toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm'));
-            $dialog.find('#layette').val();
+            //$dialog.find('#layette').val();
+            $dialog.find('#layette-boy').val();
+            $dialog.find('#layette-girl').val();
             $dialog.find('#backpack-qty').val();
+            $dialog.find('#pnp-qty').val();
             $dialog.find('#no-show').prop('checked', false);
             $dialog.find('#reschedule').prop('checked', false);
             // Display modal form.
@@ -1989,6 +2013,14 @@ var BackendCalendar = {
             firstDay: 1
         });
         $dialog.find('#start-datetime').val(startDatetime);
+
+        ////////////////TRYING TO ADD 30 MINS TO START TIME TO GET END TIME////////////////////
+        $("#start-datetime").on("input change", function (e) {
+            console.log("Date changed: ", e.target.value);
+            $('#end-datetime').val(new Date(e.target.value).addMinutes(serviceDuration).
+                toString('MM/dd/yyyy HH:mm'));
+        });
+
         
         $dialog.find('#end-datetime').datetimepicker({
             'dateFormat': 'mm/dd/yy',
@@ -2030,6 +2062,8 @@ var BackendCalendar = {
         
         // Reset previous validation css formating.
         $dialog.find('.control-group').removeClass('error');
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+        $dialog.find('.layette-control-group').removeClass('error');
         $dialog.find('.modal-message').fadeOut();
         
         try {
@@ -2108,6 +2142,12 @@ var BackendCalendar = {
         });
         $dialog.find('#unavailable-start').val(start);
         
+        $("#start-datetime").on("input change", function (e) {
+            console.log("Date changed: ", e.target.value);
+            $('#end-datetime').val(new Date(e.target.value).addMinutes(serviceDuration).
+                toString('MM/dd/yyyy HH:mm'));
+        });
+
         $dialog.find('#unavailable-end').datetimepicker({
             'dateFormat': 'mm/dd/yy',
             // Translation
