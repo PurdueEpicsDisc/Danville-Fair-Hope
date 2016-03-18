@@ -258,6 +258,10 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 CustomersHelper.prototype.save = function(customer) {
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_customer';
     var postData = { 'customer': JSON.stringify(customer) };
+
+    //////////////////////////////////////////////
+    console.log('In prototype.save.......');
+    /////////////////////////////////////////////
     
     $.post(postUrl, postData, function(response) {
         ///////////////////////////////////////////////////////////
@@ -290,10 +294,18 @@ CustomersHelper.prototype.save = function(customer) {
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
 
         if (response.id == -1) {
+            ///////////////////////////////////////////////////////
+            console.log('Referrer does not exist. Adding referrer...');
+            ///////////////////////////////////////////////////////
+
+            //alert('Referrer record not found. Do you want to create a new Referrer?');
             BackendCustomers.helper.addReferrer(customer, referrer); 
         } else {
             $('#referrer-id').val(response.id);
             customer.id_referrer = response.id;
+            //////////////////////////////////////////////////////
+            console.log('Referrer exists. Saving customer...');
+            //////////////////////////////////////////////////////
             BackendCustomers.helper.save(customer);
         }
 
@@ -425,26 +437,26 @@ CustomersHelper.prototype.display = function(customer) {
 
     /* Display customer appt. details */
     $.each(customer.appointments, function(index, appointment) {
-            var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
-            var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
-            if (appointment.no_show_flag == 1) {
-                var html =
-                        '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
-                            '<b>' + start + ' - ' + end + '</b>' + '<br>' +
-                            $('#referring-agency').val() + ' ' + $('#referrer').val() + '<br>' +
-                            appointment.service.name +
-                        '</div>';
-            }
-            else {
-                var html =
-                        '<div class="appointment-row" data-id="' + appointment.id + '">' +
-                            '<b>' + start + ' - ' + end + '</b>' + '<br>' +
-                            $('#referring-agency').val() + ' ' + $('#referrer').val() + '<br>' +
-                            appointment.service.name +
-                        '</div>';
-            }
-            $('#customer-appointments').append(html);
-        });
+        var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
+        var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
+        if (appointment.no_show_flag == 1) {
+            var html =
+                '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
+                    '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                    $('#referring-agency').val() + ', ' + $('#referrer').val() + '<br>' +
+                    appointment.service.name +
+                '</div>';
+        }
+        else {
+            var html =
+                '<div class="appointment-row" data-id="' + appointment.id + '">' +
+                    '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                    $('#referring-agency').val() + ', ' + $('#referrer').val() + '<br>' +
+                    appointment.service.name +
+                '</div>';
+        }
+        $('#customer-appointments').append(html);
+    });
     $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
     $('#appointment-details').empty();    
 }
@@ -499,10 +511,8 @@ CustomersHelper.prototype.filter = function(key, selectId, display) {
  * @return {string} Returns the record html code.
  */
 CustomersHelper.prototype.getFilterHtml = function(customer) {
-    var name = customer.first_name + ' ' + customer.last_name;
+    var name = customer.last_name + '<br>' + customer.first_name;
     var info = customer.dob; 
-    info = (customer.phone_number != '' && customer.phone_number != null) 
-            ? info + ', ' + customer.phone_number : info;
     
     var html = 
             '<div class="customer-row" data-id="' + customer.id + '">' +
@@ -562,13 +572,17 @@ CustomersHelper.prototype.displayAppointment = function(appointment) {
         notes = '';
     }
 
-    var layette = 'Layette(s): ';
-    var backpack = 'Backpack(s): ';
+    var layette_b = 'Layette (B): ';
+    var layette_g = 'Layette (G): ';
+    var pnp = 'PNP: ';
+    var backpack = 'Backpack: ';
 
     var html = 
             '<div>' + 
                 '<strong>' + appointment.service.name + '</strong><br>' + 
-                layette + appointment.layette + '<br>' +
+                layette_b + appointment.layette_boy + '<br>' +
+                layette_g + appointment.layette_girl + '<br>' +
+                pnp + appointment.pnp_qty + '<br>' +
                 backpack + appointment.backpack_qty + '<br>' +
                 notes + 
                 start + ' - ' + end + '<br>' +

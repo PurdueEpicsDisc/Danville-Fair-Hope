@@ -37,6 +37,7 @@ class Backend extends CI_Controller {
         $this->load->model('roles_model');
         $this->load->model('user_model');
         $this->load->model('secretaries_model');
+        $this->load->model('referrers_model');
         
         $view['base_url'] = $this->config->item('base_url');
         $view['user_display_name'] = $this->user_model->get_user_display_name($this->session->userdata('user_id'));
@@ -46,6 +47,7 @@ class Backend extends CI_Controller {
         $view['available_providers'] = $this->providers_model->get_available_providers();
         $view['available_services'] = $this->services_model->get_available_services();
         $view['customers'] = $this->customers_model->get_batch();
+        $view['referrers'] = $this->referrers_model->get_batch();
         $view['appointments'] = $this->appointments_model->get_batch();
         $this->setUserData($view);
         

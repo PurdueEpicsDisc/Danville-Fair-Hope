@@ -103,9 +103,6 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
         $('#edit-referrer, #delete-referrer').prop('disabled', false);
     });
 
-    /*******************************************************************************
-     * TODO:: NOT SURE HOW TO IMPLEMENT THIS YET. WILL COME BACK LATER.
-     *******************************************************************************/
     /**
      * Event: Clients Referred Row "Click"
      * 
@@ -121,8 +118,20 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
         var customer = {};
         var appointment = {};
 
-        /****************VERY BAD ALGORITHM! O(n^3)! NEED BETTER WAY!*********/
+        /****************VERY BAD ALGORITHM! O(n^3)! NEED TO RECONSIDER!*********/
         $.each(BackendReferrers.helper.filterResults, function(index, r) {
+            if (r.id_referrer == referrerId) {
+                $.each(r.appointments, function(index, a) {
+                    if (a.id == appointmentId) {
+                        appointment = a;
+                        customer = a.customer;
+                        return false;
+                    }
+                });
+            }
+        });
+
+        /*$.each(BackendReferrers.helper.filterResults, function(index, r) {
             if (r.id_referrer == referrerId) {
                 $.each(r.customers, function(index, c) {
                     if (c.id == customerId) {
@@ -137,13 +146,10 @@ ReferrersHelper.prototype.bindEventHandlers = function() {
                     }
                 });
             }
-        });
+        });*/
         BackendReferrers.helper.displayAppointment(appointment, customer);
     });
 
-    /*******************************************************************************
-     * TODO:: NOT SURE HOW TO IMPLEMENT THIS YET. WILL COME BACK LATER.
-     *******************************************************************************/
     /**
      * Event: Appointment Row "Click"
      * 
@@ -368,7 +374,7 @@ ReferrersHelper.prototype.display = function(referrer) {
     $('#agency').val(referrer.agency);
 
     /* Check if referrer has customer */
-    if (referrer.customers.length == 0) {
+    if (referrer.appointments.length == 0) {
         $('#clients-referred').empty();
         $('#client-details').empty(); 
         return;
@@ -378,30 +384,28 @@ ReferrersHelper.prototype.display = function(referrer) {
     $('#clients-referred').empty();
 
     /* Display clients & meeting details */
-    $.each(referrer.customers, function(index, customer) {
-        $.each(customer.appointments, function(index, appointment) {
-            var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
-            var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
-            if (appointment.no_show_flag == 1) {
-                var html =
-                    '<div class="clients-row-noshow" data-id="' + appointment.id + '">' +
-                        '<b>' + start + ' - ' + end + '<br>' + '</b>' +
-                        customer.first_name + ' ' + customer.last_name + '<br>' +
-                        appointment.service.name +
-                    '</div>';
-            }
-            else {
-                ////////////////////////////////////////////////////////////////
-                var html =
-                    '<div class="clients-row" data-id="' + appointment.id + '"' + 
-                        ' data-customer="' + customer.id + '">' +
-                        '<b>' + start + ' - ' + end + '<br>' + '</b>' +
-                        customer.first_name + ' ' + customer.last_name + '<br>' +
-                        appointment.service.name +
-                    '</div>';
-            }
-            $('#clients-referred').append(html);
-        });
+    $.each(referrer.appointments, function(index, appointment) {
+        var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
+        var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
+        var customer = appointment.customer;
+        if (appointment.no_show_flag == 1) {
+            var html =
+                '<div class="clients-row-noshow" data-id="' + appointment.id + '">' +
+                    '<b>' + start + ' - ' + end + '<br>' + '</b>' +
+                    customer.first_name + ' ' + customer.last_name + '<br>' +
+                    appointment.service.name +
+                '</div>';
+        }
+        else {
+            var html =
+                '<div class="clients-row" data-id="' + appointment.id + '"' + 
+                    ' data-customer="' + customer.id + '">' +
+                    '<b>' + start + ' - ' + end + '<br>' + '</b>' +
+                    customer.first_name + ' ' + customer.last_name + '<br>' +
+                    appointment.service.name +
+                '</div>';
+        }
+        $('#clients-referred').append(html);
     });
     $('#clients-referred').jScrollPane({ mouseWheelSpeed: 70 });
     $('#client-details').empty(); 
@@ -521,14 +525,17 @@ ReferrersHelper.prototype.displayAppointment = function(appointment, customer) {
         notes = '';
     }
 
-    var layette = 'Layette(s): ';
-    var backpack = 'Backpack(s): ';
+    var layette_b = 'Layette (B): ';
+    var layette_g = 'Layette (G): ';
+    var pnp = 'PNP: ';
+    var backpack = 'Backpack: ';
 
     var html = 
             '<div>' + 
-                '<strong>' + customer.first_name + ' ' + customer.last_name + '</strong><br>' + 
-                appointment.service.name +  '<br>' +
-                layette + appointment.layette + '<br>' +
+                '<strong>' + appointment.service.name + '</strong><br>' + 
+                layette_b + appointment.layette_boy + '<br>' +
+                layette_g + appointment.layette_girl + '<br>' +
+                pnp + appointment.pnp_qty + '<br>' +
                 backpack + appointment.backpack_qty + '<br>' +
                 notes + 
                 start + ' - ' + end + '<br>' +

@@ -350,15 +350,16 @@ nav a#pull {
 }
 
 #manage-appointment {
-    /*width: 860px;*/
+    width: 860px;
     margin-left: -400px;
     overflow-y: auto;
-    width: auto;
+    /*width: auto;*/
 }
 
 #existing-customers-list { 
     height: 110px;
     overflow-y: auto;
+    overflow-x: auto;
     margin-bottom: 8px;
     font-size: 12px;
     line-height: 22px;
@@ -366,7 +367,9 @@ nav a#pull {
 
 #existing-customers-list div {
     display: inline-block;
-    width: 250px;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 23%;
     margin: 0 5px 5px 0;
     padding: 3px 5px;
     border-radius: 3px;
@@ -379,6 +382,38 @@ nav a#pull {
 }
 
 #filter-existing-customers {
+    display: inline-block;
+    height: 14px;
+    min-height: 24px;
+    font-size: 12px;
+}
+
+#existing-referrers-list { 
+    height: 110px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+#existing-referrers-list div {
+    display: inline-block;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 23%;
+    margin: 0 5px 5px 0;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+#existing-referrers-list div:hover {
+    background: #B8F0C1;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#filter-existing-referrers {
     display: inline-block;
     height: 14px;
     min-height: 24px;

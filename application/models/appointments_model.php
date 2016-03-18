@@ -300,8 +300,15 @@ class Appointments_Model extends CI_Model {
         if ($where_clause != '') {
             $this->db->where($where_clause);
         }
-        
-        return $this->db->get('ea_appointments')->result_array();
+
+        return $this->db
+                    ->select('*')
+                    ->from('ea_appointments')
+                    ->order_by('id_users_customer')
+                    ->order_by('start_datetime')
+                    ->get()->result_array();
+
+        //return $this->db->get('ea_appointments')->result_array();
     }
     
     /**

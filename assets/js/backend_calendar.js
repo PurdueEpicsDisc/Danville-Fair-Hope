@@ -185,6 +185,7 @@ var BackendCalendar = {
                     'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm');
             $dialog.find('#end-datetime').val(endDatetime);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             /* Customer */
             var customer = appointment['customer'];
             $dialog.find('#customer-id').val(appointment['id_users_customer']);
@@ -201,7 +202,7 @@ var BackendCalendar = {
             $dialog.find('#customer-notes').val(customer['notes']);
             
             /* Referrer */
-            var referrer = customer['referrer'];
+            var referrer = appointment['referrer'];
             $dialog.find('#referrer-id').val(referrer['id_referrer']);
             $dialog.find('#first-name').val(referrer['name']);
             $dialog.find('#last-name').val(referrer['agency']);
@@ -252,6 +253,7 @@ var BackendCalendar = {
          * display them on the calendar.
          */
         $('#select-filter-item').change(function() { 
+            BackendCalendar.refreshGlobalVariables();
             BackendCalendar.refreshCalendarAppointments(
                     $('#calendar'),
                     $('#select-filter-item').val(),
@@ -343,7 +345,8 @@ var BackendCalendar = {
         $(document).on('click', '.close-popover', function() {
             $(this).parents().eq(2).remove(); 
         });
-        
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /**
          * Event: Popover Edit Button "Click"
          * 
@@ -358,6 +361,9 @@ var BackendCalendar = {
             
             if (BackendCalendar.lastFocusedEventData.data.is_unavailable == false) {
                 var appointment = BackendCalendar.lastFocusedEventData.data;
+                ////////////////////////////////////////////////////////////////////////////
+                console.log('Appointment edit: ' , appointment);
+                ///////////////////////////////////////////////////////////////////////////
                 $dialog = $('#manage-appointment');
 
                 BackendCalendar.resetAppointmentDialog();
@@ -367,7 +373,6 @@ var BackendCalendar = {
                 $dialog.find('#appointment-id').val(appointment['id']);
                 $dialog.find('#select-service').val(appointment['id_services']).trigger('change');
                 $dialog.find('#select-provider').val(appointment['id_users_provider']);
-                //$dialog.find('#layette').val(appointment['layette']);
                 $dialog.find('#layette-boy').val(appointment['layette_boy']);
                 $dialog.find('#layette-girl').val(appointment['layette_girl']);
                 $dialog.find('#backpack-qty').val(appointment['backpack_qty']);
@@ -412,6 +417,12 @@ var BackendCalendar = {
                 $dialog.find('#num-of-children').val(customer['num_of_children']);
                 $dialog.find('#num-noshow').val(customer['num_noshow']);
                 $dialog.find('#customer-notes').val(customer['notes']);
+
+                var referrer = appointment['referrer'];
+                $dialog.find('#referrer-id').val(referrer['id_referrer']);
+                $dialog.find('#referrer').val(referrer['name']);
+                $dialog.find('#agency').val(referrer['agency']);
+
             } else {
                 var unavailable = BackendCalendar.lastFocusedEventData.data;
                 
@@ -455,7 +466,7 @@ var BackendCalendar = {
 
                     $.post(postUrl, postData, function(response) {
                         /////////////////////////////////////////////////////////
-                        console.log('Delete Appointment Response :', response);
+                        //console.log('Delete Appointment Response :', response);
                         /////////////////////////////////////////////////////////
 
                         $('#message_box').dialog('close');
@@ -496,7 +507,7 @@ var BackendCalendar = {
 
                 $.post(postUrl, postData, function(response) {
                     /////////////////////////////////////////////////////////
-                    console.log('Delete Unavailable Response :', response);
+                    //console.log('Delete Unavailable Response :', response);
                     /////////////////////////////////////////////////////////
 
                     $('#message_box').dialog('close');
@@ -533,18 +544,20 @@ var BackendCalendar = {
                 $dialog = $('#manage-appointment');
 
                 BackendCalendar.resetAppointmentDialog();
-                console.log(appointment['id']);
+                //console.log(appointment['id']);
 
                 var customer = appointment['customer'];
+                var referrer = appointment['referrer'];
+                var service = appointment['service'];
                 var html = '' +
     '<body>' +
         '<div>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NAME:' + customer['first_name'] + ' ' + customer['last_name'] + '</FONT></FONT><FONT FACE="Arial, serif"></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Start Time:' + Date.parseExact(appointment['start_datetime'],'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</FONT></FONT></P>' + 
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time:' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
-            '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5> REFERRING AGENCY </FONT></FONT>' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>CONTACT PERSON</FONT></FONT><FONT FACE="Arial, serif">' + 'Empty' + '</font></P>' +
-           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>NUMBER OF CHILDREN:'+ customer['num_of_children'] + '</FONT></FONT> </FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Name: ' + customer['first_name'] + ' ' + customer['last_name'] + '</FONT></FONT><FONT FACE="Arial, serif"></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Start Time: ' + Date.parseExact(appointment['start_datetime'],'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') + '</FONT></FONT></P>' + 
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>End Time: ' + Date.parseExact(appointment['end_datetime'], 'yyyy-MM-dd HH:mm:ss').toString('MM/dd/yyyy HH:mm') +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Service: ' + service['name'] + '</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Referrer: ' + referrer['agency'] + ' ' + referrer['name'] + '</FONT></FONT></P>' +
+           '<P STYLE="margin-bottom: 0in; line-height: 100%"><FONT FACE="Arial, serif"><FONT SIZE=5>Number of Children:'+ customer['num_of_children'] + '</FONT></FONT> </FONT></P>' +
            '<P STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0"><BR></P>' +
            '<P ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%; widows: 0; orphans: 0">' +
            '<P STYLE="margin-bottom: 0in; line-height: 0.01in; widows: 0; orphans: 0"><BR></P>' +
@@ -580,6 +593,8 @@ var BackendCalendar = {
         $('#manage-appointment #cancel-appointment').click(function() {
             $('#manage-appointment').modal('hide');
         });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
          * Event: Manage Appointments Dialog Save Button "Click"
@@ -655,6 +670,19 @@ var BackendCalendar = {
 				}
 				});*/
             }
+
+            var referrer = {
+                'name': $dialog.find('#referrer').val(),
+                'agency': $dialog.find('#agency').val(),
+            }
+
+            if ($dialog.find('#referrer-id').val() !== '') {
+                // Set the id value, only if we are editing an appointment.
+                referrer['id_referrer'] = $dialog.find('#referrer-id').val();
+                customer['id_referrer'] = referrer['id_referrer'];
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////
+                appointment['id_referrer'] = referrer['id_referrer'];
+            }
             
             // :: DEFINE SUCCESS EVENT CALLBACK
             var successCallback = function(response) {                
@@ -689,7 +717,7 @@ var BackendCalendar = {
             };
             
             // :: CALL THE UPDATE APPOINTMENT METHOD
-            BackendCalendar.saveAppointment(appointment, customer, 
+            BackendCalendar.saveAppointment(appointment, customer, referrer,
                     successCallback, errorCallback);
         }); 
         
@@ -727,7 +755,7 @@ var BackendCalendar = {
             
             var successCallback = function(response) {
                 ///////////////////////////////////////////////////////////////////
-                console.log('Save Unavailable Time Period Response:', response);
+                //console.log('Save Unavailable Time Period Response:', response);
                 ///////////////////////////////////////////////////////////////////
 
                 if (response.exceptions) {
@@ -765,7 +793,7 @@ var BackendCalendar = {
             
             var errorCallback = function(jqXHR, textStatus, errorThrown) {
                 ////////////////////////////////////////////////////////////////////////
-                console.log('Save Unavailable Error:', jqXHR, textStatus, errorThrown);
+                //console.log('Save Unavailable Error:', jqXHR, textStatus, errorThrown);
                 ////////////////////////////////////////////////////////////////////////
                 
                 GeneralFunctions.displayMessageBox('Communication Error', 'Unfortunately ' +
@@ -830,7 +858,7 @@ var BackendCalendar = {
                             };
                             $.post(postUrl, postData, function(response) {
                                 ///////////////////////////////////////////////////////////////////
-                                console.log('Get Available Google Calendars Response', response);
+                                //console.log('Get Available Google Calendars Response', response);
                                 ///////////////////////////////////////////////////////////////////
                                 
                                 if (!GeneralFunctions.handleAjaxExceptions(response)) return;
@@ -917,18 +945,8 @@ var BackendCalendar = {
             else
                 start.set({ 'minute': 30 });
 
-            /*if (currentMin > 0 && currentMin < 15) 
-                start.set({ 'minute': 15 });
-            else if (currentMin > 15 && currentMin < 30)
-                start.set({ 'minute': 30 });
-            else if (currentMin > 30 && currentMin < 45)
-                start.set({ 'minute': 45 });
-            else 
-                start.addHours(1).set({ 'minute': 0 });*/
-            
             $dialog.find('#start-datetime').val(start.toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#end-datetime').val(start.addMinutes(serviceDuration).toString('MM/dd/yyyy HH:mm'));
-            //$dialog.find('#layette').val();
             $dialog.find('#layette-boy').val();
             $dialog.find('#layette-girl').val();
             $dialog.find('#backpack-qty').val();
@@ -954,15 +972,11 @@ var BackendCalendar = {
             var start = new Date();
             var currentMin = parseInt(start.toString('mm'));
             
-            if (currentMin > 0 && currentMin < 15) 
-                start.set({ 'minute': 15 });
-            else if (currentMin > 15 && currentMin < 30)
+            if (currentMin >= 0 && currentMin < 30) 
+                start.set({ 'minute': 0 });
+            else
                 start.set({ 'minute': 30 });
-            else if (currentMin > 30 && currentMin < 45)
-                start.set({ 'minute': 45 });
-            else 
-                start.addHours(1).set({ 'minute': 0 });
-            
+
             $dialog.find('#unavailable-start').val(start.toString('MM/dd/yyyy HH:mm'));
             $dialog.find('#unavailable-end').val(start.addHours(1).toString('MM/dd/yyyy HH:mm'));
             
@@ -984,7 +998,7 @@ var BackendCalendar = {
                 $('#filter-existing-customers').val('');
                 $.each(GlobalVariables.customers, function(index, c) {
                     $list.append('<div data-id="' + c.id + '">' 
-                            + c.first_name + ' ' + c.last_name + '</div>');
+                            + c.last_name + ', ' + c.first_name + '</div>');
                 });
             } else {
                 $list.slideUp('slow');
@@ -1002,18 +1016,27 @@ var BackendCalendar = {
             $.each(GlobalVariables.customers, function(index, c) {
                 if (c.id == id) {
                     $('#customer-id').val(c.id);
+                    $('#referrer-id').val(c.id_referrer);
                     $('#first-name').val(c.first_name);
                     $('#last-name').val(c.last_name);
                     $('#dob').val(c.dob);
                     $('#num-of-children').val(c.num_of_children);
                     $('#num-noshow').val(c.num_noshow);
-                    $('#email').val(c.email);
+                    // $('#email').val(c.email);
                     // $('#phone-number').val(c.phone_number);
                     // $('#address').val(c.address);
                     // $('#city').val(c.city);
                     // $('#zip-code').val(c.zip_code);
                     $('#customer-notes').val(c.notes);
                     return false;
+                }
+            });
+
+            var ref_id = $('#referrer-id').val();
+            $.each(GlobalVariables.referrers, function(index, r) {
+                if (r.id_referrer == ref_id) {
+                    $('#referrer').val(r.name);
+                    $('#agency').val(r.agency);
                 }
             });
             
@@ -1040,6 +1063,67 @@ var BackendCalendar = {
                 }
             });
         });
+
+        ///////////////////////////////////////////ADD/EDIT/SHOW REFERRERS///////////////////////////////////////////
+
+        /**
+         * Event: Pick Existing Referrer Button "Click"
+         */
+        $('#select-referrer').click(function() {
+            var $list = $('#existing-referrers-list');
+            
+            if (!$list.is(':visible')) {
+                $(this).text(EALang['hide']);
+                $list.empty();
+                $list.slideDown('slow');
+                $('#filter-existing-referrers').fadeIn('slow');
+                $('#filter-existing-referrers').val('');
+                $.each(GlobalVariables.referrers, function(index, r) {
+                    $list.append('<div data-id="' + r.id_referrer + '">' 
+                            + r.agency + ', ' + r.name + '</div>');
+                });
+            } else {
+                $list.slideUp('slow');
+                $('#filter-existing-referrers').fadeOut('slow');
+                $(this).text(EALang['select']);
+            }
+        });
+        
+        /**
+         * Event: Select Existing Referrer From List "Click"
+         */
+        $(document).on('click', '#existing-referrers-list div', function() {
+            var id = $(this).attr('data-id');
+            
+            $.each(GlobalVariables.referrers, function(index, r) {
+                if (r.id_referrer == id) {
+                    $('#referrer-id').val(r.id_referrer);
+                    $('#referrer').val(r.name);
+                    $('#agency').val(r.agency);
+                    return false;
+                }
+            });
+            
+            $('#select-referrer').trigger('click'); // hide list
+        });
+        
+        /**
+         * Event: Filter Existing Referrer "Change"
+         */
+        $('#filter-existing-referrers').keyup(function() {
+            var key = $(this).val().toLowerCase();
+            var $list = $('#existing-referrers-list');
+            $list.empty();
+            $.each(GlobalVariables.referrers, function(index, r) {
+                if (r.name.toLowerCase().indexOf(key) != -1 
+                        || r.agency.toLowerCase().indexOf(key) != -1) {
+                    $list.append('<div data-id="' + r.id_referrer + '">' 
+                            + r.agency + ' ' + r.name + '</div>');
+                }
+            });
+        });
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         /**
          * Event: Selected Service "Change"
@@ -1069,10 +1153,16 @@ var BackendCalendar = {
          * Event: Enter New Customer Button "Click"
          */
         $('#new-customer').click(function() {
-            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #email,'
-                    + '#phone-number, #address, #city, #zip-code, #dob,#num-of-children, #customer-notes,#num-noshow').val('');
+            $('#manage-appointment').find('#customer-id, #first-name, #last-name, #dob, #num-of-children, #customer-notes, #num-noshow').val('');
         });
-        
+
+        /**
+         * Event: Enter New Customer Button "Click"
+         */
+        $('#new-referrer').click(function() {
+            $('#manage-appointment').find('#referrer, #agency, #referrer-id').val('');
+        });
+
         /**
          * Event: Select Google Calendar "Click"
          */
@@ -1084,7 +1174,7 @@ var BackendCalendar = {
             };
             $.post(postUrl, postData, function(response){
                 ///////////////////////////////////////////////////////////
-                console.log('Select Google Calendar Response', response);
+                //console.log('Select Google Calendar Response', response);
                 ///////////////////////////////////////////////////////////
                 if (!GeneralFunctions.handleAjaxExceptions(response)) return;
                 Backend.displayNotification(EALang['google_calendar_selected']);
@@ -1111,6 +1201,30 @@ var BackendCalendar = {
                 - $('#calendar-toolbar').height() - 50; // 80 for fine tuning
         return (result > 500) ? result : 500; // Minimum height is 500px
     },
+
+    /**
+     * This method refreshes the global variables used.
+     *
+     */
+     refreshGlobalVariables: function() {
+        //console.log("Refreshing global vars");
+
+        var postUrlCustomers = GlobalVariables.baseUrl + 'backend_api/ajax_filter_customers';
+        var postUrlReferrers = GlobalVariables.baseUrl + 'backend_api/ajax_filter_referrers';
+
+        var postData = { 'key': '' };
+
+        $.post(postUrlCustomers, postData, function(response) {
+            if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+            GlobalVariables.customers = response;        
+        }, 'json');
+
+        $.post(postUrlReferrers, postData, function(response) {
+            if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+            GlobalVariables.referrers = response;        
+        }, 'json');        
+    },
+
            
     /**
      * This method reloads the registered appointments for the selected date period 
@@ -1134,7 +1248,7 @@ var BackendCalendar = {
 
         $.post(postUrl, postData, function(response) {
             ////////////////////////////////////////////////////////////////////
-            console.log('Refresh Calendar Appointments Response :', response);
+            // console.log('Refresh Calendar Appointments Response :', response);
             ////////////////////////////////////////////////////////////////////
             
             if (!GeneralFunctions.handleAjaxExceptions(response)) return;
@@ -1390,7 +1504,9 @@ var BackendCalendar = {
      * @param {function} errorCallback (OPTIONAL) If defined, this function is 
      * going to be executed on post failure.
      */
-    saveAppointment: function(appointment, customer, successCallback, errorCallback) {
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    saveAppointment: function(appointment, customer, referrer, successCallback, errorCallback) {
+
         var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_appointment';
         
         var postData = {};
@@ -1400,6 +1516,16 @@ var BackendCalendar = {
         if (customer !== undefined) {
             postData['customer_data'] = JSON.stringify(customer);
         }
+
+        if (referrer !== undefined) {
+            postData['referrer_data'] = JSON.stringify(referrer);
+        }
+
+        /////////////////REFERRER DATA///////////////////
+        console.log('post customer data: ', postData['customer_data']);
+        console.log('post referrer data: ', postData['referrer_data']);
+        console.log('post appointment data: ', postData['appointment_data']);
+        //////////////////////////////////////////////////
         
         $.ajax({
             'type': 'POST',
@@ -1408,7 +1534,7 @@ var BackendCalendar = {
             'dataType': 'json',
             'success': function(response) {
                 /////////////////////////////////////////////////////////////
-                console.log('Save Appointment Data Response:', response);
+                //console.log('Save Appointment Data Response:', response);
                 /////////////////////////////////////////////////////////////            
                 
                 if (successCallback !== undefined) {
@@ -1417,8 +1543,8 @@ var BackendCalendar = {
             },
             'error': function(jqXHR, textStatus, errorThrown) {
                 //////////////////////////////////////////////////////////////////
-                console.log('Save Appointment Data Error:', jqXHR, textStatus, 
-                        errorThrown);
+                //console.log('Save Appointment Data Error:', jqXHR, textStatus, 
+                //        errorThrown);
                 //////////////////////////////////////////////////////////////////
                 
                 if (errorCallback !== undefined) {
@@ -1478,6 +1604,7 @@ var BackendCalendar = {
 
             // Must delete the following because only appointment data should be 
             // provided to the ajax call.
+            delete appointment['referrer'];
             delete appointment['customer'];
             delete appointment['provider'];
             delete appointment['service'];
@@ -1529,7 +1656,7 @@ var BackendCalendar = {
             };
 
             // :: UPDATE APPOINTMENT DATA VIA AJAX CALL
-            BackendCalendar.saveAppointment(appointment, undefined, 
+            BackendCalendar.saveAppointment(appointment, undefined, undefined,
                     successCallback, undefined);
         } else {
             // :: UPDATE UNAVAILABLE TIME PERIOD
@@ -1743,6 +1870,7 @@ var BackendCalendar = {
             delete appointment['customer'];
             delete appointment['provider'];
             delete appointment['service'];
+            delete appointment['referrer'];
 
             appointment['start_datetime'] = Date.parseExact(
                     appointment['start_datetime'], 'yyyy-MM-dd HH:mm:ss')
@@ -1808,8 +1936,12 @@ var BackendCalendar = {
                 $('#footer').css('position', 'static'); // Footer position fix.
             };
 
+            /////////////////////////////////////////////////////
+            console.log(appointment);
+            /////////////////////////////////////////////////////
+
             // :: UPDATE APPOINTMENT DATA VIA AJAX CALL
-            BackendCalendar.saveAppointment(appointment, undefined, 
+            BackendCalendar.saveAppointment(appointment, undefined, undefined,
                     successCallback, undefined);
         } else {
             // :: UPDATE UNAVAILABLE TIME PERIOD
@@ -1821,7 +1953,7 @@ var BackendCalendar = {
             }
             
             var successCallback = function(response) {
-                console.log('Drop Unavailable Event Response:', response);
+                //console.log('Drop Unavailable Event Response:', response);
                 
                 if (response.exceptions) {
                     response.exceptions = GeneralFunctions.parseExceptions(response.exceptions);
@@ -1965,11 +2097,14 @@ var BackendCalendar = {
             }
         });
         
-        // :: CLOSE EXISTING CUSTOMERS FILTER FRAME
+        // :: CLOSE EXISTING CUSTOMERS & REFERRERS FILTER FRAME
         $('#existing-customers-list').slideUp('slow');
         $('#filter-existing-customers').fadeOut('slow');
         $('#select-customer').text(EALang['select']);
-            
+        $('#existing-referrer-list').slideUp('slow');
+        $('#filter-existing-referrers').fadeOut('slow');
+        $('#select-referrer').text(EALang['select']);
+
         // :: SETUP START AND END DATETIME PICKERS
         // Get the selected service duration. It will be needed in order to calculate
         // the appointment end datetime.
@@ -2080,10 +2215,10 @@ var BackendCalendar = {
             }
              
             // :: CHECK EMAIL ADDRESS
-            if (!GeneralFunctions.validateEmail($dialog.find('#email').val())) {
+            /*if (!GeneralFunctions.validateEmail($dialog.find('#email').val())) {
                 $dialog.find('#email').parents().eq(1).addClass('error');
                 throw EALang['invalid_email'];
-            }
+            }*/
             
             // :: CHECK APPOINTMENT START AND END TIME
             var start = Date.parseExact($('#start-datetime').val(), 'MM/dd/yyyy HH:mm');

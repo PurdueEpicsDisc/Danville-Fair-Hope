@@ -333,7 +333,7 @@
 
                     <div class="control-group">
                         <label for="num-of-children" class="control-label">
-                            <?php echo $this->lang->line('num_of_children'); ?>
+                            <?php echo $this->lang->line('num_of_children'); ?> *
                         </label>
                         <div class="controls">
                             <input type="number" id="num-of-children" class="required" onkeydown="return ( event.ctrlKey || event.altKey 
@@ -418,6 +418,7 @@
                             style="display: none;" class="input-medium span3"/>
                     
                     <div id="existing-referrers-list" style="display: none;"></div>
+
                 </legend>
                 
                 <input id="referrer-id" type="hidden" />
@@ -437,7 +438,7 @@
                         <label for="agency" class="control-label">
                             <?php echo $this->lang->line('referring_agency'); ?> *</label>
                         <div class="controls">                        
-                            <input type="text" id="referring-agency" class="required" />
+                            <input type="text" id="agency" class="required" />
                         </div>
                     </div>
                 </div>

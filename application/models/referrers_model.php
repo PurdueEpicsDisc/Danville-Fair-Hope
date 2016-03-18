@@ -25,8 +25,9 @@ class Referrers_Model extends CI_Model {
 
         // :: CHECK IF CUSTOMER ALREADY EXIST (FROM NAME & DOB).	
         if ( $this->exists($referrer) && !isset($referrer['id_referrer'])) {
+            throw new Exception('Duplicate referrer: A referrer with similar name and agency exists in the database.');
         	// Find the customer id from the database.
-        	$referrer['id_referrer'] = $this->find_record_id($referrer);
+        	// $referrer['id_referrer'] = $this->find_record_id($referrer);
         }
 
         // :: INSERT OR UPDATE CUSTOMER RECORD
@@ -233,7 +234,7 @@ class Referrers_Model extends CI_Model {
      */
     public function get_row($id_referrer) {
         if (!is_numeric($id_referrer)) {
-            throw new Exception('Invalid argument provided as $id_referrer : ' . $id_referrer);
+            throw new Exception('Invalid argument provided as $id_referrer: ' . $id_referrer);
         }
         return $this->db->get_where('fairhope_referrers', array('id_referrer' => $id_referrer))->row_array();
     }
@@ -329,7 +330,13 @@ class Referrers_Model extends CI_Model {
         ///////////////////////////////////////////////////////
         // console.log('DEBUGGING YO', $this->db->get('fairhope_referrers')->result_array());
         ///////////////////////////////////////////////////////
-        return $this->db->get('fairhope_referrers')->result_array();
+
+        return $this->db
+                    ->select('*')
+                    ->from('fairhope_referrers')
+                    ->order_by('agency')
+                    ->order_by('name')
+                    ->get()->result_array();
     }
     
 

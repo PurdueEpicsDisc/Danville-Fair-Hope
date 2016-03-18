@@ -25,8 +25,9 @@ class Customers_Model extends CI_Model {
 
         // :: CHECK IF CUSTOMER ALREADY EXIST (FROM NAME & DOB).	
         if ( $this->exists($customer) && !isset($customer['id'])) {
+            throw new Exception('Duplicate client: A client with similar first name, last name, and DOB exists in the database.');
         	// Find the customer id from the database.
-        	$customer['id'] = $this->find_record_id($customer);
+        	// $customer['id'] = $this->find_record_id($customer);
         }
 
         // :: INSERT OR UPDATE CUSTOMER RECORD
@@ -327,7 +328,12 @@ class Customers_Model extends CI_Model {
         
         $this->db->where('id_roles', $customers_role_id);
         
-        return $this->db->get('ea_users')->result_array();
+        return $this->db
+                    ->select('*')
+                    ->from('ea_users')
+                    ->order_by('last_name')
+                    ->order_by('first_name')
+                    ->get()->result_array();
     }
     
     /**
