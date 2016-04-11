@@ -126,6 +126,15 @@
                             <?php echo $this->lang->line('customers'); ?>
                         </a>
                         
+                        <?php // REFERRERS MENU ITEM 
+                              // ------------------------------------------------------ ?>
+                        <?php $hidden = ($privileges[PRIV_USERS]['view'] ==  TRUE) ? '' : 'hidden'; ?>
+                        <?php $active = ($active_menu == PRIV_USERS) ? 'active' : ''; ?>
+                        <a href="<?php echo $base_url; ?>backend/referrers" class="menu-item <?php echo $hidden; ?><?php echo $active; ?>"
+                                title="<?php echo $this->lang->line('manage_referrers_hint'); ?>">
+                            <?php echo $this->lang->line('referrers'); ?> 
+                        </a>
+
                         <?php // SERVICES MENU ITEM 
                               // ------------------------------------------------------ ?>
                         <?php $hidden = ($privileges[PRIV_SERVICES]['view'] == TRUE) ? '' : 'hidden'; ?>
@@ -143,7 +152,7 @@
                                 title="<?php echo $this->lang->line('manage_users_hint'); ?>">
                             <?php echo $this->lang->line('users'); ?>
                         </a>
-                        
+
                         <?php // Report MENU ITEM 
                               // ------------------------------------------------------ ?>
                         <?php $hidden = ($privileges[PRIV_REPORT]['view'] ==  TRUE) ? '' : 'hidden'; ?>
@@ -152,7 +161,8 @@
                                 title="<?php echo $this->lang->line('manage_report_hint'); ?>">
                             <?php echo $this->lang->line('report'); ?>
                         </a>
-
+                        
+                        
                         <?php // SETTINGS MENU ITEM 
                               // ------------------------------------------------------ ?>
                         <?php $hidden = ($privileges[PRIV_SYSTEM_SETTINGS]['view'] == TRUE 

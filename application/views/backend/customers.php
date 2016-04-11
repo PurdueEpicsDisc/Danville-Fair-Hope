@@ -85,7 +85,8 @@
         </div>
         
         <input id="customer-id" type="hidden" />
-        
+        <input id="referrer-id" type="hidden" />
+
         <div class="span6" style="margin-left: 0;">
             <h2><?php echo $this->lang->line('details'); ?></h2>
             <div id="form-message" class="alert" style="display:none;"></div>
@@ -95,30 +96,19 @@
 
             <label for="last-name"><?php echo $this->lang->line('last_name'); ?> *</label>
             <input type="text" id="last-name" class="span11 required" />
-
-            <label for="email"><?php echo $this->lang->line('email'); ?> *</label>
-            <input type="text" id="email" class="span11 required" />
-
-            <label for="phone-number"><?php echo $this->lang->line('phone_number'); ?> *</label>
-            <input type="text" id="phone-number" class="span11 required" />
-            
-<!--             <label for="address"><?php echo $this->lang->line('address'); ?></label>
-            <input type="text" id="address" class="span11" />
-
-            <label for="city"><?php echo $this->lang->line('city'); ?></label>
-            <input type="text" id="city" class="span11" />
-
-            <label for="zip-code"><?php echo $this->lang->line('zip_code'); ?></label>
-            <input type="text" id="zip-code" class="span11" /> 
 			
--->
-		
-			
+            <label for="date-of-birth"><?php echo $this->lang->line('dob'); ?> * (mm/dd/yyyy)</label>
+            <?php echo $this->lang->line('dob_format'); ?>
+            <input type="text" id="date-of-birth" class="span11 required" />
+
+            <label for="referrer"><?php echo $this->lang->line('referrer'); ?> *</label>
+            <input type="text" id="referrer" class="span11 required" />
+
+            <label for="agency"><?php echo $this->lang->line('referring_agency'); ?> *</label>
+            <input type="text" id="referring-agency" class="span11 required" />
+
             <label for="number-of-children"><?php echo $this->lang->line('num_of_children'); ?> *</label>
             <input type="text" id="num-of-children" class="span11 required" />
-			
-				<label for="date-of-birth"><?php echo $this->lang->line('dob'); ?> *</label>
-            <input type="text" id="date-of-birth" class="span11" />
 
             <label for="notes"><?php echo $this->lang->line('notes'); ?></label>
             <textarea id="notes" rows="4" class="span11"></textarea>

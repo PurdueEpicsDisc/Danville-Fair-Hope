@@ -111,12 +111,12 @@ class Notifications {
         $mail->Subject = $title;
         $mail->Body    = $email_html;
 
-        if (!$mail->Send()) {
+        /*if (!$mail->Send()) {
             throw new Exception('Email could not been sent. Mailer Error (Line ' 
                     . __LINE__ . '): ' . $mail->ErrorInfo);
-        }
+        }*/
         
-        return TRUE;
+        //return TRUE;
     }
     
     /**
@@ -184,12 +184,12 @@ class Notifications {
         $mail->Subject      = $this->ci->lang->line('appointment_cancelled_title');
         $mail->Body         = $email_html;
 
-        if (!$mail->Send()) {
-            throw new Exception('Email could not been sent. ' 
+        /*if (!$mail->Send()) {
+            throw new Exception('Email not sent. ' 
                     . 'Mailer Error (Line ' . __LINE__ . '): ' . $mail->ErrorInfo);
-        }
+        }*/
         
-        return TRUE;
+        //return TRUE;
     }
     
     /**

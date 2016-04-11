@@ -128,6 +128,7 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 
         BackendCustomers.helper.displayAppointment(appointment);
     });
+    
     /**
      * Event: Appointment Row "Click"
      * 
@@ -196,15 +197,20 @@ CustomersHelper.prototype.bindEventHandlers = function() {
      Left is database value, right is the form label
      */
     $('#save-customer').click(function() {
+        var referrer = {
+            'name' : $('#referrer').val(),
+            'agency': $('#referring-agency').val()
+        };
+
+        /////////////////////
+        // console.log('Referrer to be added: ', referrer);
+        ////////////////////
+
+        // Validate referrer
         var customer = {
             'first_name': $('#first-name').val(),
             'last_name': $('#last-name').val(),
-            'email': $('#email').val(),
-            'phone_number': $('#phone-number').val(),
-            'address': $('#address').val(),
-            'city': $('#city').val(),
             'num_of_children': $('#num-of-children').val(),
-            'zip_code': $('#zip-code').val(),
 			'dob': $('#date-of-birth').val(),
             'notes': $('#notes').val()
         };
@@ -212,10 +218,16 @@ CustomersHelper.prototype.bindEventHandlers = function() {
         if ($('#customer-id').val() != '') {
             customer.id = $('#customer-id').val();
         }
-        
+
+        if ($('#referrer-id').val() != '') {
+            customer.id_referrer = $('#referrer-id').val();
+        }
+
         if (!BackendCustomers.helper.validate(customer)) return;
-            
-        BackendCustomers.helper.save(customer);
+        
+        BackendCustomers.helper.validateReferrer(customer, referrer);
+
+        //BackendCustomers.helper.save(customer);
     });
 
     /**
@@ -246,6 +258,10 @@ CustomersHelper.prototype.bindEventHandlers = function() {
 CustomersHelper.prototype.save = function(customer) {
     var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_customer';
     var postData = { 'customer': JSON.stringify(customer) };
+
+    //////////////////////////////////////////////
+    console.log('In prototype.save.......');
+    /////////////////////////////////////////////
     
     $.post(postUrl, postData, function(response) {
         ///////////////////////////////////////////////////////////
@@ -262,6 +278,68 @@ CustomersHelper.prototype.save = function(customer) {
 };
 
 /**
+ * Validate if referrer exists.
+ *
+ * @param {object} referrer Contains referrer data.
+ */
+ CustomersHelper.prototype.validateReferrer = function(customer, referrer) {
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_validate_referrer';
+    var postData = { 'referrer' : JSON.stringify(referrer) };
+
+    $.post(postUrl, postData, function(response) {
+        ///////////////////////////////////////////////////////////
+        console.log('Validate Referrer Response:', response);
+        ///////////////////////////////////////////////////////////
+        
+        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+
+        if (response.id == -1) {
+            ///////////////////////////////////////////////////////
+            console.log('Referrer does not exist. Adding referrer...');
+            ///////////////////////////////////////////////////////
+
+            //alert('Referrer record not found. Do you want to create a new Referrer?');
+            BackendCustomers.helper.addReferrer(customer, referrer); 
+        } else {
+            $('#referrer-id').val(response.id);
+            customer.id_referrer = response.id;
+            //////////////////////////////////////////////////////
+            console.log('Referrer exists. Saving customer...');
+            //////////////////////////////////////////////////////
+            BackendCustomers.helper.save(customer);
+        }
+
+        ///////////////////////////////////////////////////////////
+        console.log("id_referrer: " , response.id);
+        ///////////////////////////////////////////////////////////
+    }, 'json');
+ }
+
+ /**
+ * Add referrer if referrer does not exist.
+ *
+ * @param {object} referrer Contains referrer data.
+ */
+ CustomersHelper.prototype.addReferrer = function(customer, referrer) {
+    var postUrl = GlobalVariables.baseUrl + 'backend_api/ajax_save_referrer';
+    var postData = { 'referrer' : JSON.stringify(referrer) };
+    var id_referrer;
+
+    $.post(postUrl, postData, function(response) {
+        ///////////////////////////////////////////////////////////
+        console.log('Save Referrer Response:', response);
+        ///////////////////////////////////////////////////////////
+        
+        if (!GeneralFunctions.handleAjaxExceptions(response)) return;
+            
+        $('#referrer-id').val(response.id);
+        customer.id_referrer = response.id;
+        BackendCustomers.helper.save(customer);
+
+    }, 'json');
+ }
+
+/**
  * Delete a customer record from database.
  * 
  * @param {numeric} id Record id to be deleted. 
@@ -272,7 +350,7 @@ CustomersHelper.prototype.delete = function(id) {
     
     $.post(postUrl, postData, function(response) {
         ////////////////////////////////////////////////////
-        //console.log('Delete customer response:', response);
+        console.log('Delete customer response:', response);
         ////////////////////////////////////////////////////
         
         if (!GeneralFunctions.handleAjaxExceptions(response)) return;
@@ -304,13 +382,6 @@ CustomersHelper.prototype.validate = function(customer) {
         if (missingRequired) {
             throw EALang['fields_are_required'];
         }
-
-        // Validate email address.
-        if (!GeneralFunctions.validateEmail($('#email').val())) {
-            $('#email').css('border', '2px solid red');
-            throw EALang['invalid_email'];
-        }
-
         return true;
 
     } catch(exc) {
@@ -347,44 +418,48 @@ CustomersHelper.prototype.resetForm = function() {
  */
 CustomersHelper.prototype.display = function(customer) {
     $('#customer-id').val(customer.id);
+    $('#referrer-id').val(customer.id_referrer);
     $('#first-name').val(customer.first_name);
     $('#last-name').val(customer.last_name);
-    $('#email').val(customer.email);
-    $('#phone-number').val(customer.phone_number);
-    $('#address').val(customer.address);
-    $('#city').val(customer.city);
-    $('#zip-code').val(customer.zip_code);
     $('#num-of-children').val(customer.num_of_children);
-	 $('#date-of-birth').val(customer.dob);
+	$('#date-of-birth').val(customer.dob);
     $('#notes').val(customer.notes);
-
+    $('#referrer').val(customer.referrer.name);
+    $('#referring-agency').val(customer.referrer.agency);
     $('#customer-appointments').data('jsp').destroy();
     $('#customer-appointments').empty();
+
+    if (customer.id_referrer == null) {
+        $('#referrer').val('');
+        $('#referring-agency').val('');
+        return;
+    }
+
+    /* Display customer appt. details */
     $.each(customer.appointments, function(index, appointment) {
         var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
         var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
         if (appointment.no_show_flag == 1) {
             var html =
-                    '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
-                        start + ' - ' + end + '<br>' +
-                        appointment.service.name + ', ' +
-                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
-                    '</div>';
+                '<div class="appointment-row-noshow" data-id="' + appointment.id + '">' +
+                    '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                    $('#referring-agency').val() + ', ' + $('#referrer').val() + '<br>' +
+                    appointment.service.name +
+                '</div>';
         }
         else {
             var html =
-                    '<div class="appointment-row" data-id="' + appointment.id + '">' +
-                        start + ' - ' + end + '<br>' +
-                        appointment.service.name + ', ' +
-                        appointment.provider.first_name + ' ' + appointment.provider.last_name +
-                    '</div>';
+                '<div class="appointment-row" data-id="' + appointment.id + '">' +
+                    '<b>' + start + ' - ' + end + '</b>' + '<br>' +
+                    $('#referring-agency').val() + ', ' + $('#referrer').val() + '<br>' +
+                    appointment.service.name +
+                '</div>';
         }
         $('#customer-appointments').append(html);
     });
     $('#customer-appointments').jScrollPane({ mouseWheelSpeed: 70 });
-    
-    $('#appointment-details').empty();
-};
+    $('#appointment-details').empty();    
+}
 
 /**
  * Filter customer records.
@@ -435,14 +510,9 @@ CustomersHelper.prototype.filter = function(key, selectId, display) {
  * @param {object} customer Contains the customer data.
  * @return {string} Returns the record html code.
  */
-
-
- /************************control how it appear on backend costumer page, left column   */
 CustomersHelper.prototype.getFilterHtml = function(customer) {
-    var name = customer.first_name + ' ' + customer.last_name;
+    var name = customer.last_name + '<br>' + customer.first_name;
     var info = customer.dob; 
-    info = (customer.phone_number != '' && customer.phone_number != null) 
-            ? info + ', ' + customer.phone_number : info;
     
     var html = 
             '<div class="customer-row" data-id="' + customer.id + '">' +
@@ -495,12 +565,33 @@ CustomersHelper.prototype.displayAppointment = function(appointment) {
     var start = Date.parse(appointment.start_datetime).toString('MM/dd/yyyy HH:mm');
     var end = Date.parse(appointment.end_datetime).toString('MM/dd/yyyy HH:mm');
 
+    var notes;
+    if (appointment.notes != '') {
+        notes = appointment.notes + '<br>';
+    } else {
+        notes = '';
+    }
+
+    var layette_b = 'Layette (B): ';
+    var layette_g = 'Layette (G): ';
+    var pnp = 'PNP: ';
+    var backpack = 'Backpack: ';
+
     var html = 
             '<div>' + 
                 '<strong>' + appointment.service.name + '</strong><br>' + 
-                appointment.provider.first_name + ' ' + appointment.provider.last_name + '<br>' +
+                layette_b + appointment.layette_boy + '<br>' +
+                layette_g + appointment.layette_girl + '<br>' +
+                pnp + appointment.pnp_qty + '<br>' +
+                backpack + appointment.backpack_qty + '<br>' +
+                notes + 
                 start + ' - ' + end + '<br>' +
             '</div>';
 
     $('#appointment-details').html(html);
 };
+
+
+
+
+

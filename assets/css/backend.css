@@ -149,7 +149,7 @@ nav {
 nav ul {  
     padding: 0;  
     margin: 0 auto;  
-    width: 750px;  
+    width: 850px;  
     height: 40px;  
 }  
 
@@ -350,15 +350,16 @@ nav a#pull {
 }
 
 #manage-appointment {
-/*    width: 860px;
-    margin-left: -430px;*/
+    width: 860px;
+    margin-left: -400px;
     overflow-y: auto;
-    width: auto;
+    /*width: auto;*/
 }
 
 #existing-customers-list { 
     height: 110px;
     overflow-y: auto;
+    overflow-x: auto;
     margin-bottom: 8px;
     font-size: 12px;
     line-height: 22px;
@@ -366,7 +367,9 @@ nav a#pull {
 
 #existing-customers-list div {
     display: inline-block;
-    width: 250px;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 23%;
     margin: 0 5px 5px 0;
     padding: 3px 5px;
     border-radius: 3px;
@@ -385,12 +388,73 @@ nav a#pull {
     font-size: 12px;
 }
 
+#existing-referrers-list { 
+    height: 110px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+#existing-referrers-list div {
+    display: inline-block;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 23%;
+    margin: 0 5px 5px 0;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+#existing-referrers-list div:hover {
+    background: #B8F0C1;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#filter-existing-referrers {
+    display: inline-block;
+    height: 14px;
+    min-height: 24px;
+    font-size: 12px;
+}
+
 body .form-horizontal .control-label {
     width: 135px;
 }
 
 body .form-horizontal .controls {
     margin-left: 158px;
+}
+
+
+body .form-horizontal .layette-controls-boy {
+    float:left;
+    margin-left: 23px;
+    width: 35%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+body .form-horizontal .layette-controls-girl{
+    float:left;
+    width: 35%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+body .form-horizontal .span5 {
+    margin-left: -10px;
+
+}
+
+body .form-horizontal .span6 {
+    margin-left: 60px;
+}
+
+body .form-horizontal .span7 {
+    float:right;
 }
 
 /* BACKEND CUSTOMERS PAGE
@@ -824,4 +888,96 @@ padding: 4px 7px;
 
 #settings-page #update-ea {
     margin-left: 12px;
+}
+
+/* BACKEND REFERRERS PAGE
+   -------------------------------------------------------------------- */
+#referrers-page h2 {
+    color: #525252;
+}
+
+#referrers-page #filter-referrers {
+    margin: 15px 0px 15px 15px; 
+    width: 350px;
+}
+
+#referrers-page .filter-records .results { 
+    overflow-y: auto; 
+    max-height: 650px;
+    outline: none;
+}
+
+#referrers-page #filter-referrers .results .referrer-row { 
+    padding: 10px 7px; 
+}
+
+#referrers-page #filter-referrers .results .referrer-row:hover:not(.selected-row) { 
+    background-color: #F3F3F3; 
+    cursor: pointer; 
+}
+
+#referrers-page #filter-referrers .results hr { 
+    margin: 5px 0; 
+}
+
+#referrers-page .details { 
+    margin: 15px 0 15px 15px; 
+    max-width: 710px;
+}
+
+#referrers-page .details .btn-toolbar { 
+    margin-top: 0px; 
+}
+
+#referrers-page .details div.span5 { 
+    margin-left: 0; 
+}
+
+#referrers-page #clients-referred { 
+    height: 370px; 
+    width: 330px;
+    border: 4px solid #E2E2E2; 
+    margin-bottom: 20px; 
+    overflow-y: auto; 
+}
+
+#referrers-page #clients-referred .clients-row { 
+    padding: 7px; 
+    border-bottom: 4px solid #E2E2E2;
+}
+
+#referrers-page #clients-referred .clients-row:hover:not(.selected-row) { 
+    background-color: #F3F3F3; 
+    cursor: pointer; 
+}
+
+#referrers-page #clients-referred .clients-row-noshow { 
+    padding: 7px;
+    border-bottom: 4px solid #E2E2E2; 
+    background-color: #ee5f5b;
+}
+
+#referrers-page #clients-referred .clients-row-noshow:hover:not(.selected-row) { 
+    background-color: #bd362f; 
+    cursor: pointer; 
+}
+
+#referrers-page #client-details {
+    width: 338px;
+}
+
+#referrers-page #client-details div {
+    padding: 10px;
+    background: #F8F8F8;
+    border-bottom: 4px solid #EEE;
+}
+
+#referrers-page .details input,
+#referrers-page .details textarea { 
+    background-color: white; 
+    cursor: default; 
+}
+
+#referrers-page .selected-row { 
+    background-color: #CBFFD8; 
 }

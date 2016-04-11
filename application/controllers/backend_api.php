@@ -43,6 +43,7 @@ class Backend_api extends CI_Controller {
             $this->load->model('providers_model');
             $this->load->model('services_model');
             $this->load->model('customers_model');
+            $this->load->model('referrers_model');
             
             if ($_POST['filter_type'] == FILTER_TYPE_PROVIDER) {
                 $where_id = 'id_users_provider';
@@ -63,7 +64,9 @@ class Backend_api extends CI_Controller {
             foreach($response['appointments'] as &$appointment) {
                 $appointment['provider'] = $this->providers_model->get_row($appointment['id_users_provider']);
                 $appointment['service'] = $this->services_model->get_row($appointment['id_services']);
-                $appointment['customer'] = $this->customers_model->get_row($appointment['id_users_customer']);
+                $customer = $this->customers_model->get_row($appointment['id_users_customer']);
+                $appointment['customer'] = $customer;
+                $appointment['referrer'] = $this->referrers_model->get_row($customer['id_referrer']);
             }
             
             // Get unavailable periods (only for provider).
@@ -167,7 +170,23 @@ class Backend_api extends CI_Controller {
         	$this->load->model('providers_model');
         	$this->load->model('services_model');
         	$this->load->model('customers_model');
+            $this->load->model('referrers_model');
         	$this->load->model('settings_model');
+
+            // :: SAVE REFERRER CHANGES TO DATABASE
+            if (isset($_POST['referrer_data'])) {
+                $referrer = json_decode(stripcslashes($_POST['referrer_data']), true);
+                
+                $REQUIRED_PRIV = (!isset($referrer['id_referrer'])) 
+                        ? $this->privileges[PRIV_CUSTOMERS]['add'] 
+                        : $this->privileges[PRIV_CUSTOMERS]['edit'];
+                if ($REQUIRED_PRIV == FALSE) {
+                    throw new Exception('You do not have the required privileges for this task.');
+                }
+                
+                $referrer['id_referrer'] = $this->referrers_model->add($referrer);
+            }
+
             // :: SAVE CUSTOMER CHANGES TO DATABASE
             if (isset($_POST['customer_data'])) {
                 $customer = json_decode(stripcslashes($_POST['customer_data']), true);
@@ -178,7 +197,7 @@ class Backend_api extends CI_Controller {
                 if ($REQUIRED_PRIV == FALSE) {
                     throw new Exception('You do not have the required privileges for this task.');
                 }
-                
+                $customer['id_referrer'] = $referrer['id_referrer'];
                 $customer['id'] = $this->customers_model->add($customer);
             }
             
@@ -199,6 +218,11 @@ class Backend_api extends CI_Controller {
                 if (!isset($appointment['id_users_customer'])) {
                     $appointment['id_users_customer'] = $customer['id'];
                 }
+
+                if (!isset($appointment['id_referrer'])) {
+                    $appointment['id_referrer'] = $referrer['id_referrer'];
+                }
+
                 $appointment['id'] = $this->appointments_model->add($appointment);
 				$services_provider = $this->db->get_where('ea_services_providers', 
                     array('id_users' => $appointment['id_users_provider'],'id_services' => $appointment['id_services']))->row_array();
@@ -214,7 +238,7 @@ class Backend_api extends CI_Controller {
                              SET u.num_noshow = a.sumf";
 				mysql_query($query);
             }
-            
+
             $appointment = $this->appointments_model->get_row($appointment['id']);
             $provider = $this->providers_model->get_row($appointment['id_users_provider']);
             $customer = $this->customers_model->get_row($appointment['id_users_customer']);
@@ -491,18 +515,14 @@ class Backend_api extends CI_Controller {
             $this->load->model('services_model');
             $this->load->model('providers_model');
 	    	$this->load->model('customers_model');
+            $this->load->model('referrers_model');
             
 	    	$key = mysql_real_escape_string($_POST['key']); 
             
 	    	$where_clause = 
 	    			'(first_name LIKE "%' . $key . '%" OR ' . 
-	    			'last_name LIKE "%' . $key . '%" 
-					/*OR ' . 
-	    			'email LIKE "%' . $key . '%" OR ' .	
-	    			'phone_number LIKE "%' . $key . '%" OR ' .
-	    			'address LIKE "%' . $key . '%" OR ' .
-	    			'city LIKE "%' . $key . '%" OR ' .
-	    			'zip_code LIKE "%' . $key . '%"*/)';		
+	    			'last_name LIKE "%' . $key . '%" OR ' . 
+	    			'num_of_children LIKE "%' . $key . '%")';		
             
             $customers = $this->customers_model->get_batch($where_clause);
             
@@ -518,6 +538,9 @@ class Backend_api extends CI_Controller {
                 }
                 
                 $customer['appointments'] = $appointments;
+
+                $referrer = $this->referrers_model->get_row($customer['id_referrer']);
+                $customer['referrer'] = $referrer;
             }
             
 	    	echo json_encode($customers);
@@ -1254,6 +1277,173 @@ class Backend_api extends CI_Controller {
             ));
         }
     }
+
+    ///////////////////////////////MODIFY THESE FUNCTIONS FOR REFERRERS/////////////////////////////////////
+    /**
+     * [AJAX] Filter the referrers records with the given key string.
+     * 
+     * @param string $_POST['key'] The filter key string
+     * @return array Returns the search results.
+     */
+
+    public function ajax_filter_referrers() {
+        try {
+            //////////////////////////TODO:: SERIOUSLY, GET THIS DONE ASAP!///////////////////////////////////////
+            if ($this->privileges[PRIV_CUSTOMERS]['view'] == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $this->load->model('appointments_model');
+            $this->load->model('services_model');
+            $this->load->model('providers_model');
+            $this->load->model('customers_model');
+            $this->load->model('referrers_model');
+            $this->load->model('appointments_model');
+            
+            // Key is input from user.
+            $key = mysql_real_escape_string($_POST['key']); 
+            
+            $where_clause = 
+                    '(name LIKE "%' . $key . '%" OR ' . 
+                    'agency LIKE "%' . $key . '%" OR ' . 
+                    'phone_number LIKE "%' . $key . '%" OR ' . 
+                    'email LIKE "%' . $key . '%" OR ' .
+                    'notes LIKE "%' . $key . '%")';        
+            
+            $referrers = $this->referrers_model->get_batch($where_clause);
+
+            foreach($referrers as &$referrer) {
+                $appointments = $this->appointments_model
+                    ->get_batch(array('id_referrer' => $referrer['id_referrer']));
+                foreach($appointments as &$appointment) {
+                    $appointment['service'] = $this->services_model
+                            ->get_row($appointment['id_services']);
+                    $appointment['provider'] = $this->providers_model
+                            ->get_row($appointment['id_users_provider']);
+                    $customer = $this->customers_model->get_row($appointment['id_users_customer']);
+                    $appointment['customer'] = $customer;
+                }
+                $referrer['appointments'] = $appointments;
+            }
+
+            /*foreach($referrers as $referrer) {
+                $customers = $this->customers_model
+                    ->get_batch(array('id_referrer' => $referrer['id_referrer']));
+
+                foreach($customers as &$customer) {
+                $appointments = $this->appointments_model
+                        ->get_batch(array('id_users_customer' => $customer['id']));
+                
+                    foreach($appointments as &$appointment) {
+                        $appointment['service'] = $this->services_model
+                                ->get_row($appointment['id_services']);
+                        $appointment['provider'] = $this->providers_model
+                                ->get_row($appointment['id_users_provider']);
+                    }
+                    $customer['appointments'] = $appointments;
+                }
+                $referrer['customers'] = $customers;
+            }*/
+
+            echo json_encode($referrers);
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    } 
+
+    /**
+     * [AJAX] Save (insert or update) a customer record.
+     * 
+     * @param array $_POST['customer'] JSON encoded array that contains the customer's data.
+     */
+    public function ajax_save_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $referrer = json_decode($_POST['referrer'], true);
+            
+            $REQUIRED_PRIV = (!isset($referrer['id_referrer'])) 
+            ////////////TODO: COME BACK ONCE PRIVILEGES IS WRITTEN///////////////
+                    ? $this->privileges[PRIV_CUSTOMERS]['add'] 
+                    : $this->privileges[PRIV_CUSTOMERS]['edit'];
+            if ($REQUIRED_PRIV == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $id_referrer = $this->referrers_model->add($referrer);
+            echo json_encode(array(
+                'status' => AJAX_SUCCESS,
+                'id' => $id_referrer
+            ));
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+    
+    /**
+     * [AJAX] Delete customer from database.
+     * 
+     * @param numeric $_POST['customer_id'] Customer record id to be deleted.
+     */
+    public function ajax_delete_referrer() {
+        try {
+            ////////////////////TODO:FIX THIS PRIVILEGES THING////////////////////
+            if ($this->privileges[PRIV_CUSTOMERS]['delete'] == FALSE) {
+                throw new Exception('You do not have the required privileges for this task.');
+            }
+            
+            $this->load->model('referrers_model');
+            $this->referrers_model->delete($_POST['id_referrer']);
+
+            echo json_encode(AJAX_SUCCESS);
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+
+
+    /**
+     * [AJAX] Validate if referrer exists in database for backend_customers.
+     * 
+     * @param numeric $_POST['referrer'] referrer to be compared against.
+     */
+    public function ajax_validate_referrer() {
+        try {
+            $this->load->model('referrers_model');
+            $referrer = json_decode($_POST['referrer'], true);
+            
+            ////////////////////////DEBUGGING//////////////////////////
+            error_log($referrer['name'] . ' ' . $referrer['agency']);
+
+            $id_referrer;
+
+            if($this->referrers_model->exists($referrer)) {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer exists');
+                $id_referrer = $this->referrers_model->find_record_id($referrer);
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer id: ' . $id_referrer);
+            } else {
+                /////////////////////DEBUGGING////////////////////////
+                error_log('referrer does not exist');
+                $id_referrer = -1;
+            }
+            echo json_encode(array(
+                    'status' => AJAX_SUCCESS,
+                    'id' => $id_referrer
+            ));
+        } catch(Exception $exc) {
+            echo json_encode(array(
+                'exceptions' => array(exceptionToJavaScript($exc))
+            ));
+        }
+    }
+/* End of class. */
 }
 
 /* End of file backend_api.php */

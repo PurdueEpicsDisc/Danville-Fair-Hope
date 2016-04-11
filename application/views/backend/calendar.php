@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css"
+ <link rel="stylesheet" type="text/css"
         href="<?php echo $base_url; ?>assets/css/libs/jquery/fullcalendar.css" />
 
 <script type="text/javascript" 
@@ -17,8 +17,9 @@
         'baseUrl'               : <?php echo '"' . $base_url . '"'; ?>,
         'bookAdvanceTimeout'    : <?php echo $book_advance_timeout; ?>,
         'editAppointment'       : <?php echo json_encode($edit_appointment); ?>,
-        'appointments'           : <?php echo json_encode($appointments); ?>,
+        'appointments'          : <?php echo json_encode($appointments); ?>,
         'customers'             : <?php echo json_encode($customers); ?>,
+        'referrers'             : <?php echo json_encode($referrers); ?>,
         'secretaryProviders'    : <?php echo json_encode($secretary_providers); ?>,
         'user'                  : {
             'id'        : <?php echo $user_id; ?>,
@@ -173,7 +174,7 @@
                     </div>
                 </div>
                 
-                <div class="control-group">
+                <div class="control-group" style="display: none;">
                     <label for="select-provider" class="control-label"><?php echo $this->lang->line('provider'); ?> *</label>
                     <div class="controls">
                         <select id="select-provider" class="required span4"></select>
@@ -194,7 +195,29 @@
                     </div>
                 </div>
 
-                <div class="control-group">
+                <div class="layette-control-group">
+                    <label class="control-label"> <?php echo $this->lang->line('layette'); ?> </label>
+                    <div class="layette-controls-boy">
+                        <label for="boy" class="layette-label"> <?php echo $this->lang->line('boy'); ?> </label>
+                        <input type="number" id="layette-boy" onkeydown="return ( event.ctrlKey || event.altKey 
+                            || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                            || (95<event.keyCode && event.keyCode<106)
+                            || (event.keyCode==8) || (event.keyCode==9) 
+                            || (event.keyCode>34 && event.keyCode<40) 
+                            || (event.keyCode==46) )" min="0">
+                    </div>
+                    <div class="layette-controls-girl">
+                        <label for="girl" class="layette-label"> <?php echo $this->lang->line('girl'); ?> </label>
+                        <input type="number" id="layette-girl" onkeydown="return ( event.ctrlKey || event.altKey 
+                            || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                            || (95<event.keyCode && event.keyCode<106)
+                            || (event.keyCode==8) || (event.keyCode==9) 
+                            || (event.keyCode>34 && event.keyCode<40) 
+                            || (event.keyCode==46) )" min="0">
+                    </div>
+                </div>
+
+                <!--<div class="control-group">
                     <label for="layette" class="control-label"><?php echo $this->lang->line('layette'); ?></label>
                     <div class="controls">
                         <input type="number" id="layette"  onkeydown="return ( event.ctrlKey || event.altKey 
@@ -205,7 +228,7 @@
                     || (event.keyCode==46) )">
                         
                     </div>
-                </div>
+                </div> -->
                 <div class="control-group">
                     <label for="backpack-qty" class="control-label"><?php echo $this->lang->line('backpack_qty'); ?></label>
                     <div class="controls">
@@ -214,7 +237,19 @@
                     || (95<event.keyCode && event.keyCode<106)
                     || (event.keyCode==8) || (event.keyCode==9) 
                     || (event.keyCode>34 && event.keyCode<40) 
-                    || (event.keyCode==46) )">
+                    || (event.keyCode==46) )" min="0">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="pnp-qty" class="control-label"><?php echo $this->lang->line('pnp_qty'); ?></label>
+                    <div class="controls">
+                        <input type="number" id="pnp-qty" onkeydown="return ( event.ctrlKey || event.altKey 
+                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                    || (95<event.keyCode && event.keyCode<106)
+                    || (event.keyCode==8) || (event.keyCode==9) 
+                    || (event.keyCode>34 && event.keyCode<40) 
+                    || (event.keyCode==46) )" min="0">
                     </div>
                 </div>
 
@@ -251,10 +286,13 @@
                             title="<?php echo $this->lang->line('pick_existing_customer_hint'); ?>" 
                             type="button"><?php echo $this->lang->line('select'); ?>
                     </button>
+                    
                     <input type="text" id="filter-existing-customers"
                            placeholder="<?php echo $this->lang->line('type_to_filter_customers'); ?>" 
-                           style="display: none;" class="input-medium span4"/>
+                           style="visibility: none;" class="input-medium span3"/>
+
                     <div id="existing-customers-list" style="display: none;"></div>
+
                 </legend>
 
                 <input id="customer-id" type="hidden" />
@@ -270,27 +308,42 @@
 
                     <div class="control-group">
                         <label for="last-name" class="control-label">
-                            <?php echo $this->lang->line('last_name'); ?>*</label>
+                            <?php echo $this->lang->line('last_name'); ?> *</label>
                         <div class="controls">
                             <input type="text" id="last-name" class="required" />
                         </div>
                     </div>
 
-                    <div class="control-group">
+<!--                    <div class="control-group">
                         <label for="email" class="control-label">
                             <?php echo $this->lang->line('email'); ?>*</label>
                         <div class="controls">
                             <input type="text" id="email" class="required" />
-                        </div>
-                    </div>
-					<div class="control-group">
-                        <label for="num-noshow" class="control-label">
-                            <?php echo $this->lang->line('num-of-noshow'); ?></label>
+                        </div> 
+                    </div> -->
+
+                    <div class="control-group">
+                        <label for="dob" class="control-label">
+                            <?php echo $this->lang->line('dob'); ?> *
+                        </label>
                         <div class="controls">
-                            <input type="text" id="num-noshow"/>
+                            <input type="text" id="dob" class="required" />
                         </div>
                     </div>
 
+                    <div class="control-group">
+                        <label for="num-of-children" class="control-label">
+                            <?php echo $this->lang->line('num_of_children'); ?> *
+                        </label>
+                        <div class="controls">
+                            <input type="number" id="num-of-children" class="required" onkeydown="return ( event.ctrlKey || event.altKey 
+                        || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
+                        || (95<event.keyCode && event.keyCode<106)
+                        || (event.keyCode==8) || (event.keyCode==9) 
+                        || (event.keyCode>34 && event.keyCode<40) 
+                        || (event.keyCode==46) )" min="0"> 
+                        </div>
+                    </div>
 <!--                     <div class="control-group">
                         <label for="phone-number" class="control-label">
                             <?php echo $this->lang->line('phone_number'); ?>*</label>
@@ -308,27 +361,8 @@
                             <input type="text" id="address" />
                         </div>
                     </div> -->
-                <div class="control-group">
-                    <label for="dob" class="control-label">
-                        <?php echo $this->lang->line('dob'); ?>
-                    </label>
-                    <div class="controls">
-                        <input type="text" id="dob" class="required" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label for="num-of-children" class="control-label">
-                        <?php echo $this->lang->line('num_of_children'); ?>
-                    </label>
-                    <div class="controls">
-                        <input type="number" id="num-of-children" class="required" onkeydown="return ( event.ctrlKey || event.altKey 
-                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false) 
-                    || (95<event.keyCode && event.keyCode<106)
-                    || (event.keyCode==8) || (event.keyCode==9) 
-                    || (event.keyCode>34 && event.keyCode<40) 
-                    || (event.keyCode==46) )"> 
-                    </div>
-                </div>
+
+
 
 <!--                     <div class="control-group">
                         <label for="city" class="control-label">
@@ -347,7 +381,16 @@
                             <input type="text" id="zip-code" />
                         </div>
                     </div> -->
-                    
+
+
+                    <div class="control-group">
+                        <label for="num-noshow" class="control-label">
+                            <?php echo $this->lang->line('num-of-noshow'); ?></label>
+                        <div class="controls">
+                            <input type="text" id="num-noshow"/>
+                        </div>
+                    </div>
+
                     <div class="control-group">
                         <label for="customer-notes" class="control-label">
                             <?php echo $this->lang->line('notes'); ?></label>
@@ -357,6 +400,52 @@
                     </div>
                 </div>
             </fieldset>
+
+            <fieldset class="row-fluid">
+                <legend>
+                    <?php echo $this->lang->line('referrer_details_title'); ?>
+                    <button id="new-referrer" class="btn btn-mini" 
+                            title="<?php echo $this->lang->line('clear_fields_add_existing_referrer_hint'); ?>"
+                            type="button"><?php echo $this->lang->line('new'); ?>
+                    </button>
+                    <button id="select-referrer" class="btn btn-primary btn-mini" 
+                            title="<?php echo $this->lang->line('pick_existing_referrer_hint'); ?>" 
+                            type="button"><?php echo $this->lang->line('select'); ?>
+                    </button>
+
+                    <input type="text" id="filter-existing-referrers"
+                            placeholder="<?php echo $this->lang->line('type_to_filter_referrers'); ?>" 
+                            style="display: none;" class="input-medium span3"/>
+                    
+                    <div id="existing-referrers-list" style="display: none;"></div>
+
+                </legend>
+                
+                <input id="referrer-id" type="hidden" />
+
+                <div class="span5">
+                    <div class="control-group">
+                        <label for="referrer" class="control-label">
+                            <?php echo $this->lang->line('referrer'); ?> *</label>
+                        <div class="controls">
+                            <input type="text" id="referrer" class="required" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <div class="control-group">
+                        <label for="agency" class="control-label">
+                            <?php echo $this->lang->line('referring_agency'); ?> *</label>
+                        <div class="controls">                        
+                            <input type="text" id="agency" class="required" />
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+
+
         </form>
     </div>
     
